@@ -1,4 +1,4 @@
-<!-- mascot goes here once the reference is chosen: assets/icon-512.png, width 160 -->
+<p align="center"><img src="assets/icon-512.png" alt="skills mascot: toolbox" width="160"></p>
 
 # skills
 
