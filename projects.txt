@@ -1,0 +1,2 @@
+# project name -> checkout path, used by scripts/link.sh for skills with `project:` in their frontmatter
+study /Volumes/Gawean/study

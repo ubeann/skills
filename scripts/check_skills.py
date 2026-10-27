@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
 """Validate every <name>/SKILL.md: frontmatter name matches the folder,
-description is present, and every references/ path mentioned exists."""
+description is present, every references/ path mentioned exists, and a
+`project:` key names a project listed in projects.txt."""
 import re
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 errors = []
+projects = {
+    line.split()[0]
+    for line in (ROOT / "projects.txt").read_text().splitlines()
+    if line.strip() and not line.startswith("#")
+}
 skills = sorted(p for p in ROOT.glob("*/SKILL.md"))
 if not skills:
     errors.append("no skills found")
@@ -23,6 +29,9 @@ for skill in skills:
         errors.append(f"{folder.name}: name is {front.get('name')!r}, want {folder.name!r}")
     if not front.get("description"):
         errors.append(f"{folder.name}: empty description")
+    project = front.get("project")
+    if project and project not in projects:
+        errors.append(f"{folder.name}: project {project!r} is not listed in projects.txt")
     for ref in set(re.findall(r"references/[\w./-]+", text)):
         if not (folder / ref).exists():
             errors.append(f"{folder.name}: {ref} does not exist")
