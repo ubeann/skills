@@ -44,3 +44,22 @@ footer {
 .tile .k { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 650; }
 .tile .v { font-size: 32px; font-weight: 650; letter-spacing: -.02em; margin-top: 4px; line-height: 1.1; }
 .tile .s { font-size: 12.5px; color: var(--ink2); margin-top: 6px; }
+
+/* Deck: deck.js adds body.deck and shows one page at a time, scaled to the window.
+   Without the script the same file is the plain scroll of pages that the PDF prints. */
+body.deck { background: #000; overflow: hidden; }
+body.deck .page { display: none; margin: 0; box-shadow: none; position: fixed; left: 50%; top: 50%; transform-origin: center; }
+body.deck .page.current { display: flex; }
+body.deck.blank .page.current { visibility: hidden; }
+body.deck [data-tip]:hover { filter: brightness(.9); } /* the hovered mark answers */
+body.deck .fragment { opacity: 0; }
+body.deck .fragment.shown { opacity: 1; }
+.tip { position: fixed; z-index: 9; background: var(--ink); color: #fff; font-size: 13px; line-height: 1.3; padding: 5px 9px; border-radius: 6px; pointer-events: none; white-space: nowrap; }
+.tip[hidden] { display: none; }
+/* Printing the deck gives the PDF: every page, every fragment, no tip. */
+@media print {
+  body.deck { background: none; overflow: visible; }
+  body.deck .page { display: flex; position: relative; left: auto; top: auto; transform: none !important; }
+  body.deck .fragment { opacity: 1; }
+  .tip { display: none; }
+}
