@@ -12,6 +12,7 @@ Global skills are symlinked into `~/.claude/skills/` so Claude Code picks them u
 |---|---|
 | [html-pdf-report](html-pdf-report/SKILL.md) | Data-driven PDF reports and decks: JSON from a slow pass, fixed-size HTML pages, headless Chrome, an overflow gate, read-only review, commit per page. |
 | [learn](learn/SKILL.md) | Answer a learning question from verified sources and file it as a note. Scoped to the [study](https://github.com/ubeann/study) repo. |
+| [video-context](video-context/SKILL.md) | Turn a video URL or file into a bundle an agent can read: post text, captions or whisper transcript, deduplicated frames, and a timestamped summary. |
 
 ## Layout
 
