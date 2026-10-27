@@ -1,0 +1,46 @@
+/* Base stylesheet for a fixed-size HTML to PDF report. One section.page per page.
+   Swap the size, the palette, and the font; keep the page box and the gates. */
+@page { size: 1280px 720px; margin: 0; }
+:root {
+  --ink: #0b0b0b; --ink2: #52514e; --muted: #726f69; --grid: #e1e0d9;
+  --paper: #fcfcfb; --plane: #f4f3ef; --ring: rgba(11, 11, 11, .10);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink);
+  font-size: 13px; line-height: 1.45; background: #e9e8e3;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+/* The page box. overflow: hidden is the last resort; overflow.js is the gate. */
+.page {
+  width: 1280px; height: 720px; padding: 40px 56px 44px; background: var(--paper);
+  position: relative; overflow: hidden; break-after: page; display: flex; flex-direction: column;
+}
+.page:last-child { break-after: auto; }
+@media screen { .page { margin: 24px auto; box-shadow: 0 1px 4px rgba(0, 0, 0, .12); } }
+
+/* Page head: kicker, title that states the page's one claim, one-sentence lede. */
+.kicker { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 650; }
+h1 { font-size: 26px; line-height: 1.18; margin: 6px 0; letter-spacing: -.015em; font-weight: 650; max-width: 1040px; }
+.lede { font-size: 14.5px; color: var(--ink2); margin: 0 0 18px; max-width: 900px; }
+
+/* Body: columns that take the remaining height. min-height: 0 lets them shrink instead of overflowing. */
+.body { flex: 1; min-height: 0; display: flex; gap: 32px; }
+.col { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.grow { flex: 1; }
+footer {
+  position: absolute; left: 56px; right: 56px; bottom: 16px; display: flex; justify-content: space-between;
+  font-size: 12px; color: var(--muted);
+}
+
+/* Numbers align in columns only with tabular figures. */
+.num { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.mut { color: var(--muted); }
+
+/* One stat tile: key, value, one-line support. */
+.tiles { display: grid; gap: 12px; }
+.tile { background: #fff; border: 1px solid var(--ring); border-radius: 12px; padding: 14px 16px; }
+.tile .k { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 650; }
+.tile .v { font-size: 32px; font-weight: 650; letter-spacing: -.02em; margin-top: 4px; line-height: 1.1; }
+.tile .s { font-size: 12.5px; color: var(--ink2); margin-top: 6px; }
