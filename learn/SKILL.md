@@ -12,7 +12,7 @@ Every answer leaves a **note** in `notes/<area>/<slug>.md`. Concepts, comparison
 
 2. **Classify** the question into one branch and copy that template from `templates/`:
    - **lookup**: one fact (a price, a cap, a release status, "is X built on Y"). No diagram.
-   - **article**: the user gave a URL to explain.
+   - **article**: the user gave a URL to explain. A video URL goes through the `video-context` skill first; its bundle `summary.md` is the article.
    - **concept** or **comparison**: "explain X", "X vs Y", "why X instead of the usual way".
 
 3. **Verify.** Fetch every URL the user gave, including the article or repo they linked. Each number, price, date, version, or release status in the note cites a page fetched this session, or goes under `unverified:`. Library and vendor facts go through context7 or the vendor's docs MCP before a web search. Search snippets are leads, not sources: open the page. Done when `sources:` lists every page cited and no claim is left uncited.
