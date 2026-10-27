@@ -10,3 +10,5 @@ Every page passes all of these. The review delegate checks them; the author chec
 6. **Tabular numerals.** Every column of numbers uses tabular figures and right alignment, so digits line up.
 7. **Headers read horizontally.** Table and axis labels are horizontal. Shorten the label or widen the column instead of rotating.
 8. **Inside the box.** Nothing escapes the page and no text is clipped. The overflow gate covers this mechanically; the review confirms the PNG agrees.
+9. **Every value mark has a tip.** A bar, point, or cell that carries a number has `data-tip` with that number formatted as the print shows it, so hovering in the deck reads the exact value.
+10. **Fragments resolve to one claim.** A page with `.fragment` children reads correctly fully revealed, which is how the PDF prints it and how the deck ends the page. One fragment per series in legend order, the value labels last, and every fragment reveals a mark at least 1px tall; a series too small to see joins the last fragment.
