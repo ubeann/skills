@@ -1,0 +1,148 @@
+<!doctype html>
+<!--
+  UX behaviour audit report. Fill every {{placeholder}}; repeat each block marked REPEAT once per item and delete the sample rows.
+  Renders on the host's theme variables, so leave html and body without a background.
+  Severity classes: sev-blocker, sev-friction, sev-doubt, sev-polish. Lens classes: lens-D, lens-S, lens-A, lens-T, lens-C, lens-O.
+  Level classes: lv-junior, lv-mid, lv-senior, lv-staff.
+-->
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font-sans);line-height:1.45;font-size:14px}
+.wrap{display:flex;flex-direction:column;gap:26px}
+h1{font-size:21px;margin:0 0 4px;letter-spacing:-.01em}
+h2{font-size:13px;margin:0 0 10px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted-foreground)}
+p{margin:0}
+.sub{color:var(--muted-foreground)}
+.frame{margin-top:10px;font-family:var(--font-mono);font-size:12.5px;background:var(--code-background,var(--card));border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius)}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.tile{padding:12px 14px}
+.tile b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
+.tile span{font-size:12px;color:var(--muted-foreground)}
+.sevbar{display:flex;height:10px;border-radius:5px;overflow:hidden;margin-top:12px;gap:2px}
+.sevbar i{display:block}
+.sevkey{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted-foreground);margin-top:6px}
+.sevkey i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.sev-blocker{--sev:var(--destructive)}.sev-friction{--sev:var(--warning)}.sev-doubt{--sev:var(--info)}.sev-polish{--sev:var(--muted-foreground)}
+.sevbar i,.sevkey i{background:var(--sev)}
+.verdict{border-left:3px solid var(--primary);padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0}
+.verdict p{font-size:15.5px;font-weight:600}
+.verdict small{display:block;margin-top:6px;color:var(--muted-foreground)}
+.strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.shot{padding:8px;display:flex;flex-direction:column;gap:6px}
+.shot img{width:100%;border-radius:calc(var(--radius) - 2px);border:1px solid var(--border);display:block;height:auto;max-height:340px;object-fit:contain;object-position:top;background:var(--secondary)}
+.shot .id{font-size:12px;font-weight:700}
+.shot .q{font-size:12px;color:var(--muted-foreground)}
+.lv{display:inline-block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 7px;border-radius:999px;border:1px solid currentColor}
+.lv-junior{color:var(--destructive)}.lv-mid{color:var(--warning)}.lv-senior{color:var(--info)}.lv-staff{color:var(--success)}
+.lens-D{--lens:var(--chart-1)}.lens-S{--lens:var(--chart-2)}.lens-A{--lens:var(--chart-3)}.lens-T{--lens:var(--chart-4)}.lens-C{--lens:var(--chart-5)}.lens-O{--lens:var(--chart-6)}
+.findings{display:flex;flex-direction:column;gap:8px}
+.f{padding:12px 14px;border-left:3px solid var(--sev)}
+.f .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:5px;font-size:12px}
+.chip{font-size:11.5px;padding:1px 7px;border-radius:999px;background:var(--secondary);color:var(--secondary-foreground)}
+.chip.lens{background:color-mix(in srgb,var(--lens) 22%,transparent);color:var(--foreground)}
+.chip.sev{background:color-mix(in srgb,var(--sev) 20%,transparent);color:var(--foreground);font-weight:600;text-transform:capitalize}
+.f b{display:block;font-size:14px;margin-bottom:3px}
+.f dl{display:grid;grid-template-columns:70px 1fr;gap:3px 10px;margin:6px 0 0;font-size:12.5px}
+.f dt{color:var(--muted-foreground)}.f dd{margin:0}
+.f code{font-family:var(--font-mono);font-size:12px}
+.f a{color:var(--primary)}
+table.mx{width:100%;border-collapse:separate;border-spacing:3px;font-size:12px}
+.mx th{font-size:11px;font-weight:600;color:var(--muted-foreground);padding:2px}
+.mx td{height:26px;border-radius:4px;text-align:center;font-variant-numeric:tabular-nums}
+.mx td.t{text-align:left;font-weight:600;padding-right:6px;white-space:nowrap}
+.m0{background:var(--secondary);opacity:.4}
+.m1{background:color-mix(in srgb,var(--destructive) 30%,transparent)}
+.m2{background:color-mix(in srgb,var(--destructive) 55%,transparent);font-weight:700}
+.m3{background:var(--destructive);color:var(--destructive-foreground,#fff);font-weight:700}
+.next{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none}
+.next li{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:start;padding:10px 12px}
+.next .id{font-weight:700;font-size:12px}
+.next p{font-size:13px}
+.next small{display:block;color:var(--muted-foreground);font-size:12px;margin-top:2px}
+.flags{background:var(--warning-surface,color-mix(in srgb,var(--warning) 12%,transparent));border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+.flags ul{margin:0;padding-left:16px;display:flex;flex-direction:column;gap:6px;font-size:13px}
+.flags li span{color:var(--muted-foreground)}
+.note{font-size:12px;color:var(--muted-foreground)}
+@media (max-width:560px){.tiles{grid-template-columns:repeat(2,1fr)}.strip{grid-template-columns:repeat(2,1fr)}.f dl{grid-template-columns:1fr}.f dt{margin-top:4px}}
+</style></head><body><div class="wrap">
+
+<section>
+  <h1>{{Product}}: {{task in a few words}}</h1>
+  <p class="sub">UX behaviour audit · {{input: screenshots / live URL / code}} · {{date}}</p>
+  <div class="frame">{{who}} wants to {{task}} on {{device}}, {{how often}}; done when {{end state}}</div>
+  <div class="tiles">
+    <div class="card tile"><b>{{n}}</b><span>screens on the path</span></div>
+    <div class="card tile"><b>{{n}}</b><span>taps to finish{{ (minimum) when inferred from screenshots}}</span></div>
+    <div class="card tile"><b>{{n}}</b><span>decisions asked</span></div>
+    <div class="card tile"><b>{{n}}</b><span>findings</span></div>
+  </div>
+  <!-- flex values are the finding counts per severity -->
+  <div class="sevbar"><i class="sev-blocker" style="flex:{{blockers}}"></i><i class="sev-friction" style="flex:{{friction}}"></i><i class="sev-doubt" style="flex:{{doubt}}"></i><i class="sev-polish" style="flex:{{polish}}"></i></div>
+  <div class="sevkey"><span class="sev-blocker"><i></i>{{n}} blocker</span><span class="sev-friction"><i></i>{{n}} friction</span><span class="sev-doubt"><i></i>{{n}} doubt</span><span class="sev-polish"><i></i>{{n}} polish</span></div>
+</section>
+
+<section class="card verdict">
+  <p>{{The question the flow makes the user answer today, in their words}}</p>
+  <small>{{One or two sentences: the question it should ask instead, and the overall level.}}</small>
+</section>
+
+<section>
+  <h2>The path, as the user meets it</h2>
+  <div class="strip">
+    <!-- REPEAT per screen. Use an absolute image path; for a code-only audit drop the img and put the file in .q -->
+    <div class="card shot">
+      <img src="{{/abs/path/S1.png}}" alt="{{S1 description}}">
+      <div><span class="id">S1</span> <span class="lv lv-{{junior|mid|senior|staff}}">{{level}}</span></div>
+      <p class="q">"{{question the screen asks}}"</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Findings, most costly first</h2>
+  <div class="findings">
+    <!-- REPEAT per finding, ordered blocker, friction, doubt, polish -->
+    <article class="card f sev-{{blocker|friction|doubt|polish}} lens-{{D|S|A|T|C|O}}">
+      <div class="top"><span class="chip sev">{{severity}}</span><span class="chip lens">{{check id}} {{lens name}}</span><span class="chip">{{screen}} · {{element}}</span></div>
+      <b>{{The behaviour it blocks, in one sentence}}</b>
+      <dl><dt>Evidence</dt><dd>{{what the image shows, a measure.js value, or <code>file:line</code>}}</dd>
+      <dt>Fix</dt><dd>{{one line}}</dd>
+      <dt>Precedent</dt><dd><a href="{{video link with &t=}}">{{CSnn case name}}</a>{{ or "none"}}</dd>
+      <dt>Watch</dt><dd>{{metric that shows the fix working}}</dd></dl>
+    </article>
+  </div>
+</section>
+
+<section>
+  <h2>Where each screen fails</h2>
+  <table class="mx">
+    <tr><th></th><th>Decide</th><th>Scan</th><th>Act</th><th>Trust</th><th>Commit</th><th>Orient</th></tr>
+    <!-- REPEAT per screen. Cell = failed checks for that lens. Class m0 for 0, m1 for 1, m2 for 2, m3 for 3 or more. Leave 0 cells empty. -->
+    <tr><td class="t">S1</td><td class="m0"></td><td class="m1">1</td><td class="m2">2</td><td class="m0"></td><td class="m0"></td><td class="m3">3</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>One level up, per screen</h2>
+  <ul class="next">
+    <!-- REPEAT per screen -->
+    <li class="card"><span class="id">S1</span><p><span class="lv lv-{{level}}">{{level}}</span> to <span class="lv lv-{{next}}">{{next}}</span>: {{the one change}}<small>{{at staff: the noise it would cost}}</small></p></li>
+  </ul>
+</section>
+
+<!-- Delete this section when there are no flags. -->
+<section class="flags">
+  <h2>Persuasion flags</h2>
+  <ul>
+    <!-- REPEAT per flag -->
+    <li><b>{{screen}}: {{technique}}</b> fails <em>{{test}}</em>. {{The honest version.}} <span>{{business risk}}</span></li>
+  </ul>
+</section>
+
+<section>
+  <p class="note">{{Not checked: states not reached, widths not tested, anything inferred rather than seen. If static: "Read from code; behaviour not observed in a running app."}}</p>
+</section>
+
+</div></body></html>
