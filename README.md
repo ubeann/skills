@@ -47,15 +47,29 @@ AGENTS.md                 pointers for any coding agent working here
 python3 scripts/check_skills.py   # validate every skill
 python3 scripts/sync_profiles.py  # sync every profile: plugins, mcp, settings, skills, files
 python3 scripts/sync_profiles.py --dry-run --only settings   # preview one step
+python3 scripts/sync_profiles.py --drift    # what a profile has that the repo does not
 sh scripts/link.sh                # skills only
 ```
 
 ## Profile sync
 
+Every change goes through `profile/` (or a skill folder) in a PR. Once it merges, each profile picks it up on its next session start: the shared `SessionStart` hook runs `sync-claude-profiles --current --pull`, which fast-forwards the main checkout (only when it is clean and on `main`) and syncs the profile that is starting. Run `python3 scripts/sync_profiles.py --pull` to update every profile at once.
+
+| To | Change | The next sync, in every profile |
+|---|---|---|
+| Add a plugin | `enabledPlugins` (and its marketplace in `extraKnownMarketplaces`) in `profile/settings.json` | adds the marketplace, installs the plugin |
+| Turn a plugin off | set it to `false` | keeps it installed, disabled |
+| Remove a plugin | delete its `enabledPlugins` entry; delete the marketplace too if nothing else uses it | uninstalls it; removes the marketplace unless a plugin still installed in that profile needs it |
+| Add, change or remove an MCP server | `profile/mcp.json` | `claude mcp add-json` / `remove` at user scope |
+| Add or remove a repo skill | the skill folder | links it / removes the link |
+| Add or remove a skill another tool installs | a line in `profile/skill-sources.txt`, or `!name` to skip one | links it / removes the link; the installer's copy itself is never deleted |
+| Change any other setting (hooks, permissions, `env`) | `profile/settings.json` | merges it; a key or list entry deleted here is deleted there |
+| Add or remove a rule, `CLAUDE.md`, agent | a file under `profile/home/` | links it / removes the link |
+
 - Profiles are `~/.claude` plus every `~/.claude-*` dir; set `CLAUDE_PROFILES=dir:dir` to choose others.
-- Settings are merged, not replaced: shared keys win, list entries (hooks, permission rules) are added to the profile's own, and keys only the profile has (its `theme`, a plugin installed with `/plugin`) stay.
-- What a sync adds is recorded in `<profile>/.skills-sync.json`; drop an entry from `profile/` and the next sync removes it everywhere. Dropping a plugin only removes it from `enabledPlugins`; it stays installed until `claude plugin uninstall` in that profile.
-- Skills installed by other tools stay where their installer keeps them; `profile/skill-sources.txt` lists those folders, and every profile links to them, so an update lands everywhere. A copy identical to the source is replaced by a link; a copy that differs is left alone with a warning. `!name` skips a skill a plugin already ships.
+- Only what the sync added is ever removed: it records that in `<profile>/.skills-sync.json`. Anything a profile has on its own (its `theme`, a plugin tried with `/plugin`) stays. `--drift` lists those, so you can promote one into `profile/` or remove it.
+- Settings are merged, not replaced: shared keys win, list entries (hooks, permission rules) are added to the profile's own.
+- Skills installed by other tools stay where their installer keeps them, so an update lands everywhere. A copy identical to the source is replaced by a link; a copy that differs is left alone with a warning.
 - MCP servers and plugins go through the `claude` CLI, never by editing `.claude.json`, which also holds the profile's login. OAuth MCP servers still need signing in once per profile.
-- The shared `SessionStart` hook runs `sync-claude-profiles --current` in whichever profile starts, so a profile picks up changes on its next session. The first run installs `~/.local/bin/sync-claude-profiles` and should be done by hand, since adding marketplaces clones them.
-- This repo is public: keep tokens out of `profile/`.
+- A new profile gets everything on its first session; run the sync by hand for it once if you want it ready sooner, since adding marketplaces clones them.
+- This repo is public: keep tokens out of `profile/`; write them as `${VAR}` in `profile/mcp.json`.
