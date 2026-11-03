@@ -1,6 +1,6 @@
 ---
 name: ux-behaviour-audit
-description: Audit a UI by how users behave on it. Walk one task as the user, check each screen through six behaviour lenses (decide, scan, act, trust, commit, orient), place every screen on a junior-to-staff ladder, flag persuasion that crosses into a dark pattern, and render the report in chat. Use when asked for a UX audit, a usability review of a flow, or why users hesitate or drop off, from screenshots, a live URL, or frontend code. Visual polish and design-system critique is the impeccable skill; a report file to keep is the report-web skill.
+description: Audit a UI by how users behave on it. Walk one task as the user, check each screen through six behaviour lenses (decide, scan, act, trust, commit, orient), place every screen on a junior-to-staff ladder, flag persuasion that crosses into a dark pattern, and render the report in chat. Use when asked for a UX audit, a usability review of a flow, or why users hesitate or drop off, from screenshots, a live URL, or frontend code. Visual polish is the impeccable skill; brand and token drift across screens is the design-direction skill; a report file to keep is the report-web skill.
 ---
 
 # UX behaviour audit
@@ -77,6 +77,7 @@ Done when the page renders with no overflow at both widths and every finding fro
 
 - Write findings in terms of behaviour, not taste. "The count is hidden until after the tap, so users apply filters blind" is a finding. "The button looks plain" is polish at most.
 - The statistics behind many principles (choice overload, default rates, sampling uplift) come from design-education sources and are not always replicated. Give the behaviour as the reason, and leave the numbers out of the report.
+- An S5 failure that repeats across screens is a system problem, not a screen one. Name it once and point to the design-direction skill's drift check.
 - Judge the screen against its own task and frequency. Staff-level context on a screen used once a year is noise.
 - One task per audit. A second flow is a second report.
 - To compare a screen against a case visually, run the `video-context` skill on the case's video into a temporary folder. Then open the frames whose seconds fall in the minute after the link's `&t=` value. The frames stay in that folder and the repository keeps only the links, because the videos belong to their creator.

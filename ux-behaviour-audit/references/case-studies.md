@@ -1,6 +1,6 @@
 # Case studies
 
-Worked before-and-after cases from UX Peak breakdowns, each linked to the moment in the video. Use them three ways:
+Worked before-and-after cases from UX Peak and Tim Gabe breakdowns, each linked to the moment in the video. Use them three ways:
 
 - **Start from a symptom.** When the user brings a real problem ("people abandon the filter", "trials don't convert"), find the symptom in the index, audit the checks it names first, and read the cases beside it.
 - **Cite a precedent.** Every finding names the closest case by id, so the fix has a worked example behind it. Search this file for the check id (`D2`, `A4`) to find the cases that fixed it.
@@ -27,6 +27,11 @@ The before-and-after screens are design exercises and A/B framings from a design
 | New users bounce from an empty or generic home | O4, O5, A1 | CS17, CS22, CS23 |
 | Mis-taps, or users lost between sections | A3, O2, O3, S8 | CS24 |
 | Product images or cards that look messy across the catalogue | S5, T6, S4 | CS06, CS20 |
+| Users hit a limit and contact support or leave | O8, T2 | CS27 |
+| Failed payments or actions become tickets or churn | T8, O6 | CS28 |
+| Users drop off after missing a day or a target | C8, C7 | CS29, CS30 |
+| Users finish the core task and don't come back the next day | C9, C7 | CS31, CS30 |
+| Engagement rises while complaints, opt-outs or uninstalls rise too | Persuasion tests 2 and 3 | CS32, CS33 |
 
 ## Decide and compare
 
@@ -246,3 +251,65 @@ The before-and-after screens are design exercises and A/B framings from a design
 - **Case.** The channel's own ebook landing page. A cover on a plain background, then the cover with value points (the channel reports 22% conversion), then real inside pages (it reports 48%).
 - **Behaviour.** A preview of the real thing beats a description of it.
 - **Watch.** Conversion on the page, with the preview as the variable in an A/B test.
+
+## Retention and recovery
+
+### CS27 Session limit in a practice app
+[Video at 5:42](https://www.youtube.com/watch?v=8EAYZe6y3I8&t=342s) · Checks O8 T2 O6
+
+- **Before.** Running out of sessions sent the user to one of two separate screens, both reading "You've used all your sessions", with no count and no date. A mic test that was too short ended with nothing at all; one founder's summary of users' reaction: "I was expecting anything instead of nothing" ([at 2:47](https://www.youtube.com/watch?v=8EAYZe6y3I8&t=167s)).
+- **After.** One pattern for every limit: a "2 of 2 sessions used" badge, "You've used both sessions this month", and the exact date they refresh.
+- **Behaviour.** A limit with a count and a date is a plan; a limit without them reads as a broken product. Two screens for one situation tell the user nobody owns it.
+- **Transfers to.** Quotas, free tiers, rate limits, storage caps, credits.
+- **Watch.** Support tickets about limits, upgrade rate from the limit screen, return rate on the refresh date.
+
+### CS28 Declined card payment
+[Video at 8:17](https://www.youtube.com/watch?v=8EAYZe6y3I8&t=497s) · Checks T8 O6
+
+- **Before.** A failed transaction gave, in the support lead's words, "zero information on what you should do. You're just left alone", in a product people trust with their own money.
+- **After.** A decline alert that tells the user to check their balance, with a Contact support button beside it. The agency reports new accounts up 60% and money loaded up 79% after this and other changes together.
+- **Behaviour.** A failure handled well can leave people as satisfied as if nothing had failed (the service recovery paradox). The scariest moment is where trust is won or lost.
+- **Transfers to.** Payments, uploads, syncs, bookings, anything that can fail after the user commits.
+- **Watch.** Tickets per decline, retry success after a decline, deposits in the week after a decline.
+
+### CS29 Food tracking without shame
+[Video at 7:23](https://www.youtube.com/watch?v=HA4yB_sd62Q&t=443s) · Checks C8 C5
+
+- **Category default.** Red numbers over target, broken streaks after a skipped day, notifications about missed goals.
+- **What MacroFactor built.** It assumes users will miss targets. It combines what was logged with a trend weight smoothed over about three weeks to work out real metabolism, then adjusts the targets.
+- **Behaviour.** Shame makes people stop logging or log what they wish they had eaten. Removing it kept users and gave cleaner data than competitors.
+- **Transfers to.** Habit, fitness, finance and learning apps: any product where the user will slip.
+- **Watch.** Logging retention after the first missed day, the share of days logged per active user.
+
+### CS30 Surprise inside a predictable system
+[Video at 2:52](https://www.youtube.com/watch?v=yBpv5rZoBjA&t=172s) · Checks C7 C5 · Persuasion row "Surprise reward"
+
+- **Pattern.** In Finch the user raises a virtual bird by finishing real self-care tasks. The bird adventures in a location the user picks and brings back one of 15 to 20 discoveries, and its six-trait personality develops in ways the user did not choose.
+- **The design rule the case teaches.** Keep the reward system mostly predictable and trackable, add controlled surprise on top, and give users one system to follow instead of many badges ([at 5:47](https://www.youtube.com/watch?v=yBpv5rZoBjA&t=347s)).
+- **Transfers to.** Habit and wellbeing apps, learning streaks, loyalty programmes.
+- **Watch.** Day-7 and day-30 retention, and also notification opt-outs and uninstalls.
+- **Persuasion line.** The surprise must stay a bonus. When progress itself becomes random, or the user pays for a chance at it, it is a flag.
+
+### CS31 Ending the ride
+[Video at 6:07](https://www.youtube.com/watch?v=11h4H3TAGkM&t=367s) · Checks C9
+
+- **Pattern.** The peak of a ride is arriving. Uber then closes the journey with a vibration and two optional, polite steps: rate the driver and leave a tip. In the same video, Ahead builds a personal report in front of the user as the peak and ends with a gentle nudge to come back tomorrow.
+- **Behaviour.** People remember the peak and the end of an experience. A flow that simply stops wastes the last moment the user will remember.
+- **Transfers to.** Checkouts, lessons, workouts, any completed core task.
+- **Watch.** Rating and tip rate, return within seven days of a completed task.
+
+### CS32 Counter-example: a hidden ranked ladder
+[Video at 4:37](https://www.youtube.com/watch?v=yBpv5rZoBjA&t=277s) · Persuasion tests 1 and 3
+
+- **What the video describes.** League of Legends' visible rank sits on a hidden rating that shapes matchmaking to hold players near a 50% win rate. Players climb 100 points, drop 200 and climb again, and the unpredictability keeps them playing.
+- **Why the audit flags it.** The visible score is not what decides the outcome (test 1), and players would not endorse the rule if they saw it (test 3). Recognise the pattern; never recommend it.
+- **Honest version.** Show the rating that drives matching, or explain plainly how players are matched.
+
+### CS33 One workout for the whole team
+[Video at 10:00](https://www.youtube.com/watch?v=HA4yB_sd62Q&t=600s) · Checks C7 · Persuasion row "Leaderboard and social visibility"
+
+- **Pattern.** Most workout apps treat motivation as solo. Ladder puts every member of a team (about 5,000 people) on the same workout on the same day. The CEO credits the shared calendar, not the funnel, with keeping users.
+- **Behaviour.** A shared ritual makes skipping visible to others, which turns a private goal into a social one.
+- **Transfers to.** Courses with cohorts, challenges, group savings, study apps.
+- **Watch.** Week-4 workout completion, and also the rate of users leaving their team.
+- **Persuasion line.** Visible absence works only with consent: the user joins the cohort knowingly and can train privately.
