@@ -17,6 +17,7 @@ The rest of the shared setup lives in `profile/` and is synced the same way: plu
 | [learn](learn/SKILL.md) | Answer a learning question from verified sources and file it as a note. Scoped to the [study](https://github.com/ubeann/study) repo. |
 | [video-context](video-context/SKILL.md) | Turn a video URL or file into a bundle an agent can read: post text, captions or whisper transcript, deduplicated frames, and a timestamped summary. |
 | [ux-behaviour-audit](ux-behaviour-audit/SKILL.md) | Audit a UI by how users behave on it: walk one task, six behaviour lenses, a junior-to-staff ladder, persuasion flags, case studies with video timestamps, a report rendered in chat. |
+| [design-direction](design-direction/SKILL.md) | Direction before UI is generated: a brief with the bet against the category's assumption, one job per reference, a DESIGN.md token system for app, website or desktop, and a drift count of type, spacing, colour and radius on the built screens. |
 
 ## Layout
 
