@@ -2,14 +2,14 @@
 """Export the skill characters for the README.
 
 Reads art/mascots/hero/<skill>.png (transparent cutouts) and assets/icon-512.png (the toolbox),
-writes assets/skills/<skill>.png at 256 px and assets/banner.png, and a light/dark check sheet
+writes assets/skills/<skill>.png at 256 px, and a light/dark check sheet
 to the path given with --check. Run from the repo root.
 """
 import argparse
 import json
 from pathlib import Path
 
-from PIL import Image, ImageDraw
+from PIL import Image
 
 R = Image.Resampling.LANCZOS
 HERE = Path(__file__).resolve().parent
@@ -35,29 +35,19 @@ def main():
     for n, im in cut.items():
         im.resize((256, 256), R).save(ROOT / "assets" / "skills" / f"{n}.png", optimize=True)
 
-    toolbox = square(Image.open(ROOT / "assets" / "icon-512.png").convert("RGBA"), pad=0.02)
-    big, small, gap = 300, 190, 18
-    half = (len(order) + 1) // 2
-    tiles = ([cut[n].resize((small, small), R) for n in order[:half]] + [toolbox.resize((big, big), R)]
-             + [cut[n].resize((small, small), R) for n in order[half:]])
-    width = sum(t.width for t in tiles) + gap * (len(tiles) - 1)
-    banner = Image.new("RGBA", (width, big), (0, 0, 0, 0))
-    x = 0
-    for t in tiles:
-        banner.alpha_composite(t, (x, big - t.height))
-        x += t.width + gap
-    banner.save(ROOT / "assets" / "banner.png", optimize=True)
-
     if args.check:
-        sheet = Image.new("RGB", (width, 2 * (big + 80)), "white")
+        toolbox = square(Image.open(ROOT / "assets" / "icon-512.png").convert("RGBA"), pad=0.02).resize((160, 160), R)
+        width = max(160, 20 + len(order) * 140)
+        sheet = Image.new("RGB", (width, 2 * 420), "white")
         for k, bg in enumerate([(255, 255, 255), (13, 17, 23)]):  # GitHub light and dark
-            layer = Image.new("RGBA", (width, big + 80), bg + (255,))
-            layer.alpha_composite(banner)
+            layer = Image.new("RGBA", (width, 420), bg + (255,))
+            layer.alpha_composite(toolbox, ((width - 160) // 2, 10))
             for i, n in enumerate(order):
-                layer.alpha_composite(cut[n].resize((40, 40), R), (20 + i * 60, big + 20))
-            sheet.paste(layer.convert("RGB"), (0, k * (big + 80)))
+                layer.alpha_composite(cut[n].resize((128, 128), R), (20 + i * 140, 190))
+                layer.alpha_composite(cut[n].resize((40, 40), R), (64 + i * 140, 340))
+            sheet.paste(layer.convert("RGB"), (0, k * 420))
         sheet.save(args.check)
-    print(f"{len(order)} characters, banner {banner.size[0]}x{banner.size[1]}")
+    print(f"{len(order)} characters")
 
 
 if __name__ == "__main__":

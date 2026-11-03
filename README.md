@@ -1,4 +1,4 @@
-<p align="center"><img src="assets/banner.png" alt="The toolbox mascot with one character per skill: slides, a scroll, a notebook, a film reel, a footprint, a compass, a pin board and a paint tube" width="720"></p>
+<p align="center"><img src="assets/icon-512.png" alt="skills mascot: toolbox" width="160"></p>
 
 # skills
 
@@ -34,7 +34,7 @@ profile/settings.json     keys merged into each profile's settings.json: plugins
 profile/mcp.json          user-scope MCP servers; write secrets as ${VAR}, read from the env at sync time
 profile/skill-sources.txt skills kept outside this repo (npx skills, but, yab), linked into each profile from where they live
 profile/home/             files symlinked into each profile at the same path (rules/, CLAUDE.md, agents/)
-assets/                   the toolbox mascot, the README banner, one character per skill in skills/
+assets/                   the toolbox mascot, one character per skill in skills/
 art/mascots/              how the characters are made: shared rules, prompts, cutouts, export.py
 AGENTS.md                 pointers for any coding agent working here
 ```
