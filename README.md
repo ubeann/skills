@@ -11,15 +11,15 @@ The rest of the shared setup lives in `profile/` and is synced the same way: plu
 ## Skills
 
 | Skill | Use it for |
-|---|---|
-| [report-deck](report-deck/SKILL.md) | A paged data report as a PDF to send and an offline HTML deck to present, from one set of fixed-size pages: JSON from a slow pass, headless Chrome, an overflow gate. |
-| [report-web](report-web/SKILL.md) | A scrolling data report as one offline HTML file for laptop, tablet or phone: one section per claim, a contents rail, hover values, a headless Chrome check. |
-| [learn](learn/SKILL.md) | Answer a learning question from verified sources and file it as a note. Scoped to the [study](https://github.com/ubeann/study) repo. |
-| [video-context](video-context/SKILL.md) | Turn a video URL or file into a bundle an agent can read: post text, captions or whisper transcript, deduplicated frames, and a timestamped summary. |
-| [ux-behaviour-audit](ux-behaviour-audit/SKILL.md) | Audit a UI by how users behave on it: walk one task, six behaviour lenses, a junior-to-staff ladder, persuasion flags, case studies with video timestamps, a report rendered in chat. |
-| [design-direction](design-direction/SKILL.md) | Direction before UI is generated: a brief with the bet against the category's assumption, one job per reference, a DESIGN.md token system for app, website or desktop, and a drift count of type, spacing, colour and radius on the built screens. |
-| [moodboard](moodboard/SKILL.md) | A local library of design references from X, Threads, Instagram, YouTube or any site: each broken into its technique, a trend count across authors, and project boards where every reference has one job. |
-| [brand-art](brand-art/SKILL.md) | Mascots, illustration sets, scene art and app icons that keep one identity: an art bible, the owner's seed, an identity pack with a hero and turnaround, one change per call through Recraft or Higgsfield, file cleanup, and a drift score against the hero. |
+|:-:|---|
+| [<img src="assets/skills/report-deck.png" alt="" width="48">](report-deck/SKILL.md)<br>[report&#8209;deck](report-deck/SKILL.md) | A paged data report as a PDF to send and an offline HTML deck to present, from one set of fixed-size pages: JSON from a slow pass, headless Chrome, an overflow gate. |
+| [<img src="assets/skills/report-web.png" alt="" width="48">](report-web/SKILL.md)<br>[report&#8209;web](report-web/SKILL.md) | A scrolling data report as one offline HTML file for laptop, tablet or phone: one section per claim, a contents rail, hover values, a headless Chrome check. |
+| [<img src="assets/skills/learn.png" alt="" width="48">](learn/SKILL.md)<br>[learn](learn/SKILL.md) | Answer a learning question from verified sources and file it as a note. Scoped to the [study](https://github.com/ubeann/study) repo. |
+| [<img src="assets/skills/video-context.png" alt="" width="48">](video-context/SKILL.md)<br>[video&#8209;context](video-context/SKILL.md) | Turn a video URL or file into a bundle an agent can read: post text, captions or whisper transcript, deduplicated frames, and a timestamped summary. |
+| [<img src="assets/skills/ux-behaviour-audit.png" alt="" width="48">](ux-behaviour-audit/SKILL.md)<br>[ux&#8209;behaviour&#8209;audit](ux-behaviour-audit/SKILL.md) | Audit a UI by how users behave on it: walk one task, six behaviour lenses, a junior-to-staff ladder, persuasion flags, case studies with video timestamps, a report rendered in chat. |
+| [<img src="assets/skills/design-direction.png" alt="" width="48">](design-direction/SKILL.md)<br>[design&#8209;direction](design-direction/SKILL.md) | Direction before UI is generated: a brief with the bet against the category's assumption, one job per reference, a DESIGN.md token system for app, website or desktop, and a drift count of type, spacing, colour and radius on the built screens. |
+| [<img src="assets/skills/moodboard.png" alt="" width="48">](moodboard/SKILL.md)<br>[moodboard](moodboard/SKILL.md) | A local library of design references from X, Threads, Instagram, YouTube or any site: each broken into its technique, a trend count across authors, and project boards where every reference has one job. |
+| [<img src="assets/skills/brand-art.png" alt="" width="48">](brand-art/SKILL.md)<br>[brand&#8209;art](brand-art/SKILL.md) | Mascots, illustration sets, scene art and app icons that keep one identity: an art bible, the owner's seed, an identity pack with a hero and turnaround, one change per call through Recraft or Higgsfield, file cleanup, and a drift score against the hero. |
 
 ## Layout
 
@@ -34,7 +34,8 @@ profile/settings.json     keys merged into each profile's settings.json: plugins
 profile/mcp.json          user-scope MCP servers; write secrets as ${VAR}, read from the env at sync time
 profile/skill-sources.txt skills kept outside this repo (npx skills, but, yab), linked into each profile from where they live
 profile/home/             files symlinked into each profile at the same path (rules/, CLAUDE.md, agents/)
-assets/                   mascot, when it exists
+assets/                   the toolbox mascot, one character per skill in skills/
+art/mascots/              how the characters are made: shared rules, prompts, cutouts, export.py
 AGENTS.md                 pointers for any coding agent working here
 ```
 
