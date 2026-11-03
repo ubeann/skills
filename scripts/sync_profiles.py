@@ -4,7 +4,8 @@
 A profile is a Claude config dir: ~/.claude (the default) and every ~/.claude-*
 dir, which T3 Code launches through CLAUDE_CONFIG_DIR. Each run does five steps:
 
-  plugins   add the marketplaces in profile/settings.json, install its enabled plugins
+  plugins   add the marketplaces in profile/settings.json, install its enabled plugins,
+            uninstall plugins and remove marketplaces the repo dropped
   mcp       add the servers in profile/mcp.json at user scope (`${VAR}` reads the env)
   settings  merge profile/settings.json into <profile>/settings.json
   skills    symlink global skills and those in profile/skill-sources.txt into
@@ -20,6 +21,7 @@ survive the worktree being deleted.
   python3 scripts/sync_profiles.py              # every profile
   python3 scripts/sync_profiles.py --current    # the profile running this (the SessionStart hook)
   python3 scripts/sync_profiles.py --only skills --dry-run
+  python3 scripts/sync_profiles.py --drift      # what a profile has that the repo does not
 """
 import argparse
 import filecmp
@@ -122,8 +124,29 @@ def marketplace_arg(source):
 
 def sync_plugins(profile, repo, state):
     shared = read_json(repo / "profile/settings.json", {})
+    plugins = shared.get("enabledPlugins", {})
+    marketplaces = shared.get("extraKnownMarketplaces", {})
+    installed = read_json(profile / "plugins/installed_plugins.json", {}).get("plugins", {})
     known = read_json(profile / "plugins/known_marketplaces.json", {})
-    for name, spec in shared.get("extraKnownMarketplaces", {}).items():
+
+    # Dropped from the repo: uninstall (a plugin set to false stays, disabled).
+    for plugin in state.get("plugins", []):
+        if plugin not in plugins and plugin in installed:
+            if claude(profile, "plugin", "uninstall", plugin, "--scope", "user"):
+                say(profile, f"uninstalled plugin {plugin}")
+                installed.pop(plugin)
+    for name in state.get("marketplaces", []):
+        if name in marketplaces or name not in known:
+            continue
+        users = [p for p in installed if p.endswith("@" + name)]
+        if users:
+            warn(profile, f"marketplace {name}: kept, still used by {', '.join(users)}")
+        elif claude(profile, "plugin", "marketplace", "remove", name):
+            say(profile, f"removed marketplace {name}")
+    state["plugins"] = sorted(plugins)
+    state["marketplaces"] = sorted(marketplaces)
+
+    for name, spec in marketplaces.items():
         if name in known:
             continue
         source = marketplace_arg(spec.get("source", {}))
@@ -132,8 +155,7 @@ def sync_plugins(profile, repo, state):
             continue
         if claude(profile, "plugin", "marketplace", "add", source):
             say(profile, f"added marketplace {name}")
-    installed = read_json(profile / "plugins/installed_plugins.json", {}).get("plugins", {})
-    for plugin, enabled in shared.get("enabledPlugins", {}).items():
+    for plugin, enabled in plugins.items():
         if not enabled or any(e.get("scope") == "user" for e in installed.get(plugin, [])):
             continue
         if claude(profile, "plugin", "install", plugin, "--scope", "user"):
@@ -331,12 +353,18 @@ def outside_skills(repo):
     return found, excluded
 
 
-def sync_skills(profile, repo, state):
+def wanted_skills(repo):
+    """Skill name -> source folder for every global skill, plus the excluded names."""
     wanted = {p.parent.name: repo / p.parent.name for p in repo.glob("*/SKILL.md") if not skill_project(p)}
     outside, excluded = outside_skills(repo)
     for name, src in outside.items():
         if name not in excluded and src.parent != repo:
             wanted.setdefault(name, src)
+    return wanted, excluded
+
+
+def sync_skills(profile, repo, state):
+    wanted, excluded = wanted_skills(repo)
     skills_dir = profile / "skills"
     managed = []
     for name, src in sorted(wanted.items()):
@@ -387,6 +415,49 @@ def sync_files(profile, repo, state):
 
 # ---- main ------------------------------------------------------------------
 
+# ---- drift and pull --------------------------------------------------------
+
+def report_drift(profile, repo):
+    """Print what this profile has that the repo does not, so it can be promoted or removed."""
+    shared = read_json(repo / "profile/settings.json", {})
+    settings = read_json(profile / "settings.json", {})
+    only = [f"plugin {p}" for p, on in settings.get("enabledPlugins", {}).items()
+            if on and p not in shared.get("enabledPlugins", {})]
+    config = HOME / ".claude.json" if is_default(profile) else profile / ".claude.json"
+    servers = read_json(repo / "profile/mcp.json", {}).get("mcpServers", {})
+    only += [f"MCP server {m}" for m in read_json(config, {}).get("mcpServers", {}) if m not in servers]
+    wanted, _ = wanted_skills(repo)
+    skills_dir = profile / "skills"
+    if skills_dir.is_dir():
+        only += [f"skill {e.name}" for e in sorted(skills_dir.iterdir())
+                 if e.name not in wanted and (e / "SKILL.md").is_file()]
+    only += [f"settings key {k}" for k in settings
+             if k not in shared and k not in ("enabledPlugins", "extraKnownMarketplaces")]
+    for item in only:
+        print(f"{profile.name}: only here: {item}")
+
+
+def pull(repo):
+    """Fast-forward the main checkout so a merged PR reaches the profiles. Returns True if HEAD moved."""
+    def git(*cli):
+        return subprocess.run(["git", "-C", str(repo), *cli], capture_output=True, text=True, timeout=30)
+    try:
+        if git("branch", "--show-current").stdout.strip() != "main":
+            return False
+        if git("status", "--porcelain").stdout.strip():
+            warn(None, f"{repo} has local changes; not pulling")
+            return False
+        before = git("rev-parse", "HEAD").stdout
+        res = git("pull", "--ff-only", "-q")
+        if res.returncode:
+            warn(None, f"git pull failed: {res.stderr.strip()[-200:]}")
+            return False
+        return git("rev-parse", "HEAD").stdout != before
+    except subprocess.TimeoutExpired:
+        warn(None, "git pull timed out")
+        return False
+
+
 def main():
     global args
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
@@ -396,12 +467,24 @@ def main():
     parser.add_argument("--repo", type=Path, help="source checkout (default: the main checkout)")
     parser.add_argument("--dry-run", action="store_true", help="print what would change")
     parser.add_argument("-q", "--quiet", action="store_true", help="print warnings only")
+    parser.add_argument("--pull", action="store_true", help="fast-forward the main checkout first (clean, on main)")
+    parser.add_argument("--drift", action="store_true", help="only report what profiles have that the repo does not")
     args = parser.parse_args()
 
     main_repo = main_checkout()
     repo = (args.repo or main_repo).resolve()
     steps = args.only or STEPS
     profiles = args.profile or ([current_profile()] if args.current else discover_profiles())
+
+    if args.pull and not args.dry_run and repo == main_repo.resolve() and pull(repo):
+        # The script itself may have changed: rerun the new one, without --pull.
+        argv = [a for a in sys.argv[1:] if a != "--pull"]
+        os.execv(sys.executable, [sys.executable, str(repo / "scripts/sync_profiles.py"), *argv])
+
+    if args.drift:
+        for profile in profiles:
+            report_drift(profile.expanduser(), repo)
+        return 0
 
     for profile in profiles:
         profile = profile.expanduser()

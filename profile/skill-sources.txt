@@ -5,5 +5,4 @@
 ~/.claude/skills/gitbutler          # installed and updated by `but`
 ~/.claude/skills/yab-browser        # installed by yab
 ~/.claude/skills/golang-*           # samber/cc-skills-golang
-~/.claude/skills/t3-thread-handoff
 !impeccable                         # the impeccable plugin ships it

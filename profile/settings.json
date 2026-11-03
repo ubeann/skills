@@ -12,7 +12,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$HOME/.local/bin/sync-claude-profiles --current --quiet >/dev/null 2>&1 || true",
+            "command": "$HOME/.local/bin/sync-claude-profiles --current --pull --quiet >/dev/null 2>&1 || true",
             "timeout": 120
           }
         ]
