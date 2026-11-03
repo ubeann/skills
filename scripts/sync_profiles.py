@@ -56,15 +56,20 @@ def warn(profile, msg):
 
 
 def main_checkout():
+    """The main checkout of the repo this script is in, or None outside git.
+
+    None matters: a copy of the repo outside git must never be mistaken for the
+    main checkout, or it would point the machine-wide links at itself.
+    """
     here = Path(os.path.realpath(__file__)).parent
     try:
         out = subprocess.run(
             ["git", "-C", str(here), "rev-parse", "--path-format=absolute", "--git-common-dir"],
             capture_output=True, text=True, check=True,
         ).stdout.strip()
-        return Path(out).parent
+        return Path(out).parent.resolve()
     except (subprocess.CalledProcessError, FileNotFoundError):
-        return here.parent
+        return None
 
 
 def discover_profiles():
@@ -472,11 +477,14 @@ def main():
     args = parser.parse_args()
 
     main_repo = main_checkout()
+    if not (args.repo or main_repo):
+        parser.error("this script is not in a git checkout; pass --repo")
     repo = (args.repo or main_repo).resolve()
+    is_main = main_repo is not None and repo == main_repo
     steps = args.only or STEPS
     profiles = args.profile or ([current_profile()] if args.current else discover_profiles())
 
-    if args.pull and not args.dry_run and repo == main_repo.resolve() and pull(repo):
+    if args.pull and not args.dry_run and is_main and pull(repo):
         # The script itself may have changed: rerun the new one, without --pull.
         argv = [a for a in sys.argv[1:] if a != "--pull"]
         os.execv(sys.executable, [sys.executable, str(repo / "scripts/sync_profiles.py"), *argv])
@@ -500,7 +508,7 @@ def main():
 
     # Project checkouts and the PATH entry are machine-wide, so only the main
     # checkout may point them at itself.
-    if repo == main_repo.resolve():
+    if is_main:
         if "skills" in steps:
             sync_project_skills(repo)
         if not args.dry_run:
