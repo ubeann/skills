@@ -7,8 +7,8 @@ dir, which T3 Code launches through CLAUDE_CONFIG_DIR. Each run does five steps:
   plugins   add the marketplaces in profile/settings.json, install its enabled plugins
   mcp       add the servers in profile/mcp.json at user scope (`${VAR}` reads the env)
   settings  merge profile/settings.json into <profile>/settings.json
-  skills    symlink global skills into <profile>/skills, project skills into
-            the checkout projects.txt names
+  skills    symlink global skills and those in profile/skill-sources.txt into
+            <profile>/skills, project skills into the checkout projects.txt names
   files     symlink everything under profile/home/ into the same path in <profile>
 
 What a run adds is recorded in <profile>/.skills-sync.json, so removing an entry
@@ -22,6 +22,8 @@ survive the worktree being deleted.
   python3 scripts/sync_profiles.py --only skills --dry-run
 """
 import argparse
+import filecmp
+import glob
 import json
 import os
 import re
@@ -266,19 +268,32 @@ def link(profile, src, dst, label):
         if os.readlink(dst) == str(src):
             return True
     elif dst.exists():
-        same = dst.is_file() and src.is_file() and dst.read_bytes() == src.read_bytes()
+        if dst.is_dir() and src.is_dir():
+            same = same_tree(dst, src)
+        else:
+            same = dst.is_file() and src.is_file() and dst.read_bytes() == src.read_bytes()
         if not same:
-            warn(profile, f"{dst} exists and is not a link to this repo; left alone")
+            warn(profile, f"{dst} exists and differs from {src}; left alone")
             return False
     if args.dry_run:
         say(profile, f"would link {label}")
         return True
     dst.parent.mkdir(parents=True, exist_ok=True)
-    if dst.is_symlink() or dst.exists():
+    if dst.is_dir() and not dst.is_symlink():
+        shutil.rmtree(dst)  # an identical copy, checked above
+    elif dst.is_symlink() or dst.exists():
         dst.unlink()
     dst.symlink_to(src)
     say(profile, f"linked {label}")
     return True
+
+
+def same_tree(a, b):
+    cmp = filecmp.dircmp(a, b, ignore=[".DS_Store"])
+    if cmp.left_only or cmp.right_only or cmp.common_funny:
+        return False
+    _, mismatch, errors = filecmp.cmpfiles(a, b, cmp.common_files, shallow=False)
+    return not mismatch and not errors and all(same_tree(a / d, b / d) for d in cmp.common_dirs)
 
 
 def unlink_if_ours(profile, dst, repo, label):
@@ -294,15 +309,54 @@ def skill_project(skill_md):
     return found.group(1) if found else None
 
 
+def outside_skills(repo):
+    """Skills from profile/skill-sources.txt: name -> folder, plus the excluded names.
+
+    Each line is a glob for a folder of skills or a single skill folder; `!name`
+    excludes a skill (one a plugin already provides). The first source wins.
+    """
+    found, excluded = {}, set()
+    sources = repo / "profile/skill-sources.txt"
+    lines = sources.read_text().splitlines() if sources.exists() else []
+    for line in lines:
+        line = line.split("#", 1)[0].strip()
+        if line.startswith("!"):
+            excluded.add(line[1:])
+            continue
+        for match in sorted(glob.glob(os.path.expanduser(line))):
+            folder = Path(match)
+            skills = [folder] if (folder / "SKILL.md").is_file() else (
+                sorted(c for c in folder.iterdir() if (c / "SKILL.md").is_file()) if folder.is_dir() else [])
+            for skill in skills:
+                found.setdefault(skill.name, skill.resolve())
+    return found, excluded
+
+
 def sync_skills(profile, repo, state):
-    global_skills = {p.parent.name for p in repo.glob("*/SKILL.md") if not skill_project(p)}
-    for name in sorted(global_skills):
-        link(profile, repo / name, profile / "skills" / name, f"skill {name}")
+    wanted = {p.parent.name: repo / p.parent.name for p in repo.glob("*/SKILL.md") if not skill_project(p)}
+    outside, excluded = outside_skills(repo)
+    for name, src in outside.items():
+        if name not in excluded and src.parent != repo:
+            wanted.setdefault(name, src)
     skills_dir = profile / "skills"
+    managed = []
+    for name, src in sorted(wanted.items()):
+        dst = skills_dir / name
+        if not dst.is_symlink() and dst.resolve() == src:
+            continue  # the source lives in this profile; nothing to link
+        if link(profile, src, dst, f"skill {name}"):
+            managed.append(name)
     if skills_dir.is_dir():
         for entry in skills_dir.iterdir():
-            if entry.name not in global_skills:
+            if entry.name in wanted:
+                continue
+            if entry.is_symlink() and (entry.name in excluded or entry.name in state.get("skills", [])):
+                if not args.dry_run:
+                    entry.unlink()
+                say(profile, f"{'would remove' if args.dry_run else 'removed'} skill link {entry.name}")
+            else:
                 unlink_if_ours(profile, entry, repo, f"skill {entry.name}")
+    state["skills"] = managed
 
 
 def sync_project_skills(repo):

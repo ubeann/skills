@@ -1,0 +1,9 @@
+# Skills that live outside this repo, linked into every profile from where their
+# installer keeps them, so an update lands in every profile at once.
+# One glob per line: a folder of skills or a single skill folder. `!name` skips one.
+~/.agents/skills                    # `npx skills` store: better-auth, turborepo, find-skills
+~/.claude/skills/gitbutler          # installed and updated by `but`
+~/.claude/skills/yab-browser        # installed by yab
+~/.claude/skills/golang-*           # samber/cc-skills-golang
+~/.claude/skills/t3-thread-handoff
+!impeccable                         # the impeccable plugin ships it
