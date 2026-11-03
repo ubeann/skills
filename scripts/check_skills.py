@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Validate every <name>/SKILL.md: frontmatter name matches the folder,
 description is present, every references/ path mentioned exists, and a
-`project:` key names a project listed in projects.txt."""
+`project:` key names a project listed in projects.txt. Also checks that the
+shared profile/*.json files parse."""
+import json
 import re
 import sys
 from pathlib import Path
@@ -38,6 +40,12 @@ for skill in skills:
     for ref in (folder / "references").glob("*") if (folder / "references").is_dir() else []:
         if f"references/{ref.name}" not in text:
             errors.append(f"{folder.name}: references/{ref.name} is never pointed at")
+
+for config in sorted(ROOT.glob("profile/*.json")):
+    try:
+        json.loads(config.read_text())
+    except json.JSONDecodeError as e:
+        errors.append(f"profile/{config.name}: {e}")
 
 for e in errors:
     print(e)

@@ -1,0 +1,117 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__pencil",
+      "Bash(gh gist create:*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.local/bin/sync-claude-profiles --current --quiet >/dev/null 2>&1 || true",
+            "timeout": 120
+          }
+        ]
+      },
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.local/bin/sync-mattpocock-gemini-skills >/dev/null 2>&1 || true",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "gopls-lsp@claude-plugins-official": true,
+    "cloudflare@cloudflare": true,
+    "svelte@svelte": true,
+    "context7@claude-plugins-official": true,
+    "context7@context7-marketplace": true,
+    "neon-postgres@neon": true,
+    "interfaces@interfaces": true,
+    "ui-ux-pro-max@ui-ux-pro-max-skill": true,
+    "macroscope@macroscope-local": true,
+    "mattpocock-skills@mattpocock": true,
+    "impeccable@impeccable": true,
+    "antislop@anti-slop": true
+  },
+  "extraKnownMarketplaces": {
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    },
+    "cloudflare": {
+      "source": {
+        "source": "github",
+        "repo": "cloudflare/skills"
+      }
+    },
+    "svelte": {
+      "source": {
+        "source": "github",
+        "repo": "sveltejs/ai-tools"
+      }
+    },
+    "context7-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "upstash/context7"
+      }
+    },
+    "neon": {
+      "source": {
+        "source": "github",
+        "repo": "neondatabase/agent-skills"
+      }
+    },
+    "interfaces": {
+      "source": {
+        "source": "github",
+        "repo": "jakubkrehel/skills"
+      }
+    },
+    "ui-ux-pro-max-skill": {
+      "source": {
+        "source": "github",
+        "repo": "nextlevelbuilder/ui-ux-pro-max-skill"
+      }
+    },
+    "macroscope-local": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/ubean/.claude/plugins/marketplaces/macroscope-local"
+      }
+    },
+    "mattpocock": {
+      "source": {
+        "source": "github",
+        "repo": "mattpocock/skills"
+      },
+      "autoUpdate": true
+    },
+    "impeccable": {
+      "source": {
+        "source": "github",
+        "repo": "pbakaus/impeccable"
+      },
+      "autoUpdate": true
+    },
+    "anti-slop": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/miqdadbadjuber/anti-slop.git"
+      }
+    }
+  },
+  "agentPushNotifEnabled": true
+}
