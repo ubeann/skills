@@ -17,7 +17,7 @@ The library is `$MOODBOARD_DIR`, default `~/moodboard`: one folder per reference
 python3 <skill-dir>/references/fetch.py <url> [<url> ...]
 ```
 
-Each link becomes a folder with `card.json` (author, date, text, quoted post, links, engagement, media, a measured palette) and its images or video frames. X posts come through the public fxtwitter mirror; videos through the `video-context` skill; other pages through their preview tags. Instagram and Threads hide media from anonymous requests: when a card's `fetch_notes` say so, open the post in the logged-in browser (the yab browser), save each image into the folder, and rerun with `--force`, which keeps any breakdown already written. A link in the post (a portfolio, a live site) is fetched as its own reference.
+Each link becomes a folder with `card.json` (author, date, text, quoted post, links, engagement, media, a measured palette) and its images or video frames. X posts come through the public fxtwitter mirror; videos through the `video-context` skill; other pages through their preview tags. Instagram and Threads give anonymous requests the cover image only, and block yt-dlp: when a card's `fetch_notes` say so, follow `references/social.md` to save the slides or the video through the yab browser, then rerun with `--force`, which keeps any breakdown already written. A link in the post (a portfolio, a live site) is fetched as its own reference.
 
 Done when every link has a folder with `card.json` and at least one media file, or a `fetch_notes` line naming what is missing and the fallback tried.
 

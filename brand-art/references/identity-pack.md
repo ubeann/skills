@@ -49,7 +49,7 @@ art/<name>/
 ## Mascot
 
 1. **Hero**: one front-facing, full-body image in a neutral pose on a plain light background, made from the seed. The owner approves it before anything else is generated.
-2. **Identity text**: 30 to 90 words naming body shape, proportions, colours in hex, eyes, the one memorable feature, the rendering and light, and what the character never has. Paste it into every prompt **verbatim**; a reworded description slowly changes the character.
+2. **Identity text**: 30 to 90 words naming body shape, proportions, colours in hex, eyes, the one memorable feature, and the rendering and light. Paste it into every prompt **verbatim**; a reworded description slowly changes the character. Describe what the character has, completely: "its face is only two small black ovals" holds where "no mouth" does not. In the toolbox comparison, two of four models added a smile to a "no mouth" mascot as soon as the prompt asked for a happy expression.
 3. **Turnaround**: front, three-quarter, side, back, same scale, same plain background, flat even light, generated from the hero. A sheet whose panels disagree teaches the disagreement to every later image, so score each panel against the hero before keeping it.
 4. **Expressions**: one per product state the mascot will appear in, generated from the front panel: neutral, happy (success), thinking (loading), surprised, sorry (error), working (empty state).
 5. **Base construction**: when several mascots form a family, they share the eye and face design, the line and the rendering, and differ in silhouette and colour.

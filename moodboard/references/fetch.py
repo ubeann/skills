@@ -139,7 +139,7 @@ def fetch_video(url, folder, card):
 
 
 def fetch_page(url, folder, card):
-    card["id"] = f"web-{slug(url.split('//', 1)[-1])}"
+    card["id"] = card["id"] or f"web-{slug(url.split('//', 1)[-1])}"
     page = curl(url)
     if not page:
         card["fetch_notes"].append("page did not load; screenshot it in the browser into this folder")
@@ -160,8 +160,9 @@ def fetch_page(url, folder, card):
         dst = folder / "01.jpg"
         if curl(html.unescape(img), dst):
             card["media"].append(dst.name)
-    card["links"] = [url]
-    card["fetch_notes"].append("a page is measured, not just pictured: run design-direction's inventory.js on it for type and colour")
+    if card["source"] == "web":
+        card["links"] = [url]
+        card["fetch_notes"].append("a page is measured, not just pictured: run design-direction's inventory.js on it for type and colour")
 
 
 def fetch_social(url, folder, card):
@@ -172,9 +173,11 @@ def fetch_social(url, folder, card):
         if not err:
             card["media"] = [str(p.relative_to(folder)) for p in sorted((folder / "video" / "frames").glob("*.png"))]
             return
+        shutil.rmtree(folder / "video", ignore_errors=True)
+        card["fetch_notes"].append(f"no video through yt-dlp: {err}")
     fetch_page(url, folder, card)
-    if not card["media"]:
-        card["fetch_notes"].append(f"{card['source']} needs the logged-in browser: open the post and save each image into this folder, then rerun with --force")
+    card["fetch_notes"].append(f"{card['source']} gives anonymous requests the cover image only: open the post in the "
+                               "yab browser (moodboard references/social.md), save every slide or the video into this folder, then rerun with --force")
 
 
 def source_of(url):

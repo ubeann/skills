@@ -39,7 +39,7 @@ DEFAULT_CHECKS = {
     "off_de": 25.0,         # distance from every ramp that counts as off-palette
     "value_min": 45.0,      # p95 - p5 of L*
     "loud_max": 0.35,       # pixels with chroma above 60
-    "texture_ratio": [0.5, 2.0],
+    "texture_ratio": [0.6, 1.5],  # creased image-to-image drift measured 1.5 to 1.95
     "shape_min": 0.75,      # silhouette IoU, mascot and icon packs only
     "accent_max": 0.20,     # accent role share
 }
@@ -241,16 +241,17 @@ def read_pack(path):
     for rel in [pack.get("hero", "")] + pack.get("sheet", []):
         if rel and not (base / rel).exists():
             errors.append(f"file {rel} does not exist")
+    incomplete = []  # what a finished pack needs; scoring the sheet against the hero runs before it exists
     if pack.get("family") == "mascot":
         words = len(pack.get("identity_text", "").split())
         if not 30 <= words <= 90:
             errors.append(f"identity_text has {words} words; a mascot needs 30 to 90")
         if len(pack.get("sheet", [])) < 4:
-            errors.append("a mascot pack needs a turnaround of at least 4 sheet panels")
+            incomplete.append("a mascot pack needs a turnaround of at least 4 sheet panels")
     if pack.get("family") in ("set", "scene") and not pack.get("prompt_suffix"):
-        errors.append("a set or scene pack needs prompt_suffix")
+        incomplete.append("a set or scene pack needs prompt_suffix")
     checks = {**DEFAULT_CHECKS, **pack.get("checks", {})}
-    return pack, base, checks, errors
+    return pack, base, checks, errors, incomplete
 
 
 def contact_sheet(paths, labels, out, tile=220):
@@ -280,7 +281,8 @@ def main():
     args = ap.parse_args()
 
     if args.pack:
-        _, _, _, errors = read_pack(args.pack)
+        _, _, _, errors, incomplete = read_pack(args.pack)
+        errors += incomplete
         for e in errors:
             print(f"- {e}")
         print(f"pack {args.pack}: {len(errors)} errors")
@@ -288,9 +290,11 @@ def main():
     if not args.pack_or_flag or not args.images:
         ap.error("give a pack.json and at least one image, or --pack pack.json")
 
-    pack, base, checks, errors = read_pack(args.pack_or_flag)
+    pack, base, checks, errors, incomplete = read_pack(args.pack_or_flag)
     if errors:
         sys.exit("pack is invalid:\n" + "\n".join(f"- {e}" for e in errors))
+    for e in incomplete:
+        print(f"note: pack not finished: {e}")
     pal_names, pal_lab = palette_lab(pack)
     ramps = palette_ramps(pal_lab)
     hero = base / pack["hero"]

@@ -69,7 +69,7 @@ Done when every file in `art/<name>/out/` opens as its extension says, every SVG
 python3 <skill-dir>/references/check.py art/<name>/pack.json art/<name>/out/* --sheet art/<name>/drift.png
 ```
 
-Open `drift.png`: the hero first, each image beside it, and a greyscale row underneath for the value test. Look for what the numbers miss: a second rendering style, a light from the other side, a stock metaphor. For each finding, regenerate from the hero with the one fix as the change, or `snap` flat art; when a deliberate change recurs on three or more images, promote it into the bible and record why.
+Open `drift.png`: the hero first, each image beside it, and a greyscale row underneath for the value test. `check.py` scores identity, not obedience, so judge two things per image by eye and add them as columns: **change made** (a near-copy of the hero passes every metric) and **identity held** (each feature the identity text rules out is still absent, such as a mouth on a mouthless mascot). Look also for what the numbers miss: a second rendering style, a light from the other side, a stock metaphor. For each finding, regenerate from the hero with the one fix as the change, or `snap` flat art; when a deliberate change recurs on three or more images, promote it into the bible and record why.
 
 Render the result in chat: the `check.py` table, then each finding with its fix, then `drift.png`.
 

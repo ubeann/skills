@@ -4,15 +4,31 @@
 
 | Operation | First choice | Why | Fallback |
 |---|---|---|---|
-| A style-locked set or scene | Recraft custom style (`generate_image` with the pack's style ID) | the only persistent style object | Higgsfield `seedream_v4_5` or `nano_banana_2` with hero and siblings as references |
+| A style-locked set or scene (new subjects, one look) | Recraft custom style (`generate_image` with the pack's style ID) | the only persistent style object | Higgsfield `seedream_v4_5` or `nano_banana_2` with hero and siblings as references |
+| Turnaround panels (three-quarter, side, back) | Higgsfield `seedream_v4_5` | the only model that really rotated the character | `gpt_image_2_5`, then fix proportions with a second edit |
+| Expressions and props on an existing pose | Higgsfield `nano_banana_2` with the hero and the matching sheet panel | keeps the character closest | `gpt_image_2_5` |
+| Cheap drafts and thumbnail rounds | Higgsfield `gpt_image_2_5 --quality medium` | 0.5 credits, follows most changes | `nano_banana_2_lite` (1 credit) |
 | Vector output (SVG) | Recraft vector model | real paths, recolourable with `snap` | Higgsfield `recraft_v4_1 --model_type vector` |
 | Palette lock at generation | Higgsfield `recraft_v4_1 --colors` | takes hex values directly | name the hex in the prompt, then `check.py` and `snap` |
-| Mascot poses and expressions from the sheet | Higgsfield `nano_banana_2` (up to 14 references) | multi-reference consistency | `gpt_image_2_5` (up to 16), `flux_kontext` (up to 4) |
-| One edit to an approved image | Higgsfield `flux_kontext` or `nano_banana_2` with the image as reference | edits keep the rest | `gpt_image_2 --is_inpaint` with a mask |
 | Transparent background | `gpt_image_2_5 --background transparent` | alpha at generation | Recraft `remove_background`, Higgsfield `image_background_remover` |
 | Extend the canvas | Higgsfield `outpaint` | one image in, wider ratio out | regenerate at the target ratio |
 | Sharpen for print | Recraft `crisp_upscale` | sharpens without redrawing | never `creative_upscale`: it invents detail |
 | A real person's likeness | Higgsfield Soul ID | trained on 20 or more photos | only with that person's consent |
+
+## Measured: one mascot, six changes, six arms
+
+The toolbox mascot hero, the same six one-change prompts (three-quarter, side, happy, loading, empty, icon peek), one hero reference, 2026-11-03.
+
+| Arm | Credits per image | Change made | Identity held | Notes |
+|---|---|---|---|---|
+| Higgsfield `nano_banana_2` 1k | 2 | 4 of 6 | 6 of 6 | closest to the hero; will not rotate from a front reference |
+| Higgsfield `gpt_image_2_5` medium | 0.5 | 5 of 6 | 5 of 6 | narrows the body on a side view; changes the blobs' eyes too |
+| Higgsfield `seedream_v4_5` basic | 1 | 6 of 6 | 4 of 6 | real rotation; added a mouth; shrank the character in one image |
+| Higgsfield `flux_kontext` | 1.5 | 3 of 6 | 5 of 6 | added a mouth; no real rotation, no gear, no peek crop |
+| Recraft custom style from the hero | 2 | 1 of 6 | 6 of 6 | a style made from one image returns that image |
+| Recraft `image_to_image` 0.5 | 2 | 2 of 6 | 2 of 6 | creased inflatable look; output at the input's size |
+
+Counts are a visual pass; `check.py` passed all of the Recraft style copies, which is why step 7 judges change and identity by eye.
 
 Higgsfield's model catalogue changes; `higgsfield model list` and `higgsfield model get <model>` are the live schema.
 
@@ -31,7 +47,10 @@ Higgsfield's model catalogue changes; `higgsfield model list` and `higgsfield mo
 - SVGs carry a full-canvas white background path, about 17 KB of C2PA metadata, and fixed width and height; `normalize` removes all three. White inner shapes are painted, not holes: on a dark background they stay white until `snap` or a recolour changes them.
 - `vectorize_image` flattens soft-3D shading into ragged colour patches; keep soft-3D art as raster.
 - A custom style fills the whole frame and ignores requests for a margin; generate full bleed and cut the frame in post (`postprocess.py edge`).
-- Inpainting runs on V3 models only, so it cannot use a V4 style.
+- Inpainting and `generate_background` take V2 and V3 styles only, so they cannot use a V4 style.
+- `image_to_image` returns an image the size of its input: upload the hero at 1024 or larger.
+- `image_edit` edits by instruction, but only through other vendors' models (Nano Banana, GPT Image, Flux Kontext), billed in Recraft credits.
+- `create_style` asked for `recraftv4_raster` reports the style as `recraftv4_1_raster`; generate with the model the style reports.
 - Chrome stores WebP inside a PDF uncompressed; export print art as JPEG.
 
 ## Higgsfield
