@@ -19,6 +19,7 @@ The rest of the shared setup lives in `profile/` and is synced the same way: plu
 | [ux-behaviour-audit](ux-behaviour-audit/SKILL.md) | Audit a UI by how users behave on it: walk one task, six behaviour lenses, a junior-to-staff ladder, persuasion flags, case studies with video timestamps, a report rendered in chat. |
 | [design-direction](design-direction/SKILL.md) | Direction before UI is generated: a brief with the bet against the category's assumption, one job per reference, a DESIGN.md token system for app, website or desktop, and a drift count of type, spacing, colour and radius on the built screens. |
 | [moodboard](moodboard/SKILL.md) | A local library of design references from X, Threads, Instagram, YouTube or any site: each broken into its technique, a trend count across authors, and project boards where every reference has one job. |
+| [brand-art](brand-art/SKILL.md) | Mascots, illustration sets, scene art and app icons that keep one identity: an art bible, the owner's seed, an identity pack with a hero and turnaround, one change per call through Recraft or Higgsfield, file cleanup, and a drift score against the hero. |
 
 ## Layout
 
