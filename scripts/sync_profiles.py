@@ -36,7 +36,6 @@ HOME = Path.home()
 DEFAULT_PROFILE = HOME / ".claude"
 STATE_FILE = ".skills-sync.json"
 STEPS = ["plugins", "mcp", "settings", "skills", "files"]
-BUILTIN_MARKETPLACES = {"claude-plugins-official"}
 BIN_LINK = HOME / ".local/bin/sync-claude-profiles"
 
 args = None
@@ -125,7 +124,7 @@ def sync_plugins(profile, repo, state):
     shared = read_json(repo / "profile/settings.json", {})
     known = read_json(profile / "plugins/known_marketplaces.json", {})
     for name, spec in shared.get("extraKnownMarketplaces", {}).items():
-        if name in known or name in BUILTIN_MARKETPLACES:
+        if name in known:
             continue
         source = marketplace_arg(spec.get("source", {}))
         if not source:
