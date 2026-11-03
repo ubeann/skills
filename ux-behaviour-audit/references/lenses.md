@@ -1,6 +1,6 @@
 # The six lenses
 
-Each lens is one kind of behaviour a screen can block. Every check has an id (used in findings and in the report matrix), the check, and the **failure signal** you can see on a screen. The examples come from UX Peak redesign breakdowns. They show what passing looks like, not the only way to pass.
+Each lens is one kind of behaviour a screen can block. Every check has an id (used in findings and in the report matrix), the check, and the **failure signal** you can see on a screen. The examples come from UX Peak and Tim Gabe breakdowns. They show what passing looks like, not the only way to pass.
 
 ## Decide: can the user choose without guessing?
 
@@ -52,6 +52,7 @@ Each lens is one kind of behaviour a screen can block. Every check has an id (us
 | T5 | Reassurance is relevant to this buyer | Generic badges everyone expects (free shipping) | "Third-party tested for heavy metals" on a supplement |
 | T6 | The UI survives any content | Nav icons that vanish over a bright photo; card text baked onto the image | Icon containers with contrast; details below the photo |
 | T7 | The user can confirm the right target | Sending money with only a name; one account shown when several exist | Photo beside the recipient; from-account and to-account both visible |
+| T8 | Every failure says what happened, whether it can be undone, and what to do next | "Something went wrong", a declined payment with no reason, a dead end | A decline alert that says to check the balance, with Contact support beside it |
 
 ## Commit: is there a reason to keep going?
 
@@ -63,6 +64,9 @@ Each lens is one kind of behaviour a screen can block. Every check has an id (us
 | C4 | Choices unfold when the user signals interest | Every option at once | Bundles revealed after "one-time purchase" is chosen |
 | C5 | Feedback answers the input | A selection with no response | The selected state changes clearly; a sleep entry answered with "2 hours more than last night" |
 | C6 | Copy frames the action as the user's step forward | "Subscribe", "Submit", "Add to cart" where commitment weighs | "Start my free trial", "Continue" |
+| C7 | Progress is one visible measure the user cares about | Points, badges and levels scattered across screens with no single total | One growing measure (a pet that grows, lifetime totals) shown where the user returns |
+| C8 | A miss costs little | A streak reset to zero, red numbers or guilt copy after a missed day | A grace day or earned freeze, targets that adjust to real behaviour |
+| C9 | The core flow ends on purpose | The task completes and the app drops the user back on the home screen | A summary of what was done, the progress it added, or the next step (rate and tip after a ride) |
 
 ## Orient: do they know where they are and what is next?
 
@@ -75,3 +79,4 @@ Each lens is one kind of behaviour a screen can block. Every check has an id (us
 | O5 | The screen fits where the user is in their life cycle | The same home for a first-day user and a power user | Goal setup for new users, today's plan for returners, stats for power users |
 | O6 | After the main action, the user knows what happens next | Order screen as a data dump | "Your order is on the way", a delivery window, the courier with call and message, a visual timeline |
 | O7 | Familiar patterns stay familiar | Novel navigation that has to be learned | Platform conventions, with creativity kept to surfaces that do not carry navigation |
+| O8 | The same situation looks the same everywhere | Two different screens for one limit or error, each with generic copy | One pattern with the count and the date ("2 of 2 sessions used, renews 1 June") |

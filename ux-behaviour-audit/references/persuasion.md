@@ -26,6 +26,16 @@ A technique is a flag when it fails any one test. Name the test in the flag.
 | Value before signup | The free part is useful by itself | The value is withheld after the user has done the work (results held hostage) |
 | Total shown late | Never. Showing the total early always helps | Fees appear only on the final step (hidden costs, drip pricing) |
 | Cancellation | As easy as signing up | Signup takes one tap and cancelling needs a call or a maze (roach motel) |
+| Surprise reward | A bonus on top of progress the user can track and predict | Core progress itself is random, the odds are hidden, or the user pays for a chance at a reward (slot-machine reward) |
+| Streak | A missed day costs little: a grace day or an earned freeze, and it counts real activity | One miss wipes what was built up, the streak is sold back for money, or the copy shames the miss (streak hostage) |
+| Endless progression | Totals keep their meaning, and each session has a natural end | Nothing ever completes and no session ends, so stopping always reads as losing (no stopping cue) |
+| Leaderboard and social visibility | The user opted in, compares with people at a similar level, and can go private | Progress or absence is public by default, or the ranking is quietly tuned to keep the user near the edge (forced publicity, rigged ladder) |
+
+## Retention mechanics
+
+Streaks, surprise rewards, endless progress and leaderboards are the mechanics behind the highest-retention apps, and the source material itself calls them "morally complicated" ([video at 1:02](https://www.youtube.com/watch?v=yBpv5rZoBjA&t=62s)). Judge them by test 2 first: the same streak passes in a product for a habit the user chose (sleep, a language, training) and flags in one whose only goal is time in the app. Then test 3: would the user keep it if they saw the rule behind it? A hidden matchmaking rating that holds players near a 50% win rate fails that test even when nobody complains (CS32).
+
+The honest version usually expects the user to slip and plans for it, as MacroFactor does (CS29).
 
 ## Writing a flag
 
