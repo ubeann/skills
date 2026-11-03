@@ -12,7 +12,8 @@ The rest of the shared setup lives in `profile/` and is synced the same way: plu
 
 | Skill | Use it for |
 |---|---|
-| [html-pdf-report](html-pdf-report/SKILL.md) | Data-driven PDF reports and decks: JSON from a slow pass, fixed-size HTML pages, headless Chrome, an overflow gate, read-only review, commit per page. |
+| [report-deck](report-deck/SKILL.md) | A paged data report as a PDF to send and an offline HTML deck to present, from one set of fixed-size pages: JSON from a slow pass, headless Chrome, an overflow gate. |
+| [report-web](report-web/SKILL.md) | A scrolling data report as one offline HTML file for laptop, tablet or phone: one section per claim, a contents rail, hover values, a headless Chrome check. |
 | [learn](learn/SKILL.md) | Answer a learning question from verified sources and file it as a note. Scoped to the [study](https://github.com/ubeann/study) repo. |
 | [video-context](video-context/SKILL.md) | Turn a video URL or file into a bundle an agent can read: post text, captions or whisper transcript, deduplicated frames, and a timestamped summary. |
 | [ux-behaviour-audit](ux-behaviour-audit/SKILL.md) | Audit a UI by how users behave on it: walk one task, six behaviour lenses, a junior-to-staff ladder, persuasion flags, case studies with video timestamps, a report rendered in chat. |
@@ -28,6 +29,7 @@ scripts/link.sh           the skills step only
 projects.txt              project name -> checkout path for project-scoped skills
 profile/settings.json     keys merged into each profile's settings.json: plugins, marketplaces, hooks, permissions
 profile/mcp.json          user-scope MCP servers; write secrets as ${VAR}, read from the env at sync time
+profile/skill-sources.txt skills kept outside this repo (npx skills, but, yab), linked into each profile from where they live
 profile/home/             files symlinked into each profile at the same path (rules/, CLAUDE.md, agents/)
 assets/                   mascot, when it exists
 AGENTS.md                 pointers for any coding agent working here
@@ -53,6 +55,7 @@ sh scripts/link.sh                # skills only
 - Profiles are `~/.claude` plus every `~/.claude-*` dir; set `CLAUDE_PROFILES=dir:dir` to choose others.
 - Settings are merged, not replaced: shared keys win, list entries (hooks, permission rules) are added to the profile's own, and keys only the profile has (its `theme`, a plugin installed with `/plugin`) stay.
 - What a sync adds is recorded in `<profile>/.skills-sync.json`; drop an entry from `profile/` and the next sync removes it everywhere. Dropping a plugin only removes it from `enabledPlugins`; it stays installed until `claude plugin uninstall` in that profile.
+- Skills installed by other tools stay where their installer keeps them; `profile/skill-sources.txt` lists those folders, and every profile links to them, so an update lands everywhere. A copy identical to the source is replaced by a link; a copy that differs is left alone with a warning. `!name` skips a skill a plugin already ships.
 - MCP servers and plugins go through the `claude` CLI, never by editing `.claude.json`, which also holds the profile's login. OAuth MCP servers still need signing in once per profile.
 - The shared `SessionStart` hook runs `sync-claude-profiles --current` in whichever profile starts, so a profile picks up changes on its next session. The first run installs `~/.local/bin/sync-claude-profiles` and should be done by hand, since adding marketplaces clones them.
 - This repo is public: keep tokens out of `profile/`.
