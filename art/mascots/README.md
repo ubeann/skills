@@ -27,6 +27,7 @@ The eye-size clause was added after the first round; report-deck, report-web, vi
 | design-direction | a pocket compass |
 | moodboard | a cork pin board |
 | brand-art | a paint tube |
+| motion-direction | a metronome |
 
 ## Adding a character for a new skill
 
