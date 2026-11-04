@@ -40,6 +40,7 @@ Each lens is one kind of behaviour a screen can block. Every check has an id (us
 | A6 | The input method fits how often it is used | Scroll wheel for daily food logging; free text for a one-off pick from a known set | Wheel or slider for one-off setup; numeric field for frequent precise entry |
 | A7 | Common values are one tap | Tapping a stepper up to the usual quantity | 500 g, 1 kg, 2 kg presets beside the custom selector |
 | A8 | Recent and frequent items are offered | Blank search, blank recipient picker | Recent recipients, recent and popular searches |
+| A9 | Nothing waits on motion | Input blocked until an entrance sequence finishes; a celebration that must play out before Continue works; a 400 ms transition on a tab switched all day | The form is usable on the first paint while the art draws in; a tap during a celebration skips to its end; tabs switch instantly |
 
 ## Trust: what doubt is left unanswered?
 
@@ -80,3 +81,4 @@ Each lens is one kind of behaviour a screen can block. Every check has an id (us
 | O6 | After the main action, the user knows what happens next | Order screen as a data dump | "Your order is on the way", a delivery window, the courier with call and message, a visual timeline |
 | O7 | Familiar patterns stay familiar | Novel navigation that has to be learned | Platform conventions, with creativity kept to surfaces that do not carry navigation |
 | O8 | The same situation looks the same everywhere | Two different screens for one limit or error, each with generic copy | One pattern with the count and the date ("2 of 2 sessions used, renews 1 June") |
+| O9 | Motion shows where things came from and went | A sheet that appears from nowhere; a deleted row that vanishes and the list jumps; a route change that loses the scroll position | The sheet slides from the edge its trigger sits on; the deleted row collapses before the list closes up; the list card grows into the detail page |
