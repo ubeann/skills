@@ -33,6 +33,18 @@ Reduced motion: <what is shown instead: the finished state, a cross-fade>
 Never moves: <what stays still during this sequence>
 ```
 
+A **celebration** is the one sequence an operate surface is allowed to make dramatic, so it is usually the focal moment. A 150-day streak in a running app, read from its frames ([post](https://x.com/BThreeAgency/status/2117589935096225911)), as a sheet:
+
+| # | Start | Duration | Element | From → to | Technique | Easing | Sound |
+|---|---|---|---|---|---|---|---|
+| 1 | 0 | --duration-state | stage | page dims to a dark stage, spotlight on | cross-fade | --easing-standard | none |
+| 2 | 0 | --duration-reveal | streak number | 147 → 150, per digit | kinetic type (roll) | --easing-reveal | tick per step |
+| 3 | after 2 | --duration-reveal | mascot | runs in from the left, jumps onto a podium | follow path, then spring settle | --easing-spring | pop on landing |
+| 4 | with 3's landing | --duration-settle | confetti | burst from the podium, falls out of frame | particles | linear | none |
+| 5 | after 4 | --duration-panel | badge sheet | rises from the bottom: date, tier, three badges, one button | slide | --easing-enter | none |
+
+Durations are this skill's token names; the project's own scale decides their values. Interruption: a tap jumps to the end state of row 5. Reduced motion: the stage and the sheet appear together, the number already at 150. Never moves: the button once it lands; the mascot returns to rest on the podium.
+
 Name each technique with one term from `animation-vocabulary` or this list: fade, slide, scale-in, pop, mask reveal, clip reveal, stroke draw, stagger, shared element, layout (FLIP), cross-fade, morph, follow path, parallax, scrub, pin, spring settle, overshoot, particles, shader, flipbook, rig.
 
 ## State table

@@ -42,11 +42,19 @@ captions="absent"
 if [ "$is_url" = 1 ]; then
   command -v yt-dlp >/dev/null || { echo "missing yt-dlp: brew install yt-dlp" >&2; exit 2; }
   note "fetching $in"
-  yt-dlp --no-playlist --no-progress \
-    -f "bv*[height<=$MAX_HEIGHT]+ba/b[height<=$MAX_HEIGHT]/b" --merge-output-format mp4 \
-    --write-subs --write-auto-subs --sub-langs "$SUB_LANGS" --convert-subs srt \
-    --print-to-file '%(.{title,description,uploader,uploader_id,upload_date,duration,webpage_url,width,height})j' "$out/meta.json" \
-    -o "$out/clip.%(ext)s" "$in" >/dev/null
+  fetch() {
+    yt-dlp --no-playlist --no-progress \
+      -f "bv*[height<=$MAX_HEIGHT]+ba/b[height<=$MAX_HEIGHT]/b" --merge-output-format mp4 \
+      --print-to-file '%(.{title,description,uploader,uploader_id,upload_date,duration,webpage_url,width,height})j' "$out/meta.json" \
+      -o "$out/clip.%(ext)s" "$@" "$in" >/dev/null
+  }
+  # A failed caption download (YouTube answers 429 when several run at once) fails the whole
+  # command; fetch the video alone and let whisper transcribe it.
+  if ! fetch --write-subs --write-auto-subs --sub-langs "$SUB_LANGS" --convert-subs srt; then
+    note "caption download failed; fetching the video alone, whisper will transcribe"
+    rm -f "$out"/clip.*
+    fetch
+  fi
   clip=$(ls "$out"/clip.* 2>/dev/null | grep -Ev '\.(srt|vtt|json)$' | head -1)
   srt=$(ls "$out"/clip.*.srt 2>/dev/null | head -1 || true)
   if [ -n "${srt:-}" ]; then

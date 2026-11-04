@@ -16,6 +16,8 @@ art/<name>/
   log.jsonl     one line per generation call
   drift.png     the latest contact sheet
   rig/          parts and state poses, for a mascot that will move (below)
+  rivals/       the category's icons, for an icon's lineup (below)
+  handover.md   the file table and rules, with handover.png the sheet (below)
 ```
 
 ## pack.json
@@ -49,11 +51,12 @@ art/<name>/
 
 ## Mascot
 
-1. **Hero**: one front-facing, full-body image in a neutral pose on a plain light background, made from the seed. The owner approves it before anything else is generated.
+1. **Hero**: one front-facing, full-body image in a neutral pose on a plain light background, made from the seed. Before the owner approves it, show it in two of the places it will live, at their real size (the app icon at 29 px, an empty state on the product's background): a character drawn for a white artboard over-details and blurs where it is used. The owner approves it before anything else is generated.
 2. **Identity text**: 30 to 90 words naming body shape, proportions, colours in hex, eyes, the one memorable feature, and the rendering and light. Paste it into every prompt **verbatim**; a reworded description slowly changes the character. Describe what the character has, completely: "its face is only two small black ovals" holds where "no mouth" does not. In the toolbox comparison, two of four models added a smile to a "no mouth" mascot as soon as the prompt asked for a happy expression.
 3. **Turnaround**: front, three-quarter, side, back, same scale, same plain background, flat even light, generated from the hero. A sheet whose panels disagree teaches the disagreement to every later image, so score each panel against the hero before keeping it.
-4. **Expressions**: one per product state the mascot will appear in, generated from the front panel: neutral, happy (success), thinking (loading), surprised, sorry (error), working (empty state).
-5. **Base construction**: when several mascots form a family, they share the eye and face design, the line and the rendering, and differ in silhouette and colour.
+4. **Expressions**: one per product state the mascot will appear in, generated from the front panel: neutral, happy (success), thinking (loading), surprised, sorry (error), working (empty state). Give each its **emanata**, the marks drawn around the character (motion lines, sparkles, a steam puff, a sweat drop): at icon and notification sizes the face is a few pixels and the marks carry the emotion. Fix their line weight and colour in the identity text so every expression draws them the same way.
+5. **Face kit**: the eye and mouth shapes the expressions are built from, drawn once (open, closed, happy arcs, wide, the mouths the states need; none for a mouthless mascot) and saved as `sheet/face-kit.png`. A new expression combines shapes from the kit, which is what keeps a large expression set reading as one face.
+6. **Base construction**: when several mascots form a family, they share the eye and face design, the line and the rendering, and differ in silhouette and colour.
 
 Ask for one figure per image; a sheet given as a reference is copied as a layout unless the prompt says the sheet is for identity only.
 
@@ -91,4 +94,28 @@ An app icon wins on appeal and clarity, so a character beats an abstract mark ([
 - **Contrast as high as the palette allows**; add an outline and a drop shadow when the subject does not separate from the background.
 - **Peek crop**: tilt the subject and let it enter from an edge so only part shows. The eye goes to the face, and small flaws fall outside the frame.
 
-Generate at 1024 on the mascot pack's hero and sheet, then `postprocess.py export --icon` writes every size and the favicon. Check it at 16 and 29 px before approving.
+Before generating, collect about 20 icons from the product's category (the top results of an App Store search for its job: `curl 'https://itunes.apple.com/search?entity=software&limit=25&term=<job>'` returns each app's `artworkUrl512`) into `art/<name>/rivals/`, and write in the README what the category is crowded with: one shared colour, the same symbol, the same gradient. The icon claims what none of them holds.
+
+Generate at 1024 on the mascot pack's hero and sheet, then `postprocess.py export --icon` writes every size and the favicon. Then hide it among the rivals at home-screen sizes on light and dark grounds:
+
+```sh
+python3 <skill-dir>/references/check.py --lineup art/<name>/lineup.png art/<name>/out/icon/icon-1024.png art/<name>/rivals/*
+```
+
+Two tests on `lineup.png`, which mixes the icon into a different place in every block:
+
+- **Ownable**: open it cold. The eye lands on the icon in each block, and it could not swap places with a rival without anyone noticing.
+- **Recall**: show the owner, or three other people, the icon alone for five seconds, then the lineup without the key. They find it in every block; when several pick the same wrong rival, compare the two shapes and change what they share.
+
+Done when both tests pass at 60 and 29 px on both grounds.
+
+## Handover
+
+What the people who use the art read, so they pick the right file without asking. Write `art/<name>/handover.md` and its image `handover.png`:
+
+- **Sheet**: the hero large; the palette as a strip of swatches with hex and role; each state pose with the name of the place it is used (empty state, loading, success), never only the emotion; the face kit for a mascot.
+- **In place**: the art in two or three of its real placements, at their sizes (an icon on a home screen, an empty state in the product, a social card).
+- **Files**: one row per file in `out/`, named by where it goes (`icon-1024.png` for the store, `favicon.ico` for the site, `empty-state@2x.webp`), with its size and format, and what goes to a printer and how it is checked first (a physical proof before a run).
+- **Rules**: the identity text, and what the art never does (the features it rules out).
+
+Done when every file in `out/` has a row, and every state pose on the sheet names its placement.

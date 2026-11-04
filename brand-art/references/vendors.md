@@ -88,3 +88,9 @@ higgsfield generate create nano_banana_2 \
 | `text2image_soul_v2` | 1 | `--soul-id` |
 
 **Soul ID** trains a character from photos (`higgsfield soul-id create --name <n> --soul-2 --image a.jpg --image b.jpg ...`, then `higgsfield soul-id wait <id>`) and is used with `--soul-id` on `text2image_soul_v2` and `soul_cinematic`. It is built for real faces. Whether it holds a stylised mascot trained on the pack's sheet is untested: run it as one arm of the vendor comparison in `references/generate.md` before relying on it.
+
+## Candidates not yet compared
+
+Run each as an arm of the vendor comparison in `references/generate.md` before routing work to it.
+
+- **QuiverAI** generates illustration as native SVG (seen in [@DannPetty's post](https://x.com/DannPetty/status/2117708396153479626), 2026-11-04, where the SVG was then animated in Claude). If its paths hold the pack's identity, it competes with the Recraft vector model for flat art that `motion-direction` will animate, since the parts arrive as paths instead of through `vectorize_image`.

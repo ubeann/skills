@@ -3,7 +3,8 @@
 
   library.py list [--tag halftone] [--job palette] [--since 2026-10-01]
   library.py trends [--days 45] [--min 3]          techniques shared by several authors recently
-  library.py board <project> <ref-id>=<job> ...    boards/<project>/board.md and board.png
+  library.py board <project> <ref-id>=<job>:<what is taken> ...
+                                                   boards/<project>/board.md and board.png; the first is the lead
   library.py palette <image> [<image> ...]         dominant colours with their share
 
 The library is $MOODBOARD_DIR (default ~/moodboard): one folder per reference with card.json.
@@ -95,38 +96,51 @@ def cmd_board(a):
     index = {c["id"]: c for c in cards()}
     picks, seen_jobs, problems = [], {}, []
     for arg in a.refs:
-        rid, _, job = arg.partition("=")
+        rid, _, rest = arg.partition("=")
+        job, _, taken = rest.partition(":")
         if rid not in index:
             sys.exit(f"{rid}: not in the library (library.py list)")
         if job not in JOBS:
             sys.exit(f"{rid}: job {job!r} is not one of {sorted(JOBS)}")
         if job in seen_jobs:
             problems.append(f"{job} has two references ({seen_jobs[job]}, {rid}): keep one")
+        if not taken.strip():
+            problems.append(f"{rid}: name what is taken ({rid}={job}:<values or technique>)")
         seen_jobs[job] = rid
-        picks.append((index[rid], job))
+        picks.append((index[rid], job, taken.strip()))
     out = LIB / "boards" / a.project
     out.mkdir(parents=True, exist_ok=True)
-    lines = [f"# {a.project} board", "", f"Made {dt.date.today().isoformat()} from {LIB}.", "",
+    lines = [f"# {a.project} board", "", f"Made {dt.date.today().isoformat()} from {LIB}. "
+             f"Lead: {picks[0][0]['id']}.", "",
              "| Reference | Job | What is taken | Everything else |", "|---|---|---|---|"]
-    for c, job in picks:
-        lines.append(f"| [{c['id']}]({c['url']}) {c.get('author') or ''} | {job} | <fill: the values or technique taken> | ignored |")
+    for c, job, taken in picks:
+        lines.append(f"| [{c['id']}]({c['url']}) {c.get('author') or ''} | {job} | {taken or '<fill>'} | ignored |")
     lines += ["", "Identity of each reference, kept out of this project:", ""]
-    lines += [f"- {c['id']}: {c.get('identity') or '<fill>'}" for c, _ in picks]
+    lines += [f"- {c['id']}: {c.get('identity') or '<fill>'}" for c, _, _ in picks]
     (out / "board.md").write_text("\n".join(lines) + "\n")
     try:
         from PIL import Image, ImageDraw
-        tile = 320
-        sheet = Image.new("RGB", (tile * min(4, len(picks)), tile * (-(-len(picks) // 4)) + 0), "white")
+        tile, cols = 320, 4
+        # the lead takes a 2x2 block: size is weight, so the eye reads the direction from it first
+        cells, taken_cells = [(0, 0, 2)], {(0, 0), (1, 0), (0, 1), (1, 1)}
+        r = 0
+        while len(cells) < len(picks):
+            for col in range(cols):
+                if (col, r) not in taken_cells and len(cells) < len(picks):
+                    cells.append((col, r, 1))
+            r += 1
+        rows = max(cy + span for _, cy, span in cells)
+        sheet = Image.new("RGB", (tile * cols, tile * rows), "white")
         draw = ImageDraw.Draw(sheet)
-        for i, (c, job) in enumerate(picks):
+        for (c, job, taken), (cx, cy, span) in zip(picks, cells):
+            size, x, y = tile * span, cx * tile, cy * tile
             media = [m for m in c["media"] if m.lower().endswith((".jpg", ".jpeg", ".png", ".webp"))]
-            x, y = (i % 4) * tile, (i // 4) * tile
             if media:
                 im = Image.open(c["_dir"] / media[0]).convert("RGB")
-                im.thumbnail((tile - 10, tile - 34))
-                sheet.paste(im, (x + (tile - im.width) // 2, y + 5))
-            draw.rectangle([x, y + tile - 26, x + tile, y + tile], fill="white")
-            draw.text((x + 6, y + tile - 20), f"{job}: {c['id']}"[:48], fill="black")
+                im.thumbnail((size - 10, size - 34))
+                sheet.paste(im, (x + (size - im.width) // 2, y + 5))
+            draw.rectangle([x, y + size - 26, x + size, y + size], fill="white")
+            draw.text((x + 6, y + size - 20), f"{job}: {taken or c['id']}"[:int(48 * span)], fill="black")
         sheet.save(out / "board.png")
     except ImportError:
         problems.append("Pillow missing: board.png not written")
@@ -155,7 +169,7 @@ def main():
     p.set_defaults(fn=cmd_trends)
     p = sub.add_parser("board")
     p.add_argument("project")
-    p.add_argument("refs", nargs="+", metavar="ref-id=job")
+    p.add_argument("refs", nargs="+", metavar="ref-id=job:taken")
     p.set_defaults(fn=cmd_board)
     p = sub.add_parser("palette")
     p.add_argument("images", nargs="+")

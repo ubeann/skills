@@ -31,10 +31,10 @@ A board gives each reference one of these, and each job one reference.
 
 Use an existing tag when it fits, so the trend count works; add a new one only for a technique none of these name, in lowercase with hyphens, and add it to this list in the same change.
 
-- **Rendering**: `flat-vector`, `flat-grain`, `soft-3d`, `clay`, `glass`, `painterly`, `gouache`, `watercolour`, `grain-print`, `risograph`, `halftone`, `dither`, `engraving`, `line-art`, `pixel`, `paper-cut`, `collage`, `photo-cutout`, `gradient-mesh`
-- **Character**: `mascot-icon`, `mascot-empty-state`, `kawaii`, `blob-character`, `object-with-face`, `character-family`
-- **Composition**: `image-behind-type`, `peek-crop`, `full-bleed-scene`, `single-object-on-sky`, `torn-edge`, `sticker-outline`, `centred-subject`
-- **Interaction and motion**: `time-of-day`, `scroll-reveal`, `cursor-reactive`, `state-morph`, `character-reaction`, `celebration`, `kinetic-type`, `one-container`, `token-snap`, `launch-film`
+- **Rendering**: `flat-vector`, `flat-grain`, `soft-3d`, `clay`, `glass`, `painterly`, `gouache`, `watercolour`, `grain-print`, `risograph`, `halftone`, `dither`, `engraving`, `line-art`, `pixel`, `paper-cut`, `collage`, `photo-cutout`, `gradient-mesh`, `rubber-hose`, `svg-plane-extrude`
+- **Character**: `mascot-icon`, `mascot-empty-state`, `kawaii`, `blob-character`, `object-with-face`, `character-family`, `emanata`, `face-kit`, `mascot-presentation-sheet`
+- **Composition**: `image-behind-type`, `peek-crop`, `full-bleed-scene`, `single-object-on-sky`, `torn-edge`, `sticker-outline`, `centred-subject`, `ip-poster-system`, `faux-ui`
+- **Interaction and motion**: `time-of-day`, `scroll-reveal`, `cursor-reactive`, `state-morph`, `character-reaction`, `celebration`, `kinetic-type`, `one-container`, `token-snap`, `launch-film`, `svg-animation`
 - **Type**: `serif-display`, `grotesk-tight`, `mono-accent`, `mixed-serif-sans`
 
 ## Motion readings

@@ -77,6 +77,12 @@ Render the result in chat: the `check.py` table, then each finding with its fix,
 
 Done when every image passes or has a finding with its fix, and `drift.png` has been looked at.
 
+### 8. Hand over
+
+Build the handover sheet and file table in `references/identity-pack.md` (Handover). An icon also passes the lineup tests in that file's Icon section before handover.
+
+Done when the Handover section's criterion holds, and an icon's lineup tests pass.
+
 ## Working habits
 
 - Restart from the hero, in a fresh call or chat, when two variations in a row drift. A drifted image is evidence, never a new base.

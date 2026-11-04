@@ -13,7 +13,7 @@ Eight fields. Each one is a decision the model would otherwise make by averaging
 | 5 | The bet | The category's hidden assumption, and the opposite this product builds | `PRODUCT.md` → Positioning |
 | 6 | Peak and end | The one moment lifted above the rest, and how the core flow closes | `PRODUCT.md` → Key moments |
 | 7 | Hard moments | The failures, empties, waits and limits of the core flow | `PRODUCT.md` → Key moments |
-| 8 | Signature element | One visual idea that is the product's own, reused to connect things | `DESIGN.md` → Overview and Components |
+| 8 | Signature element | One visual idea that is the product's own, reused to connect things, and at most two other standout ingredients | `DESIGN.md` → Overview and Components |
 
 An adjective with no visible consequence ("modern", "clean") is a placeholder. Push until it changes a token or a rule.
 
@@ -53,3 +53,7 @@ The same moment gets one pattern everywhere. Undertone had two different "you've
 One visual idea, reused so the user connects related parts without reading. In a voting screen, the same pulsing dot marks the current period on the chart and the commit button ([video at 12:27](https://www.youtube.com/watch?v=86PGRyQjdzQ&t=747s)). In a progress product, one visible measure of total progress does more than twenty scattered badges ([video at 6:17](https://www.youtube.com/watch?v=yBpv5rZoBjA&t=377s)).
 
 Good candidates: a shape, a way of drawing numbers, a single accent use, a recurring card form, a progress mark. It must survive on doing surfaces, so it cannot be an illustration or an animation alone.
+
+**Ingredients.** Art directors run a chain: an insight (an unspoken truth about the user; here, the bet), the idea that makes the user feel it, then the visual decisions that carry the idea ([video at 1:57](https://www.youtube.com/watch?v=O_B_Ei5o1k4&t=117s)). Every screen makes dozens of those decisions, but a dish is remembered by two or three standout flavours ([video at 14:21](https://www.youtube.com/watch?v=O_B_Ei5o1k4&t=861s)). Name the signature element plus at most two other standout ingredients, each traced to the bet: Polaroid's campaign against AI images put handwritten ballpoint over its photos, where a clean sans would have said the same words without the feeling ([video at 7:28](https://www.youtube.com/watch?v=O_B_Ei5o1k4&t=448s)). Everything else is tuned to stay quiet beside them.
+
+Decide which end the ingredients sit at. Usually they set the **feeling** for a message the copy carries; sometimes they form a **visual device** that carries the message with no copy at all, as LEGO's ads cast a dinosaur's shadow from two bricks ([video at 11:57](https://www.youtube.com/watch?v=O_B_Ei5o1k4&t=717s)). A device suits selling surfaces and the peak; doing surfaces keep the feeling and leave the words to the copy. Pick ingredients that thread across every surface the brief lists, from the app icon to the store page.
