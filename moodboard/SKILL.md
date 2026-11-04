@@ -39,18 +39,21 @@ Done when the trend table is in chat and every new card's techniques were counte
 
 ### 4. Build a board
 
-Only for a project that asks for one. Pick references from the library (`library.py list --tag <technique>` or `--job <job>`), give each exactly one job, and prune: a reference with no job leaves, and each job keeps one reference.
+Only for a project that asks for one. The board is a **creative argument**: every reference is a sentence in it, and one whose sentence you cannot say leaves. Pick references from the library (`library.py list --tag <technique>` or `--job <job>`), give each exactly one job, and prune: a reference with no job leaves, and each job keeps one reference.
 
 ```sh
-python3 <skill-dir>/references/library.py board <project> <ref-id>=<job> [<ref-id>=<job> ...]
+python3 <skill-dir>/references/library.py board <project> <lead-id>=<job>:<what is taken> [<ref-id>=<job>:<what is taken> ...]
 ```
 
-Fill each row of `boards/<project>/board.md` with what is taken: measured values for palette and type (`design-direction`'s `inventory.js` on a live page), a named technique for the rest. Hand the board to `brand-art` (its art bible's references table) or `design-direction` (its step 3).
+The first reference is the **lead**, drawn at four times the area: size is weight, so lead with the reference most central to the direction. What is taken is a measured value for palette and type (`design-direction`'s `inventory.js` on a live page) and a named technique for the rest; it captions the reference on `board.png` too, so a reader reacts to the part taken rather than the whole image.
 
-Done when `library.py board` exits 0, every row says what is taken, and `board.png` has been looked at.
+Then look at `board.png` for ten seconds. A reader should be able to say the direction from it; a reference whose colour or tone pulls the eye away from the lead is cut, or recoloured to sit with the others. Hand the board to `brand-art` (its art bible's references table) or `design-direction` (its step 3).
+
+Done when `library.py board` exits 0, the direction can be said from `board.png` in ten seconds, and no reference pulls away from the lead.
 
 ## Working habits
 
 - Name the technique, never the look: "halftone dots on a classical subject", not "like Nexara".
 - A post that promises a result from one prompt shares its template with everyone who copied it; its technique counts, its layout and copy do not.
 - When the user shares a batch, fetch all of it before breaking any down, so the trend count sees the batch together.
+- Weigh a reference by where it came from. A Dribbble shot, a Behance case study or a pin is one polished frame of a presentation, with no other pages, no mobile and no real content; Pinterest and Instagram serve every designer the same picks. For a `layout` or `type` job, fetch the live site the shot came from, or take it from a library of working sites (Land-book, SiteInspire, SaaS Landing Page, Mobbin for flows) or a hand-curated Are.na board.
