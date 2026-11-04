@@ -43,6 +43,7 @@ For each row of the beat sheet, open the frames around its start and its end and
 | Layout shift | nothing outside the beat's element moves |
 | Rest | a stateful piece reaches rest after every reaction |
 | Reduced motion | the reduced capture shows the row's reduced-motion behaviour |
+| Sound | a row with a sound hits one frame after its picture: `npx hyperframes audio <render> --json` lists where each sound hits, so compare it with the beat grid. Frames carry no sound, so this is the only check that hears |
 
 Agents miss single-frame faults that a person sees at once, so open the frames around every end state rather than sampling ([video at 19:31](https://www.youtube.com/watch?v=f-Ar8mwm3kQ&t=1171s)).
 

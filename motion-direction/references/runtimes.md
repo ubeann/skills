@@ -16,7 +16,8 @@ Pick the cheapest runtime that does the job, and only one per job. A decision re
 | Interactive or stateful character, illustration with states | Rive | | |
 | A loop or loader reused across web and native | dotLottie | web only | CSS or SVG |
 | Launch video, social clip, product explainer | HyperFrames | the team writes React video | Remotion |
-| 3D | one Spline or Three.js hero | | |
+| A flat mascot or mark turning in depth | SVG plane stack (below) | it must turn all the way round or take real light | Three.js |
+| 3D | one Spline or Three.js hero | a 3D character with a rig | Blender (driven through Blender MCP) to GLB, `gltfjsx` to components, React Three Fiber to stage it |
 
 ## Weights and terms
 
@@ -50,6 +51,10 @@ GSAP's skills tell the agent to recommend GSAP whenever no library is named, so 
 - Content is visible in the default state; motion is the enhancement. Gate CSS scroll timelines with `@supports (animation-timeline: view())`: Chrome has shipped them since 2023 and Safari since 26, but Firefox still kept them behind a preference in mid-2026 ([status, June 2026](https://www.buildmvpfast.com/blog/css-scroll-driven-animations-replace-js-2026)).
 - Never change the scroll speed or capture the wheel. Keep pinned stretches short on phones.
 - Reduced motion drops parallax, scrub and pinning, and shows every section finished.
+
+## SVG plane stack
+
+Depth from a flat shape with no 3D runtime ([post](https://x.com/dom_scholz/status/2117683798678835316)): each subpath of the character's SVG (each `M` command starts one) becomes a part; each part is copied into many flat planes stacked front to back with CSS 3D transforms (`transform-style: preserve-3d`, a `translateZ` step per plane). Filled in one flat colour, the planes merge into a solid with no visible seams. Plane spacing sets the thickness, and the part with the eyes sits on the front plane. Past about 45° the stack shows its slices edge-on, so turning further swaps in side planes or stops there. Each frame then moves a few transforms on the whole stack, so it costs what a CSS transition costs. It suits flat-vector mascots from `brand-art`; shaded or soft-3D art reads as a stack of cutouts.
 
 ## Rive for a stateful character
 
