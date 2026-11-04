@@ -1,6 +1,6 @@
 ---
 name: brand-art
-description: Make a product's mascots, illustration sets, scene and background art, and app icons that keep one identity across every image, through Recraft or Higgsfield. Locks an art bible and an identity pack (the owner's seed, an approved hero, a turnaround, fixed identity text, palette, style IDs) before generating, changes one thing per call, cleans the files (WebP, SVG backgrounds, palette snap, texture, edge, sizes) and scores every image for drift against the hero. Use when generating illustrations, a mascot or character, landscapes or backgrounds, or an app icon, when AI art looks generic or loses its identity, or to compare image vendors. UI tokens are design-direction; collecting and breaking down references is moodboard; logo marks are ui-ux-pro-max:design; assets cut from an approved mockup are impeccable.
+description: Make a product's mascots, illustration sets, scene and background art, and app icons that keep one identity across every image, through Recraft or Higgsfield. Locks an art bible and an identity pack (the owner's seed, an approved hero, a turnaround, fixed identity text, palette, style IDs) before generating, changes one thing per call, cleans the files (WebP, SVG backgrounds, palette snap, texture, edge, sizes) and scores every image for drift against the hero. Use when generating illustrations, a mascot or character, landscapes or backgrounds, or an app icon, when AI art looks generic or loses its identity, or to compare image vendors. UI tokens are design-direction; collecting and breaking down references is moodboard; logo marks are ui-ux-pro-max:design; assets cut from an approved mockup are impeccable; animating the art is motion-direction.
 ---
 
 # Brand art
@@ -44,6 +44,8 @@ Follow `references/identity-pack.md` for the family: generate the hero from the 
 python3 <skill-dir>/references/check.py --pack art/<name>/pack.json
 python3 <skill-dir>/references/check.py art/<name>/pack.json art/<name>/sheet/* --sheet art/<name>/sheet.png
 ```
+
+A mascot that will move also gets the rig pack in `references/identity-pack.md`: a pose per state and the rest pose split into parts with pivots.
 
 Done when the owner approved the hero, `check.py --pack` reports 0 errors, and every sheet panel passes against the hero.
 
