@@ -1,6 +1,6 @@
 ---
 name: design-direction
-description: Set a product's design direction before any UI is generated, then measure built screens for drift from it. Writes the brief (who it serves, the category assumption it bets against, its peak and end moments), gives each reference one job, locks a token system into DESIGN.md for app, website or desktop, and counts drift in type, spacing, colour and radius. Use when starting UI from references, when generated screens look generic or off-brand, or when screens stop matching each other. Building and polishing screens is the impeccable skill; how users behave on a flow is ux-behaviour-audit.
+description: Set a product's design direction before any UI is generated, then measure built screens for drift from it. Writes the brief (who it serves, the category assumption it bets against, its peak and end moments), gives each reference one job, locks a token system into DESIGN.md for app, website or desktop, and counts drift in type, spacing, colour and radius. Use when starting UI from references, when generated screens look generic or off-brand, or when screens stop matching each other. Building and polishing screens is the impeccable skill; how users behave on a flow is ux-behaviour-audit; how the product moves is motion-direction.
 ---
 
 # Design direction

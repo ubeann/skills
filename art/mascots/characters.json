@@ -46,5 +46,11 @@
     "model": "seedream_v5_pro",
     "job": "cfb1ea65-ba58-4c89-992a-dea22606df85",
     "picked": "brand-art-r1"
+  },
+  "motion-direction": {
+    "subject": "The character is a chunky classic pyramid metronome standing upright, its pendulum arm swung a little to the right with a small sliding weight near the top, the eyes on the front face below the pendulum. Main colour blue #2448e0, pendulum and weight light orange #fb9837.",
+    "model": "seedream_v5_pro",
+    "job": "853a6d40-9b48-4921-a5a5-5c39d7ab72c9",
+    "picked": "motion-direction-3"
   }
 }

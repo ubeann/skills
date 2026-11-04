@@ -1,7 +1,10 @@
 # Skills that live outside this repo, linked into every profile from where their
 # installer keeps them, so an update lands in every profile at once.
 # One glob per line: a folder of skills or a single skill folder. `!name` skips one.
-~/.agents/skills                    # `npx skills` store: better-auth, turborepo, find-skills
+~/.agents/skills                    # `npx skills` store: better-auth, turborepo, find-skills, and the motion set
+                                    # (review-animations, animation-vocabulary, find-animation-opportunities,
+                                    # motion-design, hyperframes, hyperframes-cli). `npx skills add -g` under
+                                    # CLAUDE_CONFIG_DIR copies into that one profile: move the copy here.
 ~/.claude/skills/gitbutler          # installed and updated by `but`
 ~/.claude/skills/yab-browser        # installed by yab
 ~/.claude/skills/golang-*           # samber/cc-skills-golang
