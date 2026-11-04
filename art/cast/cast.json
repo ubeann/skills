@@ -1,0 +1,126 @@
+{
+  "hero": {
+    "peek": [
+      1.25,
+      0.56,
+      0.1,
+      -8
+    ]
+  },
+  "banner": {
+    "back": [
+      "learn",
+      "video-context",
+      "design-direction",
+      "brand-art"
+    ],
+    "front": [
+      "report-web",
+      "ux-behaviour-audit",
+      "report-deck",
+      "moodboard",
+      "motion-direction"
+    ]
+  },
+  "skills": {
+    "report-deck": {
+      "colour": "#ff6b35",
+      "costume": "the presenter",
+      "tagline": "Paged data reports, sent as a PDF and presented as a deck.",
+      "peek": [
+        1.2,
+        0.62,
+        0.1,
+        -8
+      ]
+    },
+    "report-web": {
+      "colour": "#ffd23f",
+      "costume": "the reader",
+      "tagline": "Scrolling data reports in one offline file for any screen.",
+      "peek": [
+        1.25,
+        0.58,
+        0.1,
+        -8
+      ]
+    },
+    "learn": {
+      "colour": "#3ecf8e",
+      "costume": "the student",
+      "tagline": "Answers from verified sources, filed as notes.",
+      "peek": [
+        1.25,
+        0.56,
+        0.06,
+        -8
+      ]
+    },
+    "video-context": {
+      "colour": "#ff5fa2",
+      "costume": "the film buff",
+      "tagline": "Any video turned into a bundle an agent can read.",
+      "peek": [
+        1.25,
+        0.56,
+        0.06,
+        -8
+      ]
+    },
+    "ux-behaviour-audit": {
+      "colour": "#14b8a6",
+      "costume": "the detective",
+      "tagline": "A UI audited by how people behave on it, not how it looks.",
+      "peek": [
+        1.25,
+        0.56,
+        0.08,
+        -8
+      ]
+    },
+    "design-direction": {
+      "colour": "#8b5cf6",
+      "costume": "the explorer",
+      "tagline": "The direction set before any screen is generated.",
+      "peek": [
+        1.2,
+        0.56,
+        0.08,
+        -8
+      ]
+    },
+    "moodboard": {
+      "colour": "#d9a066",
+      "costume": "the collector",
+      "tagline": "References broken down into the techniques they use.",
+      "peek": [
+        1.25,
+        0.56,
+        0.1,
+        -8
+      ]
+    },
+    "brand-art": {
+      "colour": "#ef3b36",
+      "costume": "the artist",
+      "tagline": "Mascots, art and icons that keep one identity.",
+      "peek": [
+        1.25,
+        0.56,
+        0.06,
+        -8
+      ]
+    },
+    "motion-direction": {
+      "colour": "#b6e33b",
+      "costume": "the conductor",
+      "tagline": "How a product moves, decided before it is built.",
+      "peek": [
+        1.2,
+        0.5,
+        0.08,
+        -8
+      ]
+    }
+  }
+}
