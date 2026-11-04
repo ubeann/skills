@@ -1,4 +1,4 @@
-<p align="center"><img src="assets/icon-512.png" alt="skills mascot: toolbox" width="160"></p>
+<p align="center"><img src="assets/banner.png" alt="The skills cast: one ink-navy character in a costume for each skill"></p>
 
 # skills
 
@@ -22,6 +22,16 @@ The rest of the shared setup lives in `profile/` and is synced the same way: plu
 | [<img src="assets/skills/brand-art.png" alt="" width="48">](brand-art/SKILL.md)<br>[brand&#8209;art](brand-art/SKILL.md) | Mascots, illustration sets, scene art and app icons that keep one identity: an art bible, the owner's seed, an identity pack with a hero and turnaround, one change per call through Recraft or Higgsfield, file cleanup, and a drift score against the hero. |
 | [<img src="assets/skills/motion-direction.png" alt="" width="48">](motion-direction/SKILL.md)<br>[motion&#8209;direction](motion-direction/SKILL.md) | How a product moves, decided before it is built: a motion brief with one focal moment, duration and easing tokens, one runtime per job (CSS, Motion, GSAP, Rive, Lottie, HyperFrames) inside a budget, a beat sheet per sequence, and frame-by-frame review with a motion drift count. |
 
+## Cast
+
+One character, a costume for each skill. How it is made, and how a new skill gets its costume: [`art/cast/`](art/cast/README.md).
+
+<table>
+<tr><td><a href="report-deck/SKILL.md"><img src="assets/cards/report-deck.png" alt="report-deck: the presenter" width="260"></a></td><td><a href="report-web/SKILL.md"><img src="assets/cards/report-web.png" alt="report-web: the reader" width="260"></a></td><td><a href="learn/SKILL.md"><img src="assets/cards/learn.png" alt="learn: the student" width="260"></a></td></tr>
+<tr><td><a href="video-context/SKILL.md"><img src="assets/cards/video-context.png" alt="video-context: the film buff" width="260"></a></td><td><a href="ux-behaviour-audit/SKILL.md"><img src="assets/cards/ux-behaviour-audit.png" alt="ux-behaviour-audit: the detective" width="260"></a></td><td><a href="design-direction/SKILL.md"><img src="assets/cards/design-direction.png" alt="design-direction: the explorer" width="260"></a></td></tr>
+<tr><td><a href="moodboard/SKILL.md"><img src="assets/cards/moodboard.png" alt="moodboard: the collector" width="260"></a></td><td><a href="brand-art/SKILL.md"><img src="assets/cards/brand-art.png" alt="brand-art: the artist" width="260"></a></td><td><a href="motion-direction/SKILL.md"><img src="assets/cards/motion-direction.png" alt="motion-direction: the conductor" width="260"></a></td></tr>
+</table>
+
 ## Layout
 
 ```
@@ -35,8 +45,8 @@ profile/settings.json     keys merged into each profile's settings.json: plugins
 profile/mcp.json          user-scope MCP servers; write secrets as ${VAR}, read from the env at sync time
 profile/skill-sources.txt skills kept outside this repo (npx skills, but, yab), linked into each profile from where they live
 profile/home/             files symlinked into each profile at the same path (rules/, CLAUDE.md, agents/)
-assets/                   the toolbox mascot, one character per skill in skills/
-art/mascots/              how the characters are made: shared rules, prompts, cutouts, export.py
+assets/                   banner, brand icon, favicon, a tile per skill in skills/, a card per skill in cards/
+art/cast/                 how the cast is made: art bible, hero, face kit, costumes, build.py
 AGENTS.md                 pointers for any coding agent working here
 ```
 

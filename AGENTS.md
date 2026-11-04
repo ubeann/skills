@@ -8,5 +8,5 @@ Personal Claude Code skills. One skill per top-level folder: `<name>/SKILL.md` p
 - `python3 scripts/sync_profiles.py` symlinks each skill into every Claude profile (`~/.claude`, `~/.claude-*`), or into the checkout named by `project:` in its frontmatter via `projects.txt`, and syncs `profile/` (settings, plugins, MCP servers, rules). Run it from the main checkout after merging; `sh scripts/link.sh` does the skills step only.
 - Shared Claude config belongs in `profile/`, never edited inside one profile. Secrets in `profile/mcp.json` are `${VAR}` references; the repo is public.
 - A skill that depends on one repository's files (its templates, scripts, directories) gets `project: <name>` so it never triggers elsewhere.
-- A new skill gets a character in the README: follow `art/mascots/README.md`.
+- A new skill gets a costume for the cast character in the README: follow `art/cast/README.md`.
 - Prose and deck copy use no em dashes.
