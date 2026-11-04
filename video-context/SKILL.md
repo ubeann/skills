@@ -46,4 +46,5 @@ Answer the question at the size it was asked, and give the bundle path so the us
 
 - A stretch that needs finer frames gets its own run: trim it with `ffmpeg -ss <start> -t <length> -i clip.mp4 -c copy part.mp4`, then extract `part.mp4` with `INTERVAL=1`. Re-running the whole video at a finer interval multiplies the frames you must read.
 - The transcript is English by default. Another language needs a multilingual model; `references/setup.md` says which.
+- Several YouTube links: extract them one after another. Run at once, YouTube refuses the captions (HTTP 429) and every video falls back to whisper, which is slower.
 - Twitter captions never exist, so an x.com clip with speech always runs whisper. Budget about a fifth of the clip's length for it.
