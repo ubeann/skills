@@ -4,6 +4,7 @@
   check.py --pack art/<name>/pack.json                 validate the pack itself
   check.py art/<name>/pack.json out/*.png              score each image against the pack
   check.py art/<name>/pack.json out/*.png --sheet s.png   also write a contact sheet
+  check.py --lineup lineup.png icon.png rivals/*.png   the icon among its category at home-screen sizes
 
 Per image it measures:
   palette   share of coloured pixels within reach of a palette colour
@@ -272,13 +273,59 @@ def contact_sheet(paths, labels, out, tile=220):
     sheet.save(out)
 
 
+def lineup(icon, rivals, out, seed=7):
+    """The icon hidden among rivals, same mask and size, on light and dark grounds, at 60 and 29 px."""
+    import random
+    rng = random.Random(seed)
+    paths = [icon] + list(rivals)
+    cols, pad, blocks, key = 5, 18, [], []
+    for size in (60, 29):
+        for ground in ("#f2f2f7", "#1c1c1e"):
+            order = paths[:]
+            rng.shuffle(order)
+            rows = -(-len(order) // cols)
+            cell = size + pad
+            block = Image.new("RGB", (cols * cell + pad, rows * cell + pad), ground)
+            mask = Image.new("L", (size * 4, size * 4), 0)
+            ImageDraw.Draw(mask).rounded_rectangle([0, 0, size * 4 - 1, size * 4 - 1], radius=int(size * 4 * 0.225), fill=255)
+            mask = mask.resize((size, size), LANCZOS)
+            for i, p in enumerate(order):
+                im = ImageOps.fit(ImageOps.exif_transpose(Image.open(p)).convert("RGBA"), (size, size), LANCZOS)
+                plate = Image.new("RGB", im.size, "white")  # an icon ships opaque; a cutout gets a white plate
+                plate.paste(im, mask=im.getchannel("A"))
+                im = plate
+                block.paste(im, (pad + (i % cols) * cell, pad + (i // cols) * cell), mask)
+                if p == icon:
+                    key.append(f"{size} px on {ground}: row {i // cols + 1}, column {i % cols + 1}")
+            blocks.append(block)
+    W = max(b.width for b in blocks)
+    sheet = Image.new("RGB", (W, sum(b.height for b in blocks)), "white")
+    y = 0
+    for b in blocks:
+        sheet.paste(b, (0, y))
+        y += b.height
+    sheet.save(out)
+    return key
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("pack_or_flag", nargs="?")
     ap.add_argument("images", nargs="*")
     ap.add_argument("--pack", help="validate this pack and exit")
     ap.add_argument("--sheet", help="write a contact sheet: hero first, colour row over greyscale row")
+    ap.add_argument("--lineup", help="write a lineup: the first image is the icon, the rest its category's icons")
     args = ap.parse_args()
+
+    if args.lineup:
+        icons = [args.pack_or_flag] + args.images if args.pack_or_flag else args.images
+        if len(icons) < 2:
+            ap.error("--lineup needs the icon and at least one rival icon")
+        key = lineup(icons[0], icons[1:], args.lineup)
+        print(f"lineup: {args.lineup} ({len(icons) - 1} rivals). Where the icon sits, for after the recall test:")
+        for k in key:
+            print(f"- {k}")
+        sys.exit(0)
 
     if args.pack:
         _, _, _, errors, incomplete = read_pack(args.pack)
