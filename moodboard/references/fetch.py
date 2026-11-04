@@ -9,6 +9,7 @@ breakdown fields), the images, and for a video the frames from the video-context
 
   x.com / twitter.com   text, photos, video, quoted post, links, through the public fxtwitter mirror
   youtube and video     frames and captions through video-context
+  pinterest             the pin's image, its creator when Pinterest names one, and the page it was saved from
   any other page        title, description and preview image from its meta tags
   instagram / threads   a video through yt-dlp when it works; otherwise a failure line naming the browser fallback
 
@@ -31,7 +32,7 @@ VIDEO_CONTEXT = Path.home() / ".claude/skills/video-context/references/extract.s
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15"
 
 
-BREAKDOWN = ("techniques", "jobs", "subject", "identity", "notes")
+BREAKDOWN = ("author", "techniques", "jobs", "subject", "identity", "notes")
 
 
 def curl(url, dst=None, timeout=60):
@@ -143,7 +144,7 @@ def fetch_page(url, folder, card):
     page = curl(url)
     if not page:
         card["fetch_notes"].append("page did not load; screenshot it in the browser into this folder")
-        return
+        return ""
 
     def meta(*names):
         for n in names:
@@ -163,6 +164,24 @@ def fetch_page(url, folder, card):
     if card["source"] == "web":
         card["links"] = [url]
         card["fetch_notes"].append("a page is measured, not just pictured: run design-direction's inventory.js on it for type and colour")
+    return page
+
+
+def fetch_pin(url, folder, card):
+    """A pin names who saved it, rarely who made it; the trend count needs the maker."""
+    pin = re.search(r"/pin/(\d+)", url)
+    pin = pin.group(1) if pin else slug(url.split("//", 1)[-1])
+    card["id"] = f"pinterest-{pin}"
+    page = fetch_page(url, folder, card)
+    at = page.find('"native_creator":{')
+    creator = re.search(r'"username":"([^"]+)"', page[at:at + 2000]) if at >= 0 else None
+    origin = [l for l in re.findall(r'"link":"(https?://[^"]+)"', page) if "pinterest." not in l]
+    card["author"] = f"@{creator.group(1)} (pinterest)" if creator else f"pinterest-{pin}"
+    if origin:
+        card["links"] = [url, json.loads(f'"{origin[0]}"')]
+    card["fetch_notes"] = [f"author is {card['author']}, a placeholder unless Pinterest named the creator: replace it "
+                           "with the credit on the image or the saved-from page (a watermark, a handle), so the trend count "
+                           "tells designers apart"]
 
 
 def fetch_social(url, folder, card):
@@ -184,6 +203,8 @@ def source_of(url):
     host = re.sub(r"^www\.", "", url.split("//", 1)[-1].split("/", 1)[0].lower())
     if host in ("x.com", "twitter.com", "mobile.twitter.com"):
         return "x"
+    if host.endswith("pinterest.com") or host == "pin.it" or ".pinterest." in host:
+        return "pinterest"
     if host.endswith("instagram.com"):
         return "instagram"
     if host.endswith("threads.net") or host.endswith("threads.com"):
@@ -210,7 +231,8 @@ def main():
         tmp = LIB / ".incoming"
         shutil.rmtree(tmp, ignore_errors=True)
         tmp.mkdir()
-        {"x": fetch_x, "video": fetch_video, "instagram": fetch_social, "threads": fetch_social}.get(source, fetch_page)(url, tmp, card)
+        {"x": fetch_x, "video": fetch_video, "instagram": fetch_social, "threads": fetch_social,
+         "pinterest": fetch_pin}.get(source, fetch_page)(url, tmp, card)
         card["id"] = card["id"] or f"{source}-{slug(url)}"
         folder = LIB / card["id"]
         if (folder / "card.json").exists():  # a refetch keeps the breakdown already written
