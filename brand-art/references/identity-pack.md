@@ -15,6 +15,7 @@ art/<name>/
   out/          cleaned, shippable files
   log.jsonl     one line per generation call
   drift.png     the latest contact sheet
+  rig/          parts and state poses, for a mascot that will move (below)
 ```
 
 ## pack.json
@@ -55,6 +56,24 @@ art/<name>/
 5. **Base construction**: when several mascots form a family, they share the eye and face design, the line and the rendering, and differ in silhouette and colour.
 
 Ask for one figure per image; a sheet given as a reference is copied as a layout unless the prompt says the sheet is for identity only.
+
+## Rig pack
+
+For a mascot that `motion-direction` will animate, in Rive or in code. A runtime moves parts, and one flat image has none: a mascot rigged from a single generated image moved clunkily until the same character was generated in more poses ([video at 8:30](https://www.youtube.com/watch?v=Hrcq00y9EhU&t=510s)).
+
+1. **States first.** Take the state list from the motion beat sheet's state table (rest, wave, celebrate, sorry). Every state needs a pose; rest is the hero's pose.
+2. **Poses as style frames.** Generate one still per state from the front panel, one change per call (the pose), and score each against the hero like any sheet panel. These are the frames the owner approves before any motion, and the targets the animation lands on.
+3. **Parts.** Split the rest pose into the layers the states move: body, head, each eye open and closed, each mouth shape the states need (none for a mouthless mascot), each limb, each prop. Flat vector art: `vectorize_image` on Recraft, then group the paths by part and name each group. Raster or soft 3D art: cut each part's mask from the approved pose and fill the hole behind it with `erase_region` or `inpaint_image`, so the part can move without exposing a gap. Generate a missing part (closed eyes, a raised arm) from the hero with the part as the one change.
+4. **Pivots and order.** For each part, record its pivot (where it rotates from: a shoulder, the neck, the base) in rest-pose pixels, and the drawing order from back to front.
+
+```
+rig/
+  parts.svg       or parts/<part>.png at the rest pose's size and position
+  poses/<state>.png
+  rig.md          | Part | File or group | Pivot (x, y) | Order | Moves in states |
+```
+
+Done when the parts, stacked in order at their positions, reproduce the rest pose (lay them over the hero and compare), and every state in the beat sheet has an approved pose.
 
 ## Set and scene
 

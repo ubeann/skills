@@ -1,6 +1,6 @@
 ---
 name: moodboard
-description: Collect design references from X, Threads, Instagram, YouTube or any site into one local library, break each into the technique it uses, flag techniques several designers are using at once, and assemble a project board where every reference has one job. Use when the user shares reference links or screenshots, asks what is trending in design, or wants a moodboard for an app, website, illustration, mascot or icon. Turning a board into UI tokens is design-direction; into art is brand-art; a video's full transcript is video-context.
+description: Collect design references from X, Threads, Instagram, YouTube or any site into one local library, break each into the technique it uses, flag techniques several designers are using at once, and assemble a project board where every reference has one job. Use when the user shares reference links or screenshots, asks what is trending in design, or wants a moodboard for an app, website, illustration, mascot or icon. Turning a board into UI tokens is design-direction; into art is brand-art; into motion is motion-direction; a video's full transcript is video-context.
 ---
 
 # Moodboard
@@ -23,7 +23,7 @@ Done when every link has a folder with `card.json` and at least one media file, 
 
 ### 2. Break down
 
-Open every image and frame of each new card, then fill its breakdown fields from `references/breakdown.md`: `techniques` from the vocabulary, the `jobs` it could do, the `subject`, and `identity`, the part that makes it its author's own.
+Open every image and frame of each new card, then fill its breakdown fields from `references/breakdown.md`: `techniques` from the vocabulary, the `jobs` it could do, the `subject`, and `identity`, the part that makes it its author's own. A video card with the `motion` job also gets its motion readings, from frames extracted again at half a second.
 
 Done when every new card has at least one technique, at least one job and an identity line, and every media file in it has been opened.
 
