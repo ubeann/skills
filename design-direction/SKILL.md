@@ -23,7 +23,7 @@ Done when the platforms, the branch, and the location of every existing token so
 
 ### 2. Write the brief
 
-Fill every field in `references/brief.md`: who and their job, the surfaces, three adjectives each translated into something visible, three things the product is not, the **bet** against the category's hidden assumption, the peak and end moments of the core flow, the hard moments, and a candidate **signature element**. Infer from the product, the code and the conversation; ask the user once for what you cannot infer.
+Fill every field in `references/brief.md`: who and their job, the surfaces, three adjectives each translated into something visible, three things the product is not, the **bet** against the category's hidden assumption, the peak and end moments of the core flow, the hard moments, and a candidate **signature element** with at most two other standout ingredients. Infer from the product, the code and the conversation; ask the user once for what you cannot infer.
 
 Write the product fields into `PRODUCT.md` and keep the visual fields for `DESIGN.md` in step 4, as `references/brief.md` maps them. Update an existing `PRODUCT.md` in place.
 
