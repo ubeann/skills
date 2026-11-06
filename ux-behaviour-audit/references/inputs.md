@@ -1,6 +1,6 @@
 # Capturing the path
 
-One branch per input. A mixed request (screenshots of the old flow plus the code for the new one) runs each branch it needs and labels every screen with where it came from.
+One branch per input: screenshots, a live URL, frontend code, or a native app. A mixed request (screenshots of the old flow plus the code for the new one) runs each branch it needs and labels every screen with where it came from.
 
 ## Screenshots
 
@@ -47,3 +47,18 @@ Code signals that point at checks:
 | A paywall, signup, or gate rendered before any result | T1 |
 | Hard-coded counts, timers, or "was" prices in copy | Persuasion test 1 |
 | Dismiss copy other than a neutral "Not now" | Persuasion test 4 |
+
+## Native app (macOS, iOS, Android, desktop)
+
+There is no DOM, so `measure.js` does not apply. The app is driven through whatever the project already uses to test itself.
+
+1. Find the project's own driver before writing one: a skill or doc for agents in the repo (a `skill/` or `docs/agents/` folder), a test bench or socket the UI tests talk to, XCUITest or Espresso, or a script that launches a disposable copy of the app. Read its command list once and note the verbs for key presses, clicks, reading state, and screenshots.
+2. Build the debug configuration and launch a disposable copy (a separate profile, data folder, or probe mode), never the user's own running app.
+3. Capture each screen at the app's real window size, in light and in dark. Shrink each capture before reading it, as the working habit says.
+4. Probe state with the driver rather than by looking: counts, focus, what a key did, what history holds. For a sweep over positions or cases, start with a handful of points, then refine only where the answer changes. A grid of hundreds of points over a socket takes minutes per run.
+5. List what the driver cannot show. A hidden or off-screen window usually misses drags, context menus, system dialogs and motion; say so in the report's note, and use a recording or the user's hands for those.
+6. Read the code beside each screen for what a picture cannot measure, and cite it as `file:line`: accessibility labels on icon buttons, the hit area of small controls, keyboard shortcuts and what a second press does.
+
+On a desktop app the phone checks change meaning. A2 asks whether the main action sits where the pointer or the keyboard focus already is. A3 asks whether the hit area covers the whole visible control and whether every icon button has an accessible name. The frame's device names the platform and window size, not a phone width.
+
+A second audit on the same app should not rediscover the driver: when the project keeps agent notes or memory, add the verbs and the capture recipe there once.

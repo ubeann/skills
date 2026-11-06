@@ -1,12 +1,12 @@
 # Case studies
 
-Worked before-and-after cases from UX Peak and Tim Gabe breakdowns, each linked to the moment in the video. Use them three ways:
+Worked before-and-after cases from UX Peak and Tim Gabe breakdowns, each linked to the moment in the video, and desktop cases from an audit of the Search browser (a native macOS app), each linked to its pull request. Use them three ways:
 
 - **Start from a symptom.** When the user brings a real problem ("people abandon the filter", "trials don't convert"), find the symptom in the index, audit the checks it names first, and read the cases beside it.
 - **Cite a precedent.** Every finding names the closest case by id, so the fix has a worked example behind it. Search this file for the check id (`D2`, `A4`) to find the cases that fixed it.
 - **Say what to measure.** Each case ends with the metric that shows whether the fix worked in a live product. Put that metric beside the top fixes in the report.
 
-The before-and-after screens are design exercises and A/B framings from a design-education channel, not published experiments. Treat each case as a precedent for the reasoning, and let the project's own metric decide.
+The before-and-after screens are design exercises and A/B framings from a design-education channel, not published experiments. Treat each case as a precedent for the reasoning, and let the project's own metric decide. The Search cases are real changes judged by the app's maintainer; the app has no telemetry, so their watch is a test.
 
 ## Symptom index
 
@@ -32,6 +32,10 @@ The before-and-after screens are design exercises and A/B framings from a design
 | Users drop off after missing a day or a target | C8, C7 | CS29, CS30 |
 | Users finish the core task and don't come back the next day | C9, C7 | CS31, CS30 |
 | Engagement rises while complaints, opt-outs or uninstalls rise too | Persuasion tests 2 and 3 | CS32, CS33 |
+| Undo or reopen brings back less than was lost | T9, O1 | CS34 |
+| A repeated shortcut does something destructive | A10 | CS35 |
+| Drags land somewhere other than where the user aimed | A11, C5 | CS36 |
+| The owner turns a fix down as against the product's style | The philosophy from step 1 | CS37 |
 
 ## Decide and compare
 
@@ -313,3 +317,41 @@ The before-and-after screens are design exercises and A/B framings from a design
 - **Transfers to.** Courses with cohorts, challenges, group savings, study apps.
 - **Watch.** Week-4 workout completion, and also the rate of users leaving their team.
 - **Persuasion line.** Visible absence works only with consent: the user joins the cohort knowingly and can train privately.
+
+## Desktop and browser chrome
+
+### CS34 Reopening a closed tab with its history
+[PR #895](https://github.com/driceroland/Search/pull/895) · Checks T9 O1
+
+- **Before.** ⇧⌘T brought a closed tab back with its address only: Back history went from 3 entries to 1 and the scroll position from 6000 to 0. Pinned tabs that were put down showed Back lit with nothing behind it ([#896](https://github.com/driceroland/Search/pull/896)), and the app's own pages did not come back at all ([#897](https://github.com/driceroland/Search/pull/897)).
+- **After.** The reopened tab wakes with its history and scroll, the way a slept tab does. All three landed.
+- **Same rule, later.** Closing a Split View pair with Close Both brought back one page on ⇧⌘T; the fix brings back the pair ([#930](https://github.com/driceroland/Search/pull/930), in review).
+- **Behaviour.** Undo is used right after a mistake. When it restores less than the mistake took, the user loses twice and learns not to trust it.
+- **Transfers to.** Any close, archive or delete with an undo: mail, rows in a table, documents, panes.
+- **Watch.** Test: navigate three pages, close, reopen, and compare history length and scroll with the values before closing. With telemetry: a Back press within 10 s of a reopen.
+
+### CS35 The key that brings the field up puts it away
+[PR #912](https://github.com/driceroland/Search/pull/912) · Checks A10 O1
+
+- **Before.** Pressing ⌘K twice switched tabs, and ⌘L then ⌘W closed the page underneath the field instead of the field.
+- **After.** The key that raised the field puts it away and keeps what was typed; ⌘W puts a raised field away whichever key raised it ([#910](https://github.com/driceroland/Search/pull/910)). Both landed.
+- **Behaviour.** Keyboard users undo a shortcut by pressing it again. A second press that acts again turns a reflex into a destructive action.
+- **Transfers to.** Command palettes, search overlays, quick switchers, any panel opened by a key.
+- **Watch.** Test: press each key twice and check that nothing but the field changed. With telemetry: a reopen within 10 s of a close by key.
+
+### CS36 A carried tab stays under the pointer
+[PR #884](https://github.com/driceroland/Search/pull/884) · Checks A11 C5
+
+- **Before.** A tab dragged past a Split View pair drifted a row away from the pointer, because the drag assumed every row was one row tall. A pair let go just past its edge came apart with no warning.
+- **After.** The drag measures each row it passes, so the tab stays under the hand. A pair separates only after the pointer rests 0.3 s and the staying half dims with a haptic tick, so the drop shows before release ([#887](https://github.com/driceroland/Search/pull/887)). Both landed.
+- **Behaviour.** Direct manipulation is trusted only while the thing stays under the hand. A drop whose result was not shown first is a surprise the user has to undo.
+- **Transfers to.** Reordering lists, boards and tabs; drag to split, group or file.
+- **Watch.** Test: render frames mid-drag and measure the offset between the pointer and the item. With telemetry: pairs separated by a drag and paired again within a minute.
+
+### CS37 Counter-example: the product's philosophy wins
+[PR #913](https://github.com/driceroland/Search/pull/913) · Check O3 · Step 1's philosophy
+
+- **What the audit proposed.** A mark before the field's placeholder naming its mode, a key cap on every picked row ([#915](https://github.com/driceroland/Search/pull/915)), and open tabs listed in ⌘T.
+- **What the owner did.** Landed #913 without the mark: "Search keeps the field as bare as it can, and the placeholder already says where Return goes." Asked #915 down to the one surprising case: "A key cap on every picked row is more than the list needs", then it was closed. Open tabs in ⌘T broke a founding rule written in the code (`placeOffers`: "⌘K exists for those"). A new list in an empty ⌘T was accepted only behind a switch, off by default ([#914](https://github.com/driceroland/Search/pull/914)).
+- **Behaviour.** Staff-level context on a surface the owner keeps deliberately bare reads as noise to the people who chose the bareness. Say only what surprises.
+- **Lesson for the audit.** Read the product's stated rules before writing fixes, and ship new visible behaviour behind an off-by-default switch when the owner guards a minimal surface.

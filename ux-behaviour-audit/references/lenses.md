@@ -1,6 +1,6 @@
 # The six lenses
 
-Each lens is one kind of behaviour a screen can block. Every check has an id (used in findings and in the report matrix), the check, and the **failure signal** you can see on a screen. The examples come from UX Peak and Tim Gabe breakdowns. They show what passing looks like, not the only way to pass.
+Each lens is one kind of behaviour a screen can block. Every check has an id (used in findings and in the report matrix), the check, and the **failure signal** you can see on a screen. The examples come from UX Peak and Tim Gabe breakdowns and, for A10, A11 and T9, from a desktop browser audit. They show what passing looks like, not the only way to pass. On a desktop app, read A2 and A3 as `inputs.md`'s native branch describes.
 
 ## Decide: can the user choose without guessing?
 
@@ -41,6 +41,8 @@ Each lens is one kind of behaviour a screen can block. Every check has an id (us
 | A7 | Common values are one tap | Tapping a stepper up to the usual quantity | 500 g, 1 kg, 2 kg presets beside the custom selector |
 | A8 | Recent and frequent items are offered | Blank search, blank recipient picker | Recent recipients, recent and popular searches |
 | A9 | Nothing waits on motion | Input blocked until an entrance sequence finishes; a celebration that must play out before Continue works; a 400 ms transition on a tab switched all day | The form is usable on the first paint while the art draws in; a tap during a celebration skips to its end; tabs switch instantly |
+| A10 | Every frequent action has a key, and the key that brings something up also puts it away | A command used daily reachable only through a menu or the pointer; a second press of the same shortcut does something else | ⌘T raises the field and ⌘T again puts it away; a pair separates with the key that made it |
+| A11 | What the pointer carries stays under it, and the drop shows before release | A dragged item drifts from the pointer; a drop target appears only after a pause, or never | The tab stays under the pointer as it passes a split pair; the page shows its edges as a tab is carried over it |
 
 ## Trust: what doubt is left unanswered?
 
@@ -54,6 +56,7 @@ Each lens is one kind of behaviour a screen can block. Every check has an id (us
 | T6 | The UI survives any content | Nav icons that vanish over a bright photo; card text baked onto the image | Icon containers with contrast; details below the photo |
 | T7 | The user can confirm the right target | Sending money with only a name; one account shown when several exist | Photo beside the recipient; from-account and to-account both visible |
 | T8 | Every failure says what happened, whether it can be undone, and what to do next | "Something went wrong", a declined payment with no reason, a dead end | A decline alert that says to check the balance, with Contact support beside it |
+| T9 | Undo brings back everything the action took | Reopen restores the page but not its Back history; one half of a pair comes back alone | A reopened tab keeps its history and scroll; one ⇧⌘T brings back a pair closed together |
 
 ## Commit: is there a reason to keep going?
 
