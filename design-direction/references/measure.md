@@ -39,7 +39,14 @@ There is no DOM, so read the code and confirm with screenshots.
    | React Native | `fontSize:`, `padding`/`margin` numbers, `#` colour strings in `StyleSheet.create` |
    | Web (any) | Tailwind arbitrary values (`text-[13px]`, `p-[11px]`, `bg-[#...]`), inline `style=` |
 
-3. Count the distinct sizes, weights, spacing values, colours and radii per screen file, and compare them with the budgets in `presets.md` by hand.
-4. Run the app in the simulator and screenshot each core screen for the side-by-side check in step 6.
+3. Count the distinct sizes, weights, spacing values, colours and radii. For SwiftUI, AppKit and UIKit, `native_inventory.py` does it and writes JSON that `drift.py` reads:
+
+   ```sh
+   python3 <skill-dir>/references/native_inventory.py Sources/App/Omnibox.swift --tokens Sources/App/Design.swift --out screen-omnibox.json
+   python3 <skill-dir>/references/drift.py none screen-omnibox.json --platform desktop
+   ```
+
+   Pass the files that draw one screen to measure that screen, or the whole source folder to measure the system. For other stacks, count by hand against the budgets in `presets.md`.
+4. Run the app (the simulator, or a disposable copy of a desktop app) and screenshot each core screen for the side-by-side check in step 6.
 
 A React Native app with a web target can use the rendered-page branch on its web build.

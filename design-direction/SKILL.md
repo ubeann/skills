@@ -1,6 +1,6 @@
 ---
 name: design-direction
-description: Set a product's design direction before any UI is generated, then measure built screens for drift from it. Writes the brief (who it serves, the category assumption it bets against, its peak and end moments), gives each reference one job, locks a token system into DESIGN.md for app, website or desktop, and counts drift in type, spacing, colour and radius. Use when starting UI from references, when generated screens look generic or off-brand, or when screens stop matching each other. Building and polishing screens is the impeccable skill; how users behave on a flow is ux-behaviour-audit; how the product moves is motion-direction.
+description: Set a product's design direction before any UI is generated, then measure built screens for drift from it. Writes the brief (who it serves, the category assumption it bets against, its peak and end moments), gives each reference one job, locks a token system into DESIGN.md for app, website or desktop, and counts drift in type, spacing, colour and radius. Use when starting UI from references, when generated screens look generic or off-brand, or when screens stop matching each other. Building and polishing screens is the impeccable skill; a behaviour bug, its edge cases, or how users behave on a flow is ux-behaviour-audit; how the product moves is motion-direction.
 ---
 
 # Design direction
@@ -16,10 +16,12 @@ Everything here serves three outcomes the user can see: the brand survives gener
 Find the platforms (app, website, desktop; one product can have several), any `PRODUCT.md` and `DESIGN.md`, and where the code keeps its tokens (CSS custom properties, a Tailwind theme, a theme file, native style constants). Pick the branch:
 
 - **New:** no UI yet. Run steps 2 to 6 in order.
-- **Existing:** UI exists. Run step 6 first on two or three core screens to see the system actually in use, then steps 2 to 4 keep what works and settle the rest, then step 6 again.
+- **Existing:** UI exists, with or without a `DESIGN.md`. A commented token file in the code (a `Design.swift`, a theme file) is the system already in use. Run step 6 first on two or three core screens to see the system actually in use, then steps 2 to 4 keep what works and settle the rest, then step 6 again.
 - **Redesign:** the user wants a new look. Treat the current UI as evidence of what the product does, never as a source of tokens.
 
-Done when the platforms, the branch, and the location of every existing token source are written down.
+Then find who owns the design. When it is someone else's product (an upstream repository you contribute to), the files this skill writes stay in your fork or your notes, and every change to the owner's UI is a proposal.
+
+Done when the platforms, the branch, the owner, and the location of every existing token source are written down.
 
 ### 2. Write the brief
 
@@ -57,11 +59,14 @@ Done when the core flow renders at the platform's check widths with its empty, l
 
 ### 6. Measure drift
 
-Run `references/inventory.js` on each built screen at each check width, save each result as JSON, and compare them all against the tokens:
+Inventory each built screen as `references/measure.md` describes for its platform: `inventory.js` on a rendered page at each check width, `native_inventory.py` on the files that draw a native screen. Save each result as JSON and compare them all against the tokens:
 
 ```sh
+python3 <skill-dir>/references/native_inventory.py <screen files> --tokens <token file> --out screen-<name>.json   # native
 python3 <skill-dir>/references/drift.py DESIGN.md screen-*.json --platform <app|web|desktop>
 ```
+
+On the existing branch with no `DESIGN.md` yet, pass `none` in its place to check the counts against the platform's budgets only.
 
 Put the first screen built and the latest screen side by side in one image and look for what the counts miss: two cards that do not feel like the same product, a second icon style, an accent that moved. For each drift, either snap the value to its nearest token or, when the deviation is deliberate and recurs on three or more screens, promote it to a token and record why.
 
