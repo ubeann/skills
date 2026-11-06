@@ -19,6 +19,21 @@ Pick the cheapest runtime that does the job, and only one per job. A decision re
 | A flat mascot or mark turning in depth | SVG plane stack (below) | it must turn all the way round or take real light | Three.js |
 | 3D | one Spline or Three.js hero | a 3D character with a rig | Blender (driven through Blender MCP) to GLB, `gltfjsx` to components, React Three Fiber to stage it |
 
+## Native apps (SwiftUI, AppKit, UIKit)
+
+| Job | First choice | Step up when | Step up to |
+|---|---|---|---|
+| Press, hover, toggle, a value changing | SwiftUI `.animation(token, value:)` or `withAnimation(token)` | | |
+| Panel, sheet, popover, overlay | SwiftUI transitions with a spring token | it must follow a drag and be let go mid-flight | an interactive spring driven by the gesture |
+| List add, remove, reorder | SwiftUI's own list and `matchedGeometryEffect` | a carried row must stay under the pointer | draw the carried item in an overlay above the list |
+| A window, a layer or AppKit chrome | `NSAnimationContext.runAnimationGroup` with the token's duration | a layer property SwiftUI cannot reach | Core Animation (`CABasicAnimation`, `CASpringAnimation`) on that layer |
+| A loop (loading, breathing) | Core Animation on a layer, with an infinite `repeatCount` | | |
+| Stateful character | Rive (`RiveRuntime`) | | |
+
+- Every curve comes from the token type, and every token returns `nil` (no animation) under Reduce Motion, so a call site cannot forget it. A literal curve at a call site is drift, and the inventory flags it as `unguarded-literal` when no reduced-motion check sits near it.
+- A loop never stops on its own: start it only when Reduce Motion is off, stop it when the view leaves the screen, and listen for the setting changing (`NSWorkspace.accessibilityDisplayOptionsDidChangeNotification` on macOS) so turning it on stills a loop already running.
+- Core Animation and SwiftUI each run their own clock. When one moment moves both (a window button and a SwiftUI row), take both durations from the same token.
+
 ## Weights and terms
 
 Measured 2026-09-30 with esbuild and gzip or brotli ([VMB research](https://github.com/ubeann/vmb/blob/main/docs/research/motion-library-for-ui-feedback.md)). Re-measure before quoting them in a new decision record.

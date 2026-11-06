@@ -26,7 +26,8 @@ p{margin:0}
 .sevkey i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
 .sev-blocker{--sev:var(--destructive)}.sev-friction{--sev:var(--warning)}.sev-doubt{--sev:var(--info)}.sev-polish{--sev:var(--muted-foreground)}
 .sevbar i,.sevkey i{background:var(--sev)}
-.verdict{border-left:3px solid var(--primary);padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0}
+.verdict{padding:12px 16px}
+.verdict .lbl{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:4px}
 .verdict p{font-size:15.5px;font-weight:600}
 .verdict small{display:block;margin-top:6px;color:var(--muted-foreground)}
 .strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
@@ -34,15 +35,16 @@ p{margin:0}
 .shot img{width:100%;border-radius:calc(var(--radius) - 2px);border:1px solid var(--border);display:block;height:auto;max-height:340px;object-fit:contain;object-position:top;background:var(--secondary)}
 .shot .id{font-size:12px;font-weight:700}
 .shot .q{font-size:12px;color:var(--muted-foreground)}
-.lv{display:inline-block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 7px;border-radius:999px;border:1px solid currentColor}
+.lv{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 7px;border-radius:999px;border:1px solid currentColor}
 .lv-junior{color:var(--destructive)}.lv-mid{color:var(--warning)}.lv-senior{color:var(--info)}.lv-staff{color:var(--success)}
 .lens-D{--lens:var(--chart-1)}.lens-S{--lens:var(--chart-2)}.lens-A{--lens:var(--chart-3)}.lens-T{--lens:var(--chart-4)}.lens-C{--lens:var(--chart-5)}.lens-O{--lens:var(--chart-6)}
 .findings{display:flex;flex-direction:column;gap:8px}
-.f{padding:12px 14px;border-left:3px solid var(--sev)}
+.f{padding:12px 14px}
 .f .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:5px;font-size:12px}
 .chip{font-size:11.5px;padding:1px 7px;border-radius:999px;background:var(--secondary);color:var(--secondary-foreground)}
 .chip.lens{background:color-mix(in srgb,var(--lens) 22%,transparent);color:var(--foreground)}
-.chip.sev{background:color-mix(in srgb,var(--sev) 20%,transparent);color:var(--foreground);font-weight:600;text-transform:capitalize}
+.chip.sev{background:var(--sev);color:var(--background);font-weight:600;text-transform:capitalize;display:inline-flex;align-items:center;gap:5px}
+.chip.sev::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 .f b{display:block;font-size:14px;margin-bottom:3px}
 .f dl{display:grid;grid-template-columns:70px 1fr;gap:3px 10px;margin:6px 0 0;font-size:12.5px}
 .f dt{color:var(--muted-foreground)}.f dd{margin:0}
@@ -52,6 +54,10 @@ table.mx{width:100%;border-collapse:separate;border-spacing:3px;font-size:12px}
 .mx th{font-size:11px;font-weight:600;color:var(--muted-foreground);padding:2px}
 .mx td{height:26px;border-radius:4px;text-align:center;font-variant-numeric:tabular-nums}
 .mx td.t{text-align:left;font-weight:600;padding-right:6px;white-space:nowrap}
+table.cases{width:100%;border-collapse:collapse;font-size:12.5px;table-layout:fixed}
+.cases th{text-align:left;font-size:11px;font-weight:600;color:var(--muted-foreground);padding:4px 6px;border-bottom:1px solid var(--border)}
+.cases td{padding:5px 6px;border-bottom:1px solid var(--border);vertical-align:top;overflow-wrap:anywhere}
+.cases td.fail{color:var(--destructive);font-weight:600}
 .m0{background:var(--secondary);opacity:.4}
 .m1{background:color-mix(in srgb,var(--destructive) 30%,transparent)}
 .m2{background:color-mix(in srgb,var(--destructive) 55%,transparent);font-weight:700}
@@ -84,6 +90,7 @@ table.mx{width:100%;border-collapse:separate;border-spacing:3px;font-size:12px}
 </section>
 
 <section class="card verdict">
+  <span class="lbl">Verdict</span>
   <p>{{The question the flow makes the user answer today, in their words}}</p>
   <small>{{One or two sentences: the question it should ask instead, and the overall level.}}</small>
 </section>
@@ -100,6 +107,16 @@ table.mx{width:100%;border-collapse:separate;border-spacing:3px;font-size:12px}
   </div>
 </section>
 
+<!-- Bug branch only: delete this section on the flow branch. -->
+<section>
+  <h2>Cases, as measured</h2>
+  <table class="cases">
+    <tr><th style="width:26%">Case</th><th>Steps</th><th>Expected</th><th>Seen</th><th style="width:9%"></th></tr>
+    <!-- REPEAT per case. Last cell: pass, or fail with class fail. -->
+    <tr><td>{{case}}</td><td>{{steps}}</td><td>{{expected}}</td><td>{{seen}}</td><td class="{{fail|}}">{{pass|fail}}</td></tr>
+  </table>
+</section>
+
 <section>
   <h2>Findings, most costly first</h2>
   <div class="findings">
@@ -107,10 +124,10 @@ table.mx{width:100%;border-collapse:separate;border-spacing:3px;font-size:12px}
     <article class="card f sev-{{blocker|friction|doubt|polish}} lens-{{D|S|A|T|C|O}}">
       <div class="top"><span class="chip sev">{{severity}}</span><span class="chip lens">{{check id}} {{lens name}}</span><span class="chip">{{screen}} · {{element}}</span></div>
       <b>{{The behaviour it blocks, in one sentence}}</b>
-      <dl><dt>Evidence</dt><dd>{{what the image shows, a measure.js value, or <code>file:line</code>}}</dd>
+      <dl><dt>Evidence</dt><dd>{{what the image shows, a measured value, a case, or <code>file:line</code>}}</dd>
       <dt>Fix</dt><dd>{{one line}}</dd>
-      <dt>Precedent</dt><dd><a href="{{video link with &t=}}">{{CSnn case name}}</a>{{ or "none"}}</dd>
-      <dt>Watch</dt><dd>{{metric that shows the fix working}}</dd></dl>
+      <dt>Precedent</dt><dd><a href="{{the case's video or PR link}}">{{CSnn case name}}</a>{{, or a peer product with a link, or "none"}}</dd>
+      <dt>Watch</dt><dd>{{metric that shows the fix working, or "Test: " and the check that fails without it}}</dd></dl>
     </article>
   </div>
 </section>
@@ -142,7 +159,20 @@ table.mx{width:100%;border-collapse:separate;border-spacing:3px;font-size:12px}
 </section>
 
 <section>
-  <p class="note">{{Not checked: states not reached, widths not tested, anything inferred rather than seen. If static: "Read from code; behaviour not observed in a running app."}}</p>
+  <p class="note">{{Not checked: states not reached, widths not tested, anything inferred rather than seen. If static: "Read from code; behaviour not observed in a running app." Fixes left out because they break the product's philosophy, each with its rule. "No persuasion techniques on this path" when step 6 found none.}}</p>
 </section>
 
-</div></body></html>
+</div>
+<script>
+// Logs "overflow: none" or each element wider than the page, for the preview's console output.
+addEventListener('load', () => {
+  const w = document.documentElement.clientWidth, bad = [];
+  for (const el of document.querySelectorAll('.wrap *')) {
+    const r = el.getBoundingClientRect();
+    if (r.width && (r.right > w + 1 || el.clientWidth && el.scrollWidth > el.clientWidth + 1 && getComputedStyle(el).overflowX === 'visible'))
+      bad.push(el.tagName.toLowerCase() + (el.className ? '.' + String(el.className).split(' ')[0] : '') + ' ' + Math.round(r.right) + '>' + w);
+  }
+  console.log(bad.length ? 'overflow: ' + bad.slice(0, 12).join('; ') : 'overflow: none');
+});
+</script>
+</body></html>

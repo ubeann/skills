@@ -2,8 +2,9 @@
 """List every piece of motion in a codebase and check it against the motion tokens.
 
     python3 motion_inventory.py <src-dir> [<src-dir> ...] [--tokens app.css] [--json out.json] [--strict]
+    python3 motion_inventory.py Sources --tokens Sources/App/Design.swift [--guard 'Motion\.reduced']
 
-Scans .css .scss .svelte .vue .astro .html .js .jsx .ts .tsx (skipping node_modules,
+Scans .css .scss .svelte .vue .astro .html .js .jsx .ts .tsx and .swift (skipping node_modules,
 build output and test files) for:
 
   durations   CSS times on transition/animation/duration/delay lines, JS `duration:`/`delay:`,
@@ -13,6 +14,15 @@ build output and test files) for:
   libraries   imports of motion runtimes (gsap, motion, rive, lottie, svelte/motion, ...)
   flags       `transition: all`, ease-in on an entrance, layout properties in a transition,
               scale(0), files with JS-driven motion and no reduced-motion reference
+
+Swift (SwiftUI, AppKit, UIKit, Core Animation): durations from `duration:`, `response:`,
+`.duration =`, `withDuration:`, `setAnimationDuration(` and `.delay(` (seconds, every branch of a
+ternary), easings from `.easeOut(`, `.spring(...)`, `.smooth`, `CAMediaTimingFunction`, and so on.
+A Swift --tokens file makes each `static var/let/func` of its types a token: `Motion.glide`
+counts as a token reference, and a literal equal to a value defined under a token is unnamed.
+Swift flags: `unguarded-literal` (a literal animation with no reduced-motion check on that line or
+the 12 above; add the project's own check with --guard) and `forever-loop` (`repeatForever`, an
+infinite `repeatCount`), which must stop under reduced motion and off screen.
 
 With --tokens, every CSS custom property whose name contains duration, delay, stagger, easing, ease,
 spring or motion becomes a token; a JS/TS token file (`{ panel: 220 }`) adds
@@ -26,8 +36,8 @@ import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
-EXTS = {".css", ".scss", ".svelte", ".vue", ".astro", ".html", ".js", ".jsx", ".ts", ".tsx", ".mjs"}
-SKIP_DIRS = {"node_modules", ".svelte-kit", "dist", "build", ".next", ".output", "coverage", ".git", ".turbo"}
+EXTS = {".css", ".scss", ".svelte", ".vue", ".astro", ".html", ".js", ".jsx", ".ts", ".tsx", ".mjs", ".swift"}
+SKIP_DIRS = {"node_modules", ".svelte-kit", "dist", "build", ".next", ".output", "coverage", ".git", ".turbo", ".build", "DerivedData", "Pods", "Tests"}
 TEST_RE = re.compile(r"\.(test|spec|stories)\.")
 
 TOKEN_DEF = re.compile(r"--([\w-]*(?:duration|delay|stagger|easing|ease|spring|motion)[\w-]*)\s*:\s*([^;]+);")
@@ -59,7 +69,23 @@ LIBS = {
     "waapi": re.compile(r"\.animate\(\s*[\[{]"),
 }
 JS_MOTION_LIBS = {"gsap", "motion", "rive", "lottie", "animejs", "react-spring", "svelte/transition", "svelte/animate", "svelte/motion", "waapi"}
-REDUCED = re.compile(r"prefers-reduced-motion|prefersReducedMotion|useReducedMotion|reducedMotion", re.I)
+REDUCED = re.compile(r"prefers-reduced-motion|prefersReducedMotion|useReducedMotion|reducedMotion|reduceMotion", re.I)
+
+# Swift
+SW_TIME = re.compile(r"(?:\bduration|\bresponse|withDuration|\.delay)\s*[:=(]\s*([^,)\n{]+)|setAnimationDuration\(([^)]*)\)")
+SW_NUM = re.compile(r"(?<![\w.])(\d*\.?\d+)(?![\w.])")
+SW_CURVE = re.compile(r"\.(easeInOut|easeIn|easeOut|linear)\b(\([^)]*\))?(?=\s*(?:$|[,)\s.{]))")
+SW_SPRING = re.compile(r"\.(spring|interactiveSpring|interpolatingSpring|smooth|snappy|bouncy)\b(\([^)]*\))?")
+SW_CA = re.compile(r"CAMediaTimingFunction\(\s*(?:name:\s*\.(\w+)|controlPoints:[^)]*)\)")
+SW_ANIM = re.compile(r"withAnimation|\.animation\(|Animation\b|animator\(\)|timingFunction|NSAnimationContext|CATransaction|transaction|\.duration\s*=|withDuration")
+SW_GUARD = re.compile(r"reduce[d]?\s*motion|accessibilityDisplayShouldReduceMotion|isReduceMotionEnabled|\breduced\b", re.I)
+SW_FOREVER = re.compile(r"repeatForever|repeatCount\s*=\s*(?:\.infinity|Float\.infinity|\.greatestFiniteMagnitude)")
+SW_TYPE = re.compile(r"\b(?:enum|struct|class|extension)\s+(\w+)")
+SW_STATIC = re.compile(r"\bstatic\s+(?:let|var|func)\s+(\w+)")
+LIBS_SWIFT = {
+    "lottie-ios": re.compile(r"^\s*import\s+Lottie\b", re.M),
+    "rive-ios": re.compile(r"^\s*import\s+RiveRuntime\b", re.M),
+}
 FLAG_RULES = [
     ("transition-all", re.compile(r"transition\s*:\s*all\b|(?<![\w-])transition-all(?![\w-])")),
     ("layout-property", re.compile(r"transition(-property)?\s*:[^;]*\b(width|height|top|left|right|bottom|margin|padding)\b")),
@@ -76,10 +102,53 @@ def norm(s):
     return re.sub(r"\s+", "", s.strip().lower())
 
 
-def load_tokens(paths):
+def swift_time_values(line):
+    out = []
+    for m in SW_TIME.finditer(line):
+        expr = m.group(1) or m.group(2) or ""
+        out += [round(float(v) * 1000) for v in SW_NUM.findall(expr)]
+    return [ms for ms in out if ms > 1]
+
+
+def swift_easings(line):
+    out = ["." + m.group(1) + re.sub(r"\s+", "", m.group(2) or "") for m in SW_CURVE.finditer(line)]
+    for m in SW_SPRING.finditer(line):
+        args = re.sub(r"\s+", "", m.group(2) or "")
+        out.append("." + m.group(1) + args)
+    out += ["CA:" + (m.group(1) or "controlPoints") for m in SW_CA.finditer(line)]
+    return out
+
+
+def load_swift_tokens(text, durations, easings, refs):
+    """Each static member of a type in the token file is a token; literals under it are its values."""
+    current_type, current, members, timed = None, None, set(), set()
+    for line in text.splitlines():
+        t = SW_TYPE.search(line)
+        if t and not line.lstrip().startswith("//"):
+            current_type = t.group(1)
+        s = SW_STATIC.search(line)
+        if s and current_type:
+            current = f"{current_type}.{s.group(1)}"
+            members.add(current)
+        if current and not line.lstrip().startswith("//"):
+            values = swift_time_values(line) + swift_easings(line)
+            if values:
+                timed.add(current.split(".")[0])
+            for ms in swift_time_values(line):
+                durations.setdefault(ms, current)
+            for e in swift_easings(line):
+                easings.setdefault(norm(e), current)
+    # Only the types that define timing (Motion, not Palette) count as motion tokens.
+    refs.update(m for m in members if m.split(".")[0] in timed)
+
+
+def load_tokens(paths, swift_refs=None):
     durations, easings = {}, {}
     for p in paths:
         text = Path(p).read_text(errors="ignore")
+        if Path(p).suffix == ".swift":
+            load_swift_tokens(text, durations, easings, swift_refs if swift_refs is not None else set())
+            continue
         if Path(p).suffix not in {".css", ".scss"}:
             # A JS/TS mirror such as `export const duration = { panel: 220 }`: numbers are ms.
             for name, value in re.findall(r"\b(\w+)\s*:\s*(\d+)\b", text):
@@ -104,8 +173,40 @@ def walk(roots):
                 yield f
 
 
-def scan(roots, token_files):
-    tok_dur, tok_ease = load_tokens(token_files)
+def scan_swift(f, text, rows, tok_dur, tok_ease, swift_refs, guard, files_with_motion):
+    lines = text.splitlines()
+    for lib, rx in LIBS_SWIFT.items():
+        if rx.search(text):
+            rows["libraries"][lib].append(str(f))
+            files_with_motion.add(str(f))
+    for n, raw in enumerate(lines, 1):
+        line = raw.split("//")[0]
+        if not line.strip():
+            continue
+        where = f"{f}:{n}"
+        for ref in re.findall(r"\b([A-Z]\w*\.\w+)", line):
+            if ref in swift_refs:
+                rows["token_refs"][ref] += 1
+                files_with_motion.add(str(f))
+        anim = bool(SW_ANIM.search(line)) or bool(SW_CURVE.search(line) or SW_SPRING.search(line))
+        durs = swift_time_values(line) if anim or SW_TIME.search(line) and re.search(r"\.duration\s*=|withDuration|setAnimationDuration|duration:", line) else []
+        eases = swift_easings(line) if anim else []
+        for ms in durs:
+            rows["durations"].append({"ms": ms, "at": where, "token": tok_dur.get(ms)})
+        for e in eases:
+            rows["easings"].append({"value": e, "at": where, "token": tok_ease.get(norm(e))})
+        if durs or eases:
+            files_with_motion.add(str(f))
+            window = "\n".join(lines[max(0, n - 13):n])
+            if not (SW_GUARD.search(window) or (guard and guard.search(window))):
+                rows["flags"].append({"flag": "unguarded-literal", "at": where, "line": raw.strip()[:120] + "  (fine if the value it drives checks reduced motion where it is read)"})
+        if SW_FOREVER.search(line):
+            rows["flags"].append({"flag": "forever-loop", "at": where, "line": raw.strip()[:120]})
+
+
+def scan(roots, token_files, guard=None):
+    swift_refs = set()
+    tok_dur, tok_ease = load_tokens(token_files, swift_refs)
     token_paths = {Path(t).resolve() for t in token_files}
     rows = {"durations": [], "easings": [], "token_refs": Counter(), "keyframes": [], "libraries": defaultdict(list), "flags": []}
     files_with_motion = set()
@@ -115,6 +216,10 @@ def scan(roots, token_files):
         is_token_file = f.resolve() in token_paths
         is_css = f.suffix in {".css", ".scss"}
         text = f.read_text(errors="ignore")
+        if f.suffix == ".swift":
+            if not is_token_file:
+                scan_swift(f, text, rows, tok_dur, tok_ease, swift_refs, guard, files_with_motion)
+            continue
         if REDUCED.search(text):
             reduced_files.add(str(f))
         for lib, rx in LIBS.items():
@@ -177,6 +282,10 @@ def scan(roots, token_files):
     return rows
 
 
+def ref(token):
+    return token if "." in token else f"var(--{token})"
+
+
 def report(rows, has_tokens):
     durs, eases = rows["durations"], rows["easings"]
     off_d = [d for d in durs if not d["token"]]
@@ -204,9 +313,9 @@ def report(rows, has_tokens):
     if has_tokens and (named_d or named_e):
         print("\nUnnamed tokens (swap the literal for the token):")
         for d in named_d:
-            print(f"- {d['at']}  {d['ms']}ms -> var(--{d['token']})")
+            print(f"- {d['at']}  {d['ms']}ms -> {ref(d['token'])}")
         for e in named_e:
-            print(f"- {e['at']}  {e['value']} -> var(--{e['token']})")
+            print(f"- {e['at']}  {e['value']} -> {ref(e['token'])}")
     if has_tokens and (off_d or off_e):
         print("\nOff-scale literals (snap to the nearest token, or promote with a reason):")
         for d in off_d:
@@ -225,8 +334,9 @@ def main():
     ap.add_argument("--tokens", action="append", default=[], help="CSS file defining the motion tokens (repeatable)")
     ap.add_argument("--json", help="write the full inventory as JSON")
     ap.add_argument("--strict", action="store_true", help="exit 1 when an off-scale literal exists")
+    ap.add_argument("--guard", help="regex for the project's own reduced-motion check, e.g. 'Motion\\.reduced'")
     a = ap.parse_args()
-    rows = scan(a.roots, a.tokens)
+    rows = scan(a.roots, a.tokens, re.compile(a.guard) if a.guard else None)
     report(rows, bool(a.tokens))
     if a.json:
         out = dict(rows, libraries=dict(rows["libraries"]), token_refs=dict(rows["token_refs"]))

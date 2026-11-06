@@ -3,6 +3,9 @@
 
   drift.py DESIGN.md --platform web                      check the tokens against the budgets
   drift.py DESIGN.md screen-*.json --platform app        check each inventory.js result too
+  drift.py none screen-*.json --platform desktop         no DESIGN.md yet: counts against the budgets only
+
+An inventory is the JSON from inventory.js (a rendered page) or native_inventory.py (Swift code).
 
 Prints one markdown table per screen and a list of findings. Exits 1 when anything is over budget.
 Standard library only.
@@ -260,26 +263,31 @@ def table(title, rows):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("design", type=Path)
+    ap.add_argument("design", help="DESIGN.md, or none to check the counts against the budgets only")
     ap.add_argument("inventories", type=Path, nargs="*")
     ap.add_argument("--platform", choices=BUDGETS, required=True)
     a = ap.parse_args()
     budget = BUDGETS[a.platform]
-    tokens = Tokens(frontmatter(a.design.read_text()))
-
     failed = False
-    rows, findings = check_tokens(tokens, budget)
-    text, over = table(f"Tokens in {a.design.name} ({a.platform})", rows)
-    print(text)
-    failed |= over
-    for f in findings:
-        print(f"- {f}")
+    if a.design == "none":
+        tokens = Tokens({})
+        print(f"No DESIGN.md: counts are checked against the {a.platform} budgets only.")
+    else:
+        tokens = Tokens(frontmatter(Path(a.design).read_text()))
+        rows, findings = check_tokens(tokens, budget)
+        text, over = table(f"Tokens in {Path(a.design).name} ({a.platform})", rows)
+        print(text)
+        failed |= over
+        for f in findings:
+            print(f"- {f}")
     for path in a.inventories:
         inv = json.loads(path.read_text())
         rows, findings = check_screen(inv, tokens, budget)
-        text, over = table(f"{path.name}: {inv.get('url', '')} at {inv['viewport']['w']}px", rows)
+        where = inv.get("url", "") if inv.get("source") == "code" else f"{inv.get('url', '')} at {inv['viewport']['w']}px"
+        text, over = table(f"{path.name}: {where}", rows)
         print("\n" + text + "\n")
-        print(share_table(inv, tokens))
+        if inv["colour"]["areaShare"]:
+            print(share_table(inv, tokens))
         failed |= over or bool(findings)
         if findings:
             print("\nFindings:")
