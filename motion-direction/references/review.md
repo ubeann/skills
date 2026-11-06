@@ -20,6 +20,7 @@ for (const t of beatTimes) {            // ms, from the beat sheet
 
 - Web: a Playwright context with `recordVideo: { dir, size }` at the review viewport, or the host's preview recording (`preview_recording_start` and `_stop` in T3 Code). Hidden preview tabs pause CSS animations, so record from a visible tab or headless Playwright.
 - iOS simulator: `xcrun simctl io booted recordVideo out.mp4`. Android: `adb shell screenrecord /sdcard/out.mp4`.
+- macOS app: run a disposable copy (its own profile or probe mode, never the owner's running app), drive it with the project's test driver, and record the window with `screencapture -v -l <window-id> out.mov` (the window's id from the driver, or from `CGWindowListCopyWindowInfo`). A hidden or off-screen test window renders no animation in real time, so for motion use a visible window, or host the view in a test that renders frames at set times and stitch them with `ffmpeg -f concat`. Render off-screen frames in light appearance unless dark is the point: dark colours can resolve inconsistently off screen.
 - Video: the render itself, or the frames `hyperframes-cli` shows.
 
 Then turn the recording into frames with `video-context`:
@@ -28,7 +29,7 @@ Then turn the recording into frames with `video-context`:
 INTERVAL=0.1 sh ~/.claude/skills/video-context/references/extract.sh <recording> <tmp-dir>
 ```
 
-Capture each sequence twice: once normally and once with reduced motion (`page.emulateMedia({ reducedMotion: "reduce" })`, or the device setting). Capture at the smallest and largest review viewport the project lists.
+Capture each sequence twice: once normally and once with reduced motion (`page.emulateMedia({ reducedMotion: "reduce" })`, or the device setting). When the setting cannot be switched from a test (the macOS one is the system's), add a test override to the token type's reduced flag, or check the code path: the inventory's `unguarded-literal` list, then the owner turns the setting on by hand. Capture at the smallest and largest review viewport the project lists.
 
 ## Check every beat
 
@@ -66,6 +67,8 @@ python3 <skill-dir>/references/motion_inventory.py <src> --tokens <token-file> -
 | Libraries | only those step 4 chose |
 | `transition-all`, `layout-property`, `scale-zero` flags in touched code | 0 |
 | `no-reduced-motion-ref` | 0, or the shared helper that gates it is named |
+| `unguarded-literal` (Swift) in touched code | 0, or the place that checks reduced motion is named |
+| `forever-loop` | each one starts only without reduced motion and stops off screen |
 
 Literals in untouched vendored components are listed, not fixed, unless the change touched that component.
 

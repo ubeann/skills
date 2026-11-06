@@ -19,6 +19,8 @@ Find the platforms, `DESIGN.md` and `PRODUCT.md` (from `design-direction`), the 
 python3 <skill-dir>/references/motion_inventory.py <src> --tokens <token-file> [--tokens motion.ts]
 ```
 
+It reads web code and Swift. In a Swift app, pass the file that holds the motion constants (a `Design.swift`) as `--tokens`, and the project's own reduced-motion check as `--guard 'Motion\.reduced'`.
+
 Pick the branch:
 
 - **New:** no motion yet. Run steps 2 to 7 in order.
@@ -41,7 +43,7 @@ Done when every duration and easing the brief implies maps to a token, each toke
 
 ### 4. Pick one runtime per job
 
-List the jobs the brief implies (feedback, panels, route changes, lists, scroll sections, stateful art, loops, video) and give each one runtime from `references/runtimes.md`, cheapest first: the platform's built-ins before any library. A library the project has not adopted needs its weight measured or cited and a decision record drafted for the user; once adopted, install its official skill into that project, not globally. A stateful mascot needs its art as parts first, from `brand-art`.
+List the jobs the brief implies (feedback, panels, route changes, lists, scroll sections, stateful art, loops, video) and give each one runtime from `references/runtimes.md` (a web table and a native one), cheapest first: the platform's built-ins before any library. A library the project has not adopted needs its weight measured or cited and a decision record drafted for the user; once adopted, install its official skill into that project, not globally. A stateful mascot needs its art as parts first, from `brand-art`.
 
 Done when every job has exactly one runtime with its cost written beside it, and every new dependency has a drafted decision record.
 
