@@ -1,6 +1,6 @@
 ---
 name: report-deck
-description: Build a paged data report as a PDF for sending and a single offline HTML deck for presenting, from one set of fixed-size HTML pages. A slow analysis pass writes the numbers to JSON, the renderer prints the pages through headless Chrome and wraps the same pages with keyboard navigation, and every page passes an overflow gate and a PNG look before it is committed. Use when generating a multi-page PDF or a meeting deck from data, or iterating on its pages. A report read by scrolling in a browser is the report-web skill; editing an existing PDF is the pdf skill; PowerPoint output is the pptx skill.
+description: Build a paged data report as a PDF for sending and a single offline HTML deck for presenting, from one set of fixed-size HTML pages. A slow analysis pass writes the numbers to JSON, the renderer prints the pages through headless Chrome and wraps the same pages with keyboard navigation, and every page passes an overflow gate and a PNG look before it is committed. Use when generating a multi-page PDF or a meeting deck from data, or iterating on its pages. A report read by scrolling in a browser is the report-web skill; a before/after report of an app change is report-changelog; editing an existing PDF is the pdf skill; PowerPoint output is the pptx skill.
 ---
 
 # Report deck

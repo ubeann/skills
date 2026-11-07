@@ -1,6 +1,6 @@
 ---
 name: report-web
-description: Build a scrolling web report from computed data as one offline HTML file, read in a browser on a laptop, a tablet, or a phone. A slow analysis pass writes the numbers to JSON, the renderer emits one section per claim with a contents rail and hover values, and headless Chrome checks every section at three widths and screenshots it before it is committed. Use when a report is read by scrolling rather than presented or printed. A PDF or a meeting deck is the report-deck skill.
+description: Build a scrolling web report from computed data as one offline HTML file, read in a browser on a laptop, a tablet, or a phone. A slow analysis pass writes the numbers to JSON, the renderer emits one section per claim with a contents rail and hover values, and headless Chrome checks every section at three widths and screenshots it before it is committed. Use when a report is read by scrolling rather than presented or printed. A PDF or a meeting deck is the report-deck skill; a before/after report of an app change is report-changelog.
 ---
 
 # Report web
