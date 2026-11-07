@@ -49,11 +49,16 @@ if [ "$is_url" = 1 ]; then
       -o "$out/clip.%(ext)s" "$@" "$in" >/dev/null
   }
   # A failed caption download (YouTube answers 429 when several run at once) fails the whole
-  # command; fetch the video alone and let whisper transcribe it.
+  # command. The original-language auto track (en-orig) is one request and usually still answers;
+  # failing that, fetch the video alone and let whisper transcribe it.
   if ! fetch --write-subs --write-auto-subs --sub-langs "$SUB_LANGS" --convert-subs srt; then
-    note "caption download failed; fetching the video alone, whisper will transcribe"
+    note "caption download failed; retrying with the original auto captions only"
     rm -f "$out"/clip.*
-    fetch
+    if ! fetch --write-auto-subs --sub-langs en-orig --convert-subs srt; then
+      note "caption download failed again; fetching the video alone, whisper will transcribe"
+      rm -f "$out"/clip.*
+      fetch
+    fi
   fi
   clip=$(ls "$out"/clip.* 2>/dev/null | grep -Ev '\.(srt|vtt|json)$' | head -1)
   srt=$(ls "$out"/clip.*.srt 2>/dev/null | head -1 || true)
@@ -101,7 +106,11 @@ if [ "$speech" = 1 ] && { [ "$captions" = "absent" ] || [ "${FORCE_TRANSCRIBE:-0
       | sed -E 's/^\[00:/[/' > "$out/transcript.txt" || true
     rm -f "$out/audio.wav"
     words=$(wc -w < "$out/transcript.txt" | tr -d ' ')
-    if [ "$words" -lt 5 ] || grep -qiE '^\[[0-9:]+\] \[?(BLANK_AUDIO|music|sound|applause|noise)' "$out/transcript.txt"; then
+    # Empty when whisper heard almost nothing, or when most lines are tags such as [music]:
+    # one [music] line before the narration starts is not an empty channel.
+    lines=$(grep -c . "$out/transcript.txt" || true)
+    tags=$(grep -ciE '^\[[0-9:]+\] *[[(]?(BLANK_AUDIO|music|sound|applause|noise|silence)[])]? *$' "$out/transcript.txt" || true)
+    if [ "$words" -lt 5 ] || [ $((tags * 2)) -gt "$lines" ]; then
       transcript="empty: audio is music or effects, not speech ($words words)"
     else
       transcript="present ($words words)"
