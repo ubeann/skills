@@ -3,17 +3,17 @@
   "compose": {
    "busy": 0.0,
    "camo": null,
-   "contrast": 11.726,
+   "contrast": 11.851,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T14:23:29Z"
+   "t": "2026-11-07T15:59:57Z"
   },
   "critique": {
-   "note": "reader (report-web) on the second drawer has a red tongue blot with no mouth line beside it, the round-5 smudge motif; also the sky is a vertical gradient and the lower-right clouds lose their ink outline",
-   "status": "fix",
-   "t": "2026-11-07T14:27:28Z"
+   "note": "reader's mouth fixed; open majors are the round-6 owner-approved sky gradient and soft right cloud bank, waived by the owner 2026-11-07 under When to stop; minors: learn's mouth, two-eraser pencil, footprints",
+   "status": "waived",
+   "t": "2026-11-07T16:03:00Z"
   },
-  "sha": "d1a7e16b1ac9e639"
+  "sha": "93e26dc9b7442072"
  },
  "../../assets/cards/art-critique.png": {
   "compose": {
@@ -22,7 +22,7 @@
    "contrast": 9.506,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T14:23:28Z"
+   "t": "2026-11-07T15:59:57Z"
   },
   "critique": {
    "note": "closest to failing: one hand, gloss highlights on the gold stanchions and frame; the framed picture repeats brand-art's canvas",
@@ -38,7 +38,7 @@
    "contrast": 14.328,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T14:23:28Z"
+   "t": "2026-11-07T15:59:57Z"
   },
   "critique": {
    "note": "closest to failing: one hand, the canvas is drawn in the world's own line and lines up with the real path, so it reads as a window",
@@ -54,7 +54,7 @@
    "contrast": 4.73,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T14:23:28Z"
+   "t": "2026-11-07T15:59:57Z"
   },
   "critique": {
    "note": "closest to failing: motifs, three stock direction props (compass, summit flag, signpost) stacked; chip contrast 4.7:1 is the set's lowest",
@@ -70,7 +70,7 @@
    "contrast": 10.219,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T14:23:28Z"
+   "t": "2026-11-07T15:59:57Z"
   },
   "critique": {
    "note": "closest to failing: defects, a mint sliver on the grass under the chalkboard ledge belongs to nothing",
@@ -86,14 +86,14 @@
    "contrast": 15.755,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T14:23:28Z"
+   "t": "2026-11-07T15:59:57Z"
   },
   "critique": {
-   "note": "two cork boards side by side (easel left, held board right) with the same mountain-river photo and plant on both; the easel board is as big as the lead and repeats the costume prop",
-   "status": "fix",
-   "t": "2026-11-07T14:27:28Z"
+   "note": "easel removed, card raised in the free mitten; minors: sparse lower-left ground, board grip",
+   "status": "pass",
+   "t": "2026-11-07T16:03:00Z"
   },
-  "sha": "aea0dc3c6122d476"
+  "sha": "f7076c2050dfbdaa"
  },
  "../../assets/cards/motion-direction.png": {
   "compose": {
@@ -102,7 +102,7 @@
    "contrast": 13.85,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T14:23:28Z"
+   "t": "2026-11-07T15:59:57Z"
   },
   "critique": {
    "note": "closest to failing: composition, three flowers of one height evenly spaced in a row; strongest card of the set",
@@ -118,7 +118,7 @@
    "contrast": 15.527,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T14:23:28Z"
+   "t": "2026-11-07T15:59:57Z"
   },
   "critique": {
    "note": "closest to failing: one hand, hills and bushes outlined about half the cast's weight, stage in unpaletted wood brown",
@@ -150,7 +150,7 @@
    "contrast": 12.176,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T14:23:28Z"
+   "t": "2026-11-07T15:59:57Z"
   },
   "critique": {
    "note": "closest to failing: composition, the footprint trail runs the eye out of the bottom-right corner",
@@ -166,7 +166,7 @@
    "contrast": 12.971,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T14:23:28Z"
+   "t": "2026-11-07T15:59:57Z"
   },
   "critique": {
    "note": "closest to failing: composition, the card zoom slices the projector and the screen at the window edges",
@@ -279,9 +279,14 @@
    "findings": [],
    "pack": "world.json",
    "status": "pass",
-   "t": "2026-11-07T14:23:27Z"
+   "t": "2026-11-07T15:58:33Z"
   },
-  "sha": "5a01c839a94cf8ff"
+  "critique": {
+   "note": "reader's mouth fixed; open majors are the round-6 owner-approved sky gradient and soft right cloud bank, waived by the owner 2026-11-07 under When to stop; minors: learn's mouth, two-eraser pencil, footprints",
+   "status": "waived",
+   "t": "2026-11-07T16:03:00Z"
+  },
+  "sha": "817b2623fb03e554"
  },
  "scene/brand-art.webp": {
   "check": {
@@ -315,9 +320,14 @@
    "findings": [],
    "pack": "world.json",
    "status": "pass",
-   "t": "2026-11-07T14:23:27Z"
+   "t": "2026-11-07T15:58:33Z"
   },
-  "sha": "0f87c2f3fb71716c"
+  "critique": {
+   "note": "easel removed, card raised in the free mitten; minors: sparse lower-left ground, board grip",
+   "status": "pass",
+   "t": "2026-11-07T16:03:00Z"
+  },
+  "sha": "cad467196b6c2d27"
  },
  "scene/motion-direction.webp": {
   "check": {
