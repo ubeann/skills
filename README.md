@@ -21,6 +21,7 @@ The rest of the shared setup lives in `profile/` and is synced the same way: plu
 | [<img src="assets/skills/moodboard.png" alt="" width="48">](moodboard/SKILL.md)<br>[moodboard](moodboard/SKILL.md) | A local library of design references from X, Threads, Instagram, YouTube or any site: each broken into its technique, a trend count across authors, and project boards where every reference has one job. |
 | [<img src="assets/skills/brand-art.png" alt="" width="48">](brand-art/SKILL.md)<br>[brand&#8209;art](brand-art/SKILL.md) | Mascots, illustration sets, scene art and app icons that keep one identity: an art bible, the owner's seed, an identity pack with a hero and turnaround, one change per call through Recraft or Higgsfield, file cleanup, and a drift score against the hero. |
 | [<img src="assets/skills/motion-direction.png" alt="" width="48">](motion-direction/SKILL.md)<br>[motion&#8209;direction](motion-direction/SKILL.md) | How a product moves, decided before it is built: a motion brief with one focal moment, duration and easing tokens, one runtime per job (CSS, Motion, GSAP, Rive, Lottie, HyperFrames) inside a budget, a beat sheet per sequence, and frame-by-frame review with a motion drift count. |
+| [<img src="assets/skills/art-critique.png" alt="" width="48">](art-critique/SKILL.md)<br>[art&#8209;critique](art-critique/SKILL.md) | Art judged cold by a reviewer who never saw it made: six axes from identity to the art in its real placement with its copy, defects found in full-size crops, candidates ranked two at a time in both orders, the gap to premium against a benchmark, and verdicts that feed brand-art's handover gate. |
 
 ## Cast
 
@@ -30,6 +31,7 @@ One character, a costume for each skill. How it is made, and how a new skill get
 <tr><td><a href="report-deck/SKILL.md"><img src="assets/cards/report-deck.png" alt="report-deck: the presenter" width="260"></a></td><td><a href="report-web/SKILL.md"><img src="assets/cards/report-web.png" alt="report-web: the reader" width="260"></a></td><td><a href="learn/SKILL.md"><img src="assets/cards/learn.png" alt="learn: the student" width="260"></a></td></tr>
 <tr><td><a href="video-context/SKILL.md"><img src="assets/cards/video-context.png" alt="video-context: the film buff" width="260"></a></td><td><a href="ux-behaviour-audit/SKILL.md"><img src="assets/cards/ux-behaviour-audit.png" alt="ux-behaviour-audit: the detective" width="260"></a></td><td><a href="design-direction/SKILL.md"><img src="assets/cards/design-direction.png" alt="design-direction: the explorer" width="260"></a></td></tr>
 <tr><td><a href="moodboard/SKILL.md"><img src="assets/cards/moodboard.png" alt="moodboard: the collector" width="260"></a></td><td><a href="brand-art/SKILL.md"><img src="assets/cards/brand-art.png" alt="brand-art: the artist" width="260"></a></td><td><a href="motion-direction/SKILL.md"><img src="assets/cards/motion-direction.png" alt="motion-direction: the conductor" width="260"></a></td></tr>
+<tr><td colspan="3" align="center"><a href="art-critique/SKILL.md"><img src="assets/cards/art-critique.png" alt="art-critique: the critic" width="260"></a></td></tr>
 </table>
 
 ## Layout
