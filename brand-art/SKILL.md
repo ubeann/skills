@@ -28,7 +28,9 @@ Done when the family, every target with size and format, and each vendor's credi
 
 Fill every field of `references/art-bible.md` into `art/<name>/README.md`. References arrive from the `moodboard` skill with one job each; a bare link gets one job here, and a technique flagged as a trend enters as one ingredient, never the whole style.
 
-Done when every field has a value, each adjective names a visible consequence, the palette has dominant, secondary and accent roles in hex, and the subject vocabulary names an owned metaphor for every subject the targets need.
+When the style fields (line, rendering, light, palette, texture) are undecided, when the owner wants to change them, or when a world or scene family needs a style the bible lacks, run the style round in `references/style-round.md` first: the owner's own character drawn in three or four researched directions, identity locked and style varied, and the pick fills those fields. It needs a subject, so it can follow step 3's seed or thumbnail round.
+
+Done when every field has a value, the style fields came from an owner's pick of drawn frames rather than from a reference alone, each adjective names a visible consequence, the palette has dominant, secondary and accent roles in hex, and the subject vocabulary names an owned metaphor for every subject the targets need.
 
 ### 3. Get the original seed
 
