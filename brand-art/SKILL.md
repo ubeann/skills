@@ -70,7 +70,7 @@ Done when every file in `art/<name>/out/` opens as its extension says, every SVG
 ### 7. Check drift
 
 ```sh
-python3 <skill-dir>/references/check.py art/<name>/pack.json art/<name>/out/* --sheet art/<name>/drift.png
+python3 <skill-dir>/references/check.py art/<name>/pack.json art/<name>/out/* --sheet art/<name>/drift.png --record art/<name>/review.json
 ```
 
 Open `drift.png`: the hero first, each image beside it, and a greyscale row underneath for the value test. `check.py` scores identity, not obedience: a near-copy of the hero passes every metric, and a second rendering style or a stock metaphor passes too. So then run the `art-critique` skill on `out/` in a fresh subagent, handing it the files, the bible, the hero and the benchmark as paths. Add one column of your own per image, **change made**: the one change its call asked for is visible. For each finding, regenerate from the hero with the one fix as the change, or `snap` flat art; when a deliberate change recurs on three or more images, promote it into the bible and record why.
@@ -81,15 +81,21 @@ Done when every image passes both `check.py` and the critique or has a finding w
 
 ### 8. Compose
 
-For a target built from several figures or with text (a banner, a card set, a social image), run the layout round in `references/compose.md`: one composition reference, two or three greyscale layouts for the owner, the poses the pick needs, then the build and `references/compose_check.py`.
+For a target built from several figures or with text (a banner, a card set, a social image), run the layout round in `references/compose.md`: one composition reference, two or three greyscale layouts for the owner, the poses the pick needs, then the build and `references/compose_check.py`. Then run `art-critique` cold on the built layouts, at their real sizes and on their real grounds.
 
-Done when `references/compose.md`'s criterion holds for every composed target.
+Done when `references/compose.md`'s criterion holds for every composed target and the critique passed each one.
 
 ### 9. Hand over
 
-Build the handover sheet and file table in `references/identity-pack.md` (Handover). An icon also passes the lineup tests in that file's Icon section before handover.
+Build the handover sheet and file table in `references/identity-pack.md` (Handover). An icon also passes the lineup tests in that file's Icon section before handover. List every shipped file in `pack.json` `targets`, then run the gate:
 
-Done when the Handover section's criterion holds, and an icon's lineup tests pass.
+```sh
+python3 <skill-dir>/references/check.py --handover art/<name>
+```
+
+It fails any target without a current passing verdict in `review.json`: `check.py` for every image, `compose_check.py` for every layout, `art-critique` for everything a viewer sees. A file changed after its review counts as unreviewed. In the cast pilot, rounds 5 to 7 shipped 20 images with no check run at all; the gate makes that a red build.
+
+Done when the Handover section's criterion holds, an icon's lineup tests pass, and `check.py --handover` exits 0.
 
 ## Working habits
 

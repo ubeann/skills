@@ -5,6 +5,8 @@
   check.py art/<name>/pack.json out/*.png              score each image against the pack
   check.py art/<name>/pack.json out/*.png --sheet s.png   also write a contact sheet
   check.py --lineup lineup.png icon.png rivals/*.png   the icon among its category at home-screen sizes
+  check.py art/<name>/pack.json raw/*.png --record art/<name>/review.json   also record each verdict
+  check.py --handover art/<name>                       the gate: every shipped target reviewed and current
 
 Per image it measures:
   palette   share of coloured pixels within reach of a palette colour
@@ -17,12 +19,25 @@ Per image it measures:
   shape     best silhouette overlap with the hero or a sheet panel (mascot and icon packs)
 
 Prints one markdown table and a findings list. Exits 1 when anything fails.
+
+The handover gate reads the targets pack.json lists by kind, as globs relative to the pack:
+  "targets": {"source": ["scene/*.webp"], "image": ["out/icon-1024.png"], "layout": ["../../assets/cards/*.png"]}
+  source  an image that ships only inside a layout     needs a check verdict
+  image   an image that ships as it is                 needs check and critique verdicts
+  layout  a banner, card or page composed from art     needs compose and critique verdicts
+Verdicts live in review.json beside the pack, written by --record here, by compose_check.py --record
+and by art-critique's critique_sheet.py record, each pinned to the file's hash: a file changed after its
+review fails until it is reviewed again. pass and waived count; waived needs its reason in the note.
 Needs Pillow and numpy.
 """
 import argparse
+import glob
+import hashlib
 import json
+import os
 import re
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 try:
@@ -308,6 +323,86 @@ def lineup(icon, rivals, out, seed=7):
     return key
 
 
+# ---------- review record and handover gate
+
+NEEDS = {"source": ("check",), "image": ("check", "critique"), "layout": ("compose", "critique")}
+
+
+def digest(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()[:16]
+
+
+def review_key(review, path):
+    return Path(os.path.relpath(Path(path).resolve(), Path(review).parent.resolve())).as_posix()
+
+
+def record(review, rows, pack_path):
+    review = Path(review)
+    data = json.loads(review.read_text()) if review.exists() else {}
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    for path, found in rows:
+        key, d = review_key(review, path), digest(path)
+        e = data.get(key, {})
+        if e.get("sha") != d:
+            e = {"sha": d}  # a changed file loses every earlier verdict
+        e["check"] = {"status": "fail" if found else "pass", "t": now, "pack": review_key(review, pack_path),
+                      "findings": found}
+        data[key] = e
+    review.write_text(json.dumps(data, indent=1, sort_keys=True) + "\n")
+
+
+def handover(folder):
+    folder = Path(folder)
+    pack_path, review_path = folder / "pack.json", folder / "review.json"
+    if not pack_path.exists():
+        sys.exit(f"{pack_path}: no pack; brand-art step 4 writes it")
+    pack, base, _, errors, incomplete = read_pack(pack_path)
+    problems = [f"pack: {e}" for e in errors]
+    review = json.loads(review_path.read_text()) if review_path.exists() else {}
+    targets = pack.get("targets") or {}
+    if not targets:
+        problems.append("pack.json lists no targets: name the files that ship, by kind (source, image, layout)")
+    print("| file | kind | " + " | ".join(("check", "compose", "critique")) + " | status |")
+    print("|---|---|---|---|---|---|")
+    count = 0
+    for kind, patterns in targets.items():
+        if kind not in NEEDS:
+            problems.append(f"target kind {kind!r} is not one of {sorted(NEEDS)}")
+            continue
+        for pat in patterns:
+            files = sorted(glob.glob(str(base / pat)))
+            if not files:
+                problems.append(f"{kind} {pat}: matches no file")
+            for f in files:
+                count += 1
+                key = review_key(review_path, f)
+                e = review.get(key, {})
+                cells, bad = {}, []
+                for section in ("check", "compose", "critique"):
+                    st = e.get(section, {}).get("status")
+                    cells[section] = st or "-"
+                    if section in NEEDS[kind] and st not in ("pass", "waived"):
+                        bad.append(f"{section} {st or 'missing'}")
+                if e and e.get("sha") != digest(f):
+                    bad = ["changed since its review"]
+                    cells = {k: "stale" for k in cells}
+                for b in bad:
+                    problems.append(f"{key}: {b}")
+                print(f"| {key} | {kind} | {cells['check']} | {cells['compose']} | {cells['critique']} | "
+                      f"{'fail' if bad else 'pass'} |")
+    for n in incomplete:
+        print(f"note: pack not finished: {n}")
+    waived = [f"{k}: {s} waived: {v[s].get('note', '')}" for k, v in review.items()
+              for s in ("check", "compose", "critique") if v.get(s, {}).get("status") == "waived"]
+    for w in waived:
+        print(f"note: {w}")
+    print()
+    for pr in problems:
+        print(f"- {pr}")
+    print(f"\nhandover {folder}: {count} targets, {len(problems)} problems")
+    sys.exit(1 if problems else 0)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("pack_or_flag", nargs="?")
@@ -315,7 +410,12 @@ def main():
     ap.add_argument("--pack", help="validate this pack and exit")
     ap.add_argument("--sheet", help="write a contact sheet: hero first, colour row over greyscale row")
     ap.add_argument("--lineup", help="write a lineup: the first image is the icon, the rest its category's icons")
+    ap.add_argument("--record", help="write each image's verdict into this review.json")
+    ap.add_argument("--handover", help="the gate: check every target in this art folder's pack.json against review.json")
     args = ap.parse_args()
+
+    if args.handover:
+        handover(args.handover)
 
     if args.lineup:
         icons = [args.pack_or_flag] + args.images if args.pack_or_flag else args.images
@@ -374,6 +474,9 @@ def main():
     if args.sheet:
         contact_sheet([hero] + list(args.images), ["HERO " + hero.name] + [Path(p).name for p in args.images], args.sheet)
         print(f"contact sheet: {args.sheet}")
+    if args.record:
+        record(args.record, [(p, found) for p, (_, found) in zip(args.images, rows)], args.pack_or_flag)
+        print(f"recorded: {args.record}")
     sys.exit(1 if failed else 0)
 
 
