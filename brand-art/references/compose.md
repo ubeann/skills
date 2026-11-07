@@ -51,19 +51,22 @@ Done when the owner picked one layout per target and every figure it places has 
 ### Text
 
 - **Text sits on its own plate when the art is generated.** A prompt's empty zone is a request: a sun and a cloud landed under the title on two of three tests. A window for the art and a plate for the name, label and line cannot collide.
+- `compose_check.py --bare` measures what this rule prevents: any art running under a letter, on every layout with text, the plate layout included.
 - Text sits in a calm safe zone and is never generated; the type and its scale come from `DESIGN.md` when one exists.
 - The character can enter the type: eyes in a letter's counter, a prop replacing a letter ([post](https://x.com/adrianabelarde/status/2117896840633098515)).
 
 ## Build and check
 
-Compose in code (HTML or SVG rendered by headless Chrome, or Pillow) from the cleaned figures, so text stays sharp and every figure stays exact. Render each layout twice: with its figures, and without them as a **plate** of the same size and file name in a second folder. Then:
+Compose in code (HTML or SVG rendered by headless Chrome, or Pillow) from the cleaned figures, so text stays sharp and every figure stays exact. Render each layout three times, each at the same size and file name in its own folder: as built; without its figures, the **plate**; and with its letters hidden and everything else kept, the **bare** render (in CSS, `*{color:transparent!important}`, which keeps chips and plates). A layout whose figures live inside a generated scene has no plate; it still gets a bare render. Then:
 
 ```sh
-python3 <skill-dir>/references/compose_check.py art/<name>/out/layouts/*.png --plates art/<name>/out/plates/ --sheet art/<name>/compose.png
+python3 <skill-dir>/references/compose_check.py art/<name>/out/layouts/*.png --plates art/<name>/out/plates/ --bare art/<name>/out/bare/ --sheet art/<name>/compose.png --record art/<name>/review.json
 ```
+
+`busy` is the share of pixels under the worst letter or word that are not the colour beneath it: text on a flat plate, sky or chip measures 0, and the cast banner's title moved onto the cast measured 100%. `contrast` is the WCAG ratio of the glyphs to the art under them.
 
 `camo` is the share of coloured figure pixels that share a hue and a value with the ground around them. On this repo's first cards it measured 21 to 53% on seven of nine; the same cards on a cream ground with a complementary panel measured 0 to 6%.
 
-Then open `compose.png`, one row per layout: colour, greyscale, greyscale blurred, and the camouflaged pixels in magenta. In the blurred column one shape leads and the faces stay readable. Then look at each layout at its real size in its real place: a README card at about 260 px in GitHub's light and dark themes, a social preview at 600 px wide ([video at 13:41](https://www.youtube.com/watch?v=nry7K2y4ypc&t=821s)).
+Then open `compose.png`, one row per layout: colour, greyscale, greyscale blurred, the camouflaged pixels in magenta, and the glyphs in cyan over any art under them in magenta. In the blurred column one shape leads and the faces stay readable. Then look at each layout at its real size in its real place: a README card at about 260 px in GitHub's light and dark themes, a social preview at 600 px wide ([video at 13:41](https://www.youtube.com/watch?v=nry7K2y4ypc&t=821s)).
 
-Done when `compose_check.py` passes every layout, the blurred column shows one lead per layout, and each layout has been seen at its real size on every ground it ships on.
+Done when `compose_check.py` passes every layout on camo, busy and contrast and recorded it, the blurred column shows one lead per layout, and each layout has been seen at its real size on every ground it ships on.
