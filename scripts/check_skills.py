@@ -37,7 +37,7 @@ for skill in skills:
     for ref in set(re.findall(r"references/[\w./-]+", text)):
         if not (folder / ref).exists():
             errors.append(f"{folder.name}: {ref} does not exist")
-    for ref in (folder / "references").glob("*") if (folder / "references").is_dir() else []:
+    for ref in (folder / "references").glob("[!._]*") if (folder / "references").is_dir() else []:
         if f"references/{ref.name}" not in text:
             errors.append(f"{folder.name}: references/{ref.name} is never pointed at")
 
