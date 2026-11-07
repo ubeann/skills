@@ -106,5 +106,6 @@ One gotcha stays with this folder: `cutout.py` floods from the border over light
 | 6 | 28 | one card in three world treatments, the banner redrawn flat | B: a full-bleed scene in the character's own style |
 | 7 | 63 | nine card scenes in that world | shipped, with the text on a plate below the art |
 | 8 | 126 | model comparison: a costume, a card scene, one banner fix and pose thumbnails on five models, ranked blind by `art-critique` | `gpt_image_2_medium` for costumes, `gpt_image_2p5_sunburst` for scenes and fixes, `gpt_image_2_low` for pose sheets; results in `brand-art`'s vendors file |
+| 8b | 22 | the same scene, fix and pose tests on GPT Image 2.6 in Recraft Studio, through the yab browser | 2.6 Sunburst lost the scene to 2.5 and tied on the fix; markup was the most surgical edit but drew a second board |
 
-Balance: 911 credits before the pilot, 714 after its final round, 595 after round 7, 469 after round 8. That is 7 more than the logged calls add up to: the first face-kit call was interrupted, `get_user` showed no charge right after, and it was most likely billed later.
+Balance: 911 credits before the pilot, 714 after its final round, 595 after round 7, 469 after round 8, 447 after round 8b. That is 7 more than the logged calls add up to: the first face-kit call was interrupted, `get_user` showed no charge right after, and it was most likely billed later.

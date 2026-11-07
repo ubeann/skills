@@ -50,8 +50,11 @@ The cast character, Recraft's MCP `image_edit`, one call per model per test, ran
 | `bytedance_seedreamv5_pro` | 22 | dropped: walking, not leaning; a paddle with no handle; side-eye | not run | not run | the owner's earlier six-prompt win did not repeat here |
 | `recraftv4_1_flash_raster` (D) | 1 | | | | text only: the wrong blue, no cel shading, one figure with three eyes |
 | `gpt_image_2_low` (D) | 2 | | | | each of four images a sheet of 4 to 9 on-model poses: about 21 poses for 8 credits |
+| GPT Image 2.6 Sunburst (Studio, medium, 1K) | 6 | | lost the blind pair to 2.5 Sunburst: roped off the critic instead of the painting, copied the world frame's flag | correct, 3.5% changed outside the edit, but dropped "pinning a card" | as good at fixes for 4 fewer credits; not in the MCP |
+| GPT Image 2.6 Sunburst markup (Studio) | 6 | | | the most surgical (0.6% inside, 2.3% outside), but kept the old board and drew a second one | the point-and-describe edit; Studio only |
+| GPT Image 2.6 Flare (Studio, low, 1K) | 4 | | | | one clean on-model pose per image; `gpt_image_2_low` gives a sheet of poses for half the credits |
 
-The contact sheet is `art/cast/rounds/round8-model-comparison.jpg` in this repo. GPT Image 2.6 was in Recraft Studio only that day; rerun B and C on 2.6 Sunburst there before moving the scene and fix rows to it.
+The contact sheets are `art/cast/rounds/round8-model-comparison.jpg` and `art/cast/rounds/round8-studio-2.6.jpg` in this repo. The 2.6 rows ran in Recraft Studio, driven through the yab browser, on the same credit balance as the MCP: 2.6 did not beat 2.5 Sunburst on the scene, so the routing stays on the MCP's 2.5 Sunburst. Studio is worth opening for a fix where markup's precision matters more than the rest of the brief, or to save 4 credits a fix.
 
 ## Recraft
 
@@ -117,7 +120,7 @@ higgsfield generate create nano_banana_2 \
 
 Run each as an arm of the vendor comparison in `references/generate.md` before routing work to it.
 
-- **GPT Image 2.6 (Flare and Sunburst).** OpenAI released both on 2026-11-04: Flare for fast drafts, Sunburst for final images and edits that leave the unasked parts alone ([Recraft's test](https://www.recraft.ai/blog/gpt-image-2-6)). On 2026-11-07 Recraft Studio had 2.6, while the MCP listed only the 2.5 pair measured above; read `image_edit`'s `model` list for a 2.6 id. Studio credits per image, the same for both: low 4 (1K) or 7 (2K), medium 6 or 12, high 10 or 14. Preliminary Arena ranks Sunburst 2nd for text to image and 3rd for single-image edits ([Kingy](https://kingy.ai/blog/gpt-image-2-6-sunburst-flare/)). Recraft's own illustration test preferred Recraft V4.1 Pro's flat graphic look to Sunburst's painterly storybook look, and markup editing (circle a region to change) is API-only.
+- **GPT Image 2.6 (Flare and Sunburst).** OpenAI released both on 2026-11-04: Flare for fast drafts, Sunburst for final images and edits that leave the unasked parts alone ([Recraft's test](https://www.recraft.ai/blog/gpt-image-2-6)). On 2026-11-07 Recraft Studio had 2.6, while the MCP listed only the 2.5 pair; both are measured above. Read `image_edit`'s `model` list for a 2.6 id before relying on Studio for it. Studio credits per image, the same for both: low 4 (1K) or 7 (2K), medium 6 or 12, high 10 or 14. Preliminary Arena ranks Sunburst 2nd for text to image and 3rd for single-image edits ([Kingy](https://kingy.ai/blog/gpt-image-2-6-sunburst-flare/)). Recraft's own illustration test preferred Recraft V4.1 Pro's flat graphic look to Sunburst's painterly storybook look, and markup editing (circle a region to change) is API-only.
 - **Untested here**: `gpt_image_2_high`, Recraft V4.1 Utility and Utility Pro (Studio only), FLUX 3 (Studio only).
 - **Draft low, upscale the pick.** A cheap model at 480p plus an upscale of the chosen image cost about a quarter of generating every draft at full size ([video at 13:16](https://www.youtube.com/watch?v=Rk6t9Uq1y9M&t=796s)).
 - **Nano Banana Pro through Google's API** at about $0.134 per image is cheaper than a $59 monthly plan below roughly 440 images a month ([video](https://www.youtube.com/watch?v=Zk4Qzd-NJ_0)).
