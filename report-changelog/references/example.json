@@ -1,0 +1,186 @@
+{
+  "slug": "shipment-lines",
+  "date": "2026-11-07",
+  "project": "Acme Freight",
+  "module": "Finance · Invoices",
+  "type": "copy",
+  "langs": [
+    "en",
+    "id"
+  ],
+  "context": {
+    "lang": "en",
+    "background": "Finance enters the actual charges for a shipment at billing settlement, in a repeater labelled Vendor Lines. A line never records which vendor it came from, so the label pointed at nothing on screen.",
+    "reason": "The PIC asked for the lines to be called Shipment Lines. The estimate beside them was renamed Estimated Charges so the comparison does not read as shipment against shipment.",
+    "source": [
+      {
+        "kind": "request",
+        "ref": "WhatsApp, Finance group",
+        "note": "PIC asked to rename the field, 7 Nov"
+      },
+      {
+        "kind": "session",
+        "ref": "t3-thread://v2/ENV/THREAD",
+        "note": "audit, copy options, the change and this report"
+      }
+    ],
+    "people": [
+      {
+        "role": "PIC",
+        "name": "Rina, Finance lead"
+      },
+      {
+        "role": "Implemented by",
+        "name": "Ubean with Claude"
+      }
+    ],
+    "decisions": [
+      {
+        "question": "Name for the vendor lines:",
+        "chosen": "Shipment Lines",
+        "options": [
+          "Billed Charges",
+          "Billing Lines"
+        ],
+        "by": "the PIC",
+        "why": "Billed Charges was suggested because the page already says billing; the PIC preferred the shipment wording finance uses"
+      }
+    ],
+    "scope": {
+      "pr": "https://github.com/acme/freight/pull/189",
+      "branch": "feat/invoices-shipment-lines-copy",
+      "commits": [
+        {
+          "sha": "a1b2c3d",
+          "subject": "feat(invoices): rename vendor lines to shipment lines"
+        }
+      ],
+      "files": [
+        "app/Invoices/Pages/BillingSettlement.php",
+        "resources/views/billing-comparison.blade.php"
+      ]
+    },
+    "verification": [
+      "Before and after captured on the local app with seeded data",
+      "Lint passes"
+    ],
+    "unchanged": [
+      "Calculations, saved data and the invoice PDF",
+      "The `vendors` relation and its columns keep their names"
+    ],
+    "risks": [
+      "Support docs and training slides still say Vendor Lines"
+    ],
+    "followups": [
+      "Rename the `vendors` relation in a later refactor"
+    ],
+    "rollback": "Revert the merge commit of #189; no data or schema changed.",
+    "evidence": [
+      {
+        "file": "evidence/01-pic-request.png",
+        "what": "PIC asks to rename Vendor Lines to Shipment Lines",
+        "from": "Rina, Finance group chat",
+        "date": "2026-11-07",
+        "thread": "t3-thread://v2/ENV/THREAD"
+      }
+    ]
+  },
+  "head": {
+    "en": {
+      "title": {
+        "old": "Vendor Lines",
+        "new": "Shipment Lines"
+      },
+      "meta": "Billing Settlement & Invoice Details",
+      "summary": [
+        {
+          "label": "Renamed",
+          "text": "\"Vendor Lines\" is now \"Shipment Lines\" on the form, the details page and the guides."
+        },
+        {
+          "label": "Clearer comparison",
+          "text": "The estimate is now \"Estimated Charges\", so it can't be confused with Shipment Lines."
+        },
+        {
+          "label": "Fixed",
+          "text": "An empty form no longer shows a green \"totals match\" box."
+        }
+      ],
+      "footer": "Apart from the empty-form fix, only the wording changed. Calculations, saved data and the invoice PDF are the same as before."
+    },
+    "id": {
+      "title": {
+        "old": "Vendor Lines",
+        "new": "Shipment Lines"
+      },
+      "meta": "Billing Settlement & Detail Invoice",
+      "summary": [
+        {
+          "label": "Ganti nama",
+          "text": "\"Vendor Lines\" sekarang \"Shipment Lines\" di form, halaman detail dan panduan."
+        },
+        {
+          "label": "Perbandingan lebih jelas",
+          "text": "Estimasi sekarang bernama \"Estimated Charges\", jadi tidak tertukar dengan Shipment Lines."
+        },
+        {
+          "label": "Perbaikan",
+          "text": "Form kosong tidak lagi menampilkan kotak hijau \"totals match\"."
+        }
+      ],
+      "footer": "Selain perbaikan form kosong, yang berubah hanya teksnya. Perhitungan, data tersimpan dan PDF invoice tetap sama."
+    }
+  },
+  "sections": [
+    {
+      "kind": "pair",
+      "before": "shots/before/01-form-empty.png",
+      "after": "shots/after/01-form-empty.png",
+      "text": {
+        "en": {
+          "title": "Billing Settlement: before any line is added",
+          "where": "Finance → Billing Settlement → Billing Details",
+          "bullets": [
+            "Field label: **Shipment Lines**, with a short explanation of what to enter",
+            "Button: **Add Shipment Line**"
+          ]
+        },
+        "id": {
+          "title": "Billing Settlement: sebelum ada baris yang diisi",
+          "where": "Finance → Billing Settlement → Billing Details",
+          "bullets": [
+            "Label field: **Shipment Lines**, ditambah penjelasan singkat apa yang perlu diisi",
+            "Tombol: **Add Shipment Line**"
+          ]
+        }
+      }
+    },
+    {
+      "kind": "table",
+      "text": {
+        "en": {
+          "title": "Other wording changes",
+          "where": "Pop-up guides and messages (not shown above)",
+          "rows": [
+            [
+              "Billing Settlement guide, step 1",
+              "Enter Vendor Line Items",
+              "Enter Shipment Lines"
+            ]
+          ]
+        },
+        "id": {
+          "title": "Perubahan teks lainnya",
+          "where": "Panduan pop-up dan notifikasi (tidak terlihat di screenshot di atas)",
+          "rows": [
+            [
+              "Panduan Billing Settlement, langkah 1",
+              "Enter Vendor Line Items",
+              "Enter Shipment Lines"
+            ]
+          ]
+        }
+      }
+    }
+  ]
+}
