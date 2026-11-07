@@ -1,0 +1,34 @@
+{
+ "name": "cast-world",
+ "version": 1,
+ "family": "scene",
+ "hero": "scene/design-direction.webp",
+ "prompt_suffix": "World rules, strictly: every object has the same bold, even ink #141414 outline as the character's silhouette; no thin sketchy lines, no hatching, no texture, no grain, no gradients; every surface is exactly two flat tones, light and shadow, light from the upper left; simple rounded shapes.",
+ "palette": {
+  "dominant": [
+   "#cfe3f7",
+   "#a8c79a"
+  ],
+  "secondary": [
+   "#e8d3a8",
+   "#cfc6b8",
+   "#1a2046"
+  ],
+  "accent": [
+   "#ff6b35",
+   "#ffd23f",
+   "#3ecf8e",
+   "#ff5fa2",
+   "#14b8a6",
+   "#8b5cf6",
+   "#d9a066",
+   "#ef3b36",
+   "#b6e33b"
+  ],
+  "neutral": [
+   "#141414",
+   "#f6f1e7",
+   "#ffffff"
+  ]
+ }
+}

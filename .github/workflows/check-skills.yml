@@ -6,3 +6,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: python3 scripts/check_skills.py
+      - run: python3 -m pip install --quiet pillow numpy
+      - name: art handover gate
+        run: for p in art/*/pack.json; do python3 brand-art/references/check.py --handover "$(dirname "$p")" || exit 1; done

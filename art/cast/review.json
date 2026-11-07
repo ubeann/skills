@@ -1,0 +1,333 @@
+{
+ "../../assets/banner.png": {
+  "compose": {
+   "busy": 0.0,
+   "camo": null,
+   "contrast": 11.778,
+   "findings": [],
+   "status": "pass",
+   "t": "2026-11-07T11:51:32Z"
+  },
+  "critique": {
+   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: moodboard collector lost its pin-board costume (holds report-web's yellow sheet); also red toolbox camouflages brand-art, every figure on its own cloud island",
+   "status": "waived",
+   "t": "2026-11-07T12:05:20Z"
+  },
+  "sha": "4a0fccde3478b7d6"
+ },
+ "../../assets/cards/brand-art.png": {
+  "compose": {
+   "busy": 0.0,
+   "camo": null,
+   "contrast": 14.821,
+   "findings": [],
+   "status": "pass",
+   "t": "2026-11-07T11:51:31Z"
+  },
+  "critique": {
+   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: chip (~4 px caps) and line (~5 px x-height) too small to read at 260 px; also centred figure flanked by one prop each side",
+   "status": "waived",
+   "t": "2026-11-07T12:05:20Z"
+  },
+  "sha": "a3c9c3b3a67518f0"
+ },
+ "../../assets/cards/design-direction.png": {
+  "compose": {
+   "busy": 0.0,
+   "camo": null,
+   "contrast": 14.352,
+   "findings": [],
+   "status": "pass",
+   "t": "2026-11-07T11:51:31Z"
+  },
+  "critique": {
+   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: chip (~4 px caps) and line (~5 px x-height) too small to read at 260 px; art closest to failing: composition, figure near dead centre",
+   "status": "waived",
+   "t": "2026-11-07T12:05:20Z"
+  },
+  "sha": "eb43b019ec2dbadb"
+ },
+ "../../assets/cards/learn.png": {
+  "compose": {
+   "busy": 0.0,
+   "camo": null,
+   "contrast": 10.637,
+   "findings": [],
+   "status": "pass",
+   "t": "2026-11-07T11:51:31Z"
+  },
+  "critique": {
+   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: chip (~4 px caps) and line (~5 px x-height) too small to read at 260 px; also a '?' glyph on the chalkboard and a centred figure flanked by desk and board",
+   "status": "waived",
+   "t": "2026-11-07T12:05:20Z"
+  },
+  "sha": "1e20565c8462e937"
+ },
+ "../../assets/cards/moodboard.png": {
+  "compose": {
+   "busy": 0.0,
+   "camo": null,
+   "contrast": 15.856,
+   "findings": [],
+   "status": "pass",
+   "t": "2026-11-07T11:51:31Z"
+  },
+  "critique": {
+   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: chip (~4 px caps) and line (~5 px x-height) too small to read at 260 px; art closest to failing: motifs, two sourceless butterflies",
+   "status": "waived",
+   "t": "2026-11-07T12:05:20Z"
+  },
+  "sha": "dce8cdd2c2a1711c"
+ },
+ "../../assets/cards/motion-direction.png": {
+  "compose": {
+   "busy": 0.0,
+   "camo": null,
+   "contrast": 14.555,
+   "findings": [],
+   "status": "pass",
+   "t": "2026-11-07T11:51:31Z"
+  },
+  "critique": {
+   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: chip (~4 px caps) and line (~5 px x-height) too small to read at 260 px; also centred figure flanked by one prop each side",
+   "status": "waived",
+   "t": "2026-11-07T12:05:20Z"
+  },
+  "sha": "4b9e462de2766be1"
+ },
+ "../../assets/cards/report-deck.png": {
+  "compose": {
+   "busy": 0.0,
+   "camo": null,
+   "contrast": 15.764,
+   "findings": [],
+   "status": "pass",
+   "t": "2026-11-07T11:51:31Z"
+  },
+  "critique": {
+   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: chip (~4 px caps) and line (~5 px x-height) too small to read at 260 px; also centred figure flanked by one prop each side",
+   "status": "waived",
+   "t": "2026-11-07T12:05:20Z"
+  },
+  "sha": "bf4a7c3dc2821c41"
+ },
+ "../../assets/cards/report-web.png": {
+  "compose": {
+   "busy": 0.0,
+   "camo": null,
+   "contrast": 15.662,
+   "findings": [],
+   "status": "pass",
+   "t": "2026-11-07T11:51:31Z"
+  },
+  "critique": {
+   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: chip (~4 px caps) and line (~5 px x-height) too small to read at 260 px; also centred figure flanked by one prop each side",
+   "status": "waived",
+   "t": "2026-11-07T12:05:20Z"
+  },
+  "sha": "ca6c7a40bd5950cd"
+ },
+ "../../assets/cards/ux-behaviour-audit.png": {
+  "compose": {
+   "busy": 0.0,
+   "camo": null,
+   "contrast": 13.803,
+   "findings": [],
+   "status": "pass",
+   "t": "2026-11-07T11:51:31Z"
+  },
+  "critique": {
+   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: chip (~4 px caps) and line (~5 px x-height) too small to read at 260 px; art closest to failing: in place, magnifier and face small at 260 px",
+   "status": "waived",
+   "t": "2026-11-07T12:05:20Z"
+  },
+  "sha": "68904e7198022508"
+ },
+ "../../assets/cards/video-context.png": {
+  "compose": {
+   "busy": 0.0,
+   "camo": null,
+   "contrast": 13.702,
+   "findings": [],
+   "status": "pass",
+   "t": "2026-11-07T11:51:31Z"
+  },
+  "critique": {
+   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: chip (~4 px caps) and line (~5 px x-height) too small to read at 260 px; also centred figure flanked by one prop each side",
+   "status": "waived",
+   "t": "2026-11-07T12:05:20Z"
+  },
+  "sha": "684eb385c098c4b3"
+ },
+ "raw/brand-art.webp": {
+  "check": {
+   "findings": [],
+   "pack": "pack.json",
+   "status": "pass",
+   "t": "2026-11-07T11:51:13Z"
+  },
+  "sha": "f65b6a015043a5c2"
+ },
+ "raw/design-direction.webp": {
+  "check": {
+   "findings": [],
+   "pack": "pack.json",
+   "status": "pass",
+   "t": "2026-11-07T11:51:13Z"
+  },
+  "sha": "ab862a409958c230"
+ },
+ "raw/learn.webp": {
+  "check": {
+   "findings": [],
+   "pack": "pack.json",
+   "status": "pass",
+   "t": "2026-11-07T11:51:13Z"
+  },
+  "sha": "dbe6a7e83d515aa5"
+ },
+ "raw/moodboard.webp": {
+  "check": {
+   "findings": [],
+   "pack": "pack.json",
+   "status": "pass",
+   "t": "2026-11-07T11:51:13Z"
+  },
+  "sha": "b05e1aaab7b74073"
+ },
+ "raw/motion-direction.webp": {
+  "check": {
+   "findings": [],
+   "pack": "pack.json",
+   "status": "pass",
+   "t": "2026-11-07T11:51:13Z"
+  },
+  "sha": "a5678a4626597b5f"
+ },
+ "raw/report-deck.webp": {
+  "check": {
+   "findings": [],
+   "pack": "pack.json",
+   "status": "pass",
+   "t": "2026-11-07T11:51:13Z"
+  },
+  "sha": "a700ab98c033176e"
+ },
+ "raw/report-web.webp": {
+  "check": {
+   "findings": [],
+   "pack": "pack.json",
+   "status": "pass",
+   "t": "2026-11-07T11:51:13Z"
+  },
+  "sha": "22284773990e8666"
+ },
+ "raw/ux-behaviour-audit.webp": {
+  "check": {
+   "findings": [],
+   "pack": "pack.json",
+   "status": "pass",
+   "t": "2026-11-07T11:51:13Z"
+  },
+  "sha": "bb03e607af51357b"
+ },
+ "raw/video-context.webp": {
+  "check": {
+   "findings": [],
+   "pack": "pack.json",
+   "status": "pass",
+   "t": "2026-11-07T11:51:13Z"
+  },
+  "sha": "6b5d845674d9b2e2"
+ },
+ "scene/banner.webp": {
+  "check": {
+   "findings": [],
+   "pack": "world.json",
+   "status": "pass",
+   "t": "2026-11-07T11:51:30Z"
+  },
+  "sha": "c0b38156d21e1634"
+ },
+ "scene/brand-art.webp": {
+  "check": {
+   "findings": [],
+   "pack": "world.json",
+   "status": "pass",
+   "t": "2026-11-07T11:51:30Z"
+  },
+  "sha": "eca1e5234f0652d3"
+ },
+ "scene/design-direction.webp": {
+  "check": {
+   "findings": [],
+   "pack": "world.json",
+   "status": "pass",
+   "t": "2026-11-07T11:51:30Z"
+  },
+  "sha": "784bc1c1a903f1de"
+ },
+ "scene/learn.webp": {
+  "check": {
+   "findings": [],
+   "pack": "world.json",
+   "status": "pass",
+   "t": "2026-11-07T11:51:30Z"
+  },
+  "sha": "c033c19887cbba46"
+ },
+ "scene/moodboard.webp": {
+  "check": {
+   "findings": [],
+   "pack": "world.json",
+   "status": "pass",
+   "t": "2026-11-07T11:51:30Z"
+  },
+  "sha": "34d6c8ac81ea55bf"
+ },
+ "scene/motion-direction.webp": {
+  "check": {
+   "findings": [],
+   "pack": "world.json",
+   "status": "pass",
+   "t": "2026-11-07T11:51:30Z"
+  },
+  "sha": "d8b0363a45aac4dc"
+ },
+ "scene/report-deck.webp": {
+  "check": {
+   "findings": [],
+   "pack": "world.json",
+   "status": "pass",
+   "t": "2026-11-07T11:51:30Z"
+  },
+  "sha": "b4527c2c08493464"
+ },
+ "scene/report-web.webp": {
+  "check": {
+   "findings": [],
+   "pack": "world.json",
+   "status": "pass",
+   "t": "2026-11-07T11:51:30Z"
+  },
+  "sha": "26b7b918d40bf544"
+ },
+ "scene/ux-behaviour-audit.webp": {
+  "check": {
+   "findings": [],
+   "pack": "world.json",
+   "status": "pass",
+   "t": "2026-11-07T11:51:30Z"
+  },
+  "sha": "1e52272cbf6f1fbf"
+ },
+ "scene/video-context.webp": {
+  "check": {
+   "findings": [],
+   "pack": "world.json",
+   "status": "pass",
+   "t": "2026-11-07T11:51:30Z"
+  },
+  "sha": "6906927c74914d95"
+ }
+}

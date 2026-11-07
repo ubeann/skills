@@ -40,7 +40,8 @@ art/<name>/
   },
   "styles": {"recraft": {"style_id": "<uuid>", "model": "recraftv4_1_raster"}},
   "soul_id": null,
-  "checks": {"shape_min": 0.75}
+  "checks": {"shape_min": 0.75},
+  "targets": {"source": ["raw/*.png"], "image": ["out/icon-1024.png"], "layout": ["out/layouts/*.png"]}
 }
 ```
 
@@ -48,6 +49,9 @@ art/<name>/
 - `palette` roles are `dominant`, `secondary`, `accent`, `neutral`; values are `#RRGGBB`.
 - `checks` overrides any default threshold in `check.py` (its source lists them). Loosen one only with a reason in the README.
 - `styles` holds one entry per vendor model: a Recraft style ID works only with the model it was created for.
+- `targets` lists every shipped file by kind, as globs relative to the pack (`../../assets/...` reaches outside it): `source` ships only inside a layout, `image` ships as it is, `layout` is composed. `check.py --handover` reads it; its docstring says which verdicts each kind needs.
+
+`review.json` beside the pack holds the verdicts: `check.py --record`, `compose_check.py --record` and `art-critique`'s `record` each write theirs, pinned to the file's hash. Commit it with the art.
 
 ## Mascot
 
