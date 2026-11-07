@@ -15,6 +15,8 @@ Writes:
   assets/icon-512.png, favicon.ico   the brand icon (the hero, waving)
   assets/cards/<skill>.png           900 x 1200 card: the scene in a window, name, expression and line below
   assets/banner.png                  1280 x 640 banner: the cast scene with the title, by headless Chrome
+  art/cast/out/bare/                 each card and the banner again with its letters hidden, for
+                                     brand-art's compose_check.py --bare (text on the art)
 Run from the repo root. Needs Pillow, numpy and Google Chrome.
 """
 import argparse
@@ -24,7 +26,7 @@ import subprocess
 import tempfile
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image, ImageChops, ImageDraw, ImageFilter
 
 from cutout import cutout
 
@@ -100,16 +102,30 @@ def tile(st, bg, peek, size=1024):
     return out
 
 
+BARE = "<style>*{color:transparent!important;text-shadow:none!important}</style>"
+
+
 def chrome(html, out, w, h):
+    """Render a page to a PNG; whatever the page leaves unpainted stays transparent."""
     with tempfile.NamedTemporaryFile("w", suffix=".html", dir=HERE, delete=False) as f:
         f.write(html)
         page = Path(f.name)
     try:
         subprocess.run([CHROME, "--headless", "--disable-gpu", "--hide-scrollbars", "--force-device-scale-factor=1",
-                        "--virtual-time-budget=4000", f"--window-size={w},{h}", f"--screenshot={out}",
-                        page.as_uri()], check=True, capture_output=True)
+                        "--default-background-color=00000000", "--virtual-time-budget=4000",
+                        f"--window-size={w},{h}", f"--screenshot={out}", page.as_uri()], check=True, capture_output=True)
     finally:
         page.unlink()
+
+
+def render(html, out, w, h, finish):
+    """The layout, then the same layout with its letters hidden, finished the same way."""
+    chrome(html, out, w, h)
+    finish(out)
+    bare = HERE / "out" / "bare" / out.relative_to(ROOT / "assets")
+    bare.parent.mkdir(parents=True, exist_ok=True)
+    chrome(html + BARE, bare, w, h)
+    finish(bare)
 
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
@@ -123,7 +139,7 @@ def card_html(i, skill, c, scene):
     size = 84 if len(skill) <= 11 else 72 if len(skill) <= 16 else 64
     return f"""<!doctype html><meta charset="utf-8">{FONTS}<style>
 *{{margin:0;box-sizing:border-box}}
-html,body{{width:900px;height:1200px;background:#fff}}
+html,body{{width:900px;height:1200px;background:transparent}}
 .face{{position:absolute;inset:16px;border-radius:30px;overflow:hidden;background:{PAPER};border:6px solid {c["colour"]}}}
 .win{{position:absolute;left:18px;right:18px;top:18px;aspect-ratio:1;border-radius:20px;overflow:hidden;border:4px solid {INK}}}
 .win img{{width:100%;height:100%;display:block}}
@@ -157,7 +173,7 @@ def round_card(path, radius=44):
     im = Image.open(path).convert("RGBA")
     m = Image.new("L", (im.width * 4, im.height * 4), 0)
     ImageDraw.Draw(m).rounded_rectangle([0, 0, im.width * 4 - 1, im.height * 4 - 1], radius=radius * 4, fill=255)
-    im.putalpha(m.resize(im.size, R))
+    im.putalpha(ImageChops.multiply(im.getchannel("A"), m.resize(im.size, R)))  # keep Chrome's transparent margin
     im.quantize(256, method=Image.Quantize.FASTOCTREE, dither=Image.Dither.NONE).save(path, optimize=True)
 
 
@@ -186,11 +202,10 @@ def main():
     (ROOT / "assets" / "cards").mkdir(parents=True, exist_ok=True)
     for i, (skill, c) in enumerate(skills.items(), 1):
         card = ROOT / "assets" / "cards" / f"{skill}.png"
-        chrome(card_html(i, skill, c, HERE / "scene" / f"{skill}.webp"), card, 900, 1200)
-        round_card(card)
+        render(card_html(i, skill, c, HERE / "scene" / f"{skill}.webp"), card, 900, 1200, round_card)
     banner = ROOT / "assets" / "banner.png"
-    chrome(banner_html(CAST["banner"], HERE / CAST["banner"]["scene"]), banner, 1280, 640)
-    Image.open(banner).convert("RGB").quantize(256, method=Image.Quantize.FASTOCTREE, dither=Image.Dither.NONE).save(banner, optimize=True)
+    render(banner_html(CAST["banner"], HERE / CAST["banner"]["scene"]), banner, 1280, 640, lambda f: Image.open(f).convert("RGB").quantize(
+        256, method=Image.Quantize.FASTOCTREE, dither=Image.Dither.NONE).save(f, optimize=True))
 
     if args.check:
         W = 140

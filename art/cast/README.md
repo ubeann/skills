@@ -25,6 +25,7 @@ The repo's art: one ink-navy character, dressed for each skill's job. It replace
 | `assets/icon-512.png`, `assets/favicon.ico` | 512 px, 16 to 64 px | the brand icon: the hero on cobalt |
 | `assets/cards/<skill>.png` | 900 x 1200, transparent corners | the cast section of the README, social posts: the scene in a square window, then name, expression and line on a paper plate |
 | `assets/banner.png` | 1280 x 640 | README top, GitHub social preview: `scene/banner.webp` with the title in its calm upper-left sky |
+| `art/cast/out/bare/` | as above | each card and the banner with its letters hidden, for `compose_check.py --bare` (not committed) |
 
 ## Identity
 
