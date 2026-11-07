@@ -26,6 +26,7 @@ Done when the owner picked one layout per target and every figure it places has 
 - **A ground plane first**: horizon and an average-height mark, figures sized from their feet ([video at 4:53](https://www.youtube.com/watch?v=rm0wi0afoKM&t=293s)). A contact shadow under every figure ([video at 1:01:52](https://www.youtube.com/watch?v=rm0wi0afoKM&t=3712s)).
 - **A foreground layer cuts the bodies**: clouds, a desk edge, a crate, blurred, across the bottom ([video at 7:16](https://www.youtube.com/watch?v=KSyVCx8la_w&t=436s)).
 - **Relight cutouts for the scene**: one rim light on the same side of every figure, a ground tint on top. Relighting and a contact shadow ground a cutout; a white sticker outline only isolates it, so keep the sticker for icon tiles.
+- **A generated world gets its own style frame first.** Before a set of scenes, generate one scene in two or three world treatments and have the owner pick; the pick becomes the world reference for every other scene ("the third image shows the world style only"). Without it the world falls back to the model's default: this repo's first test drew a generic floating island with a dirt cliff, scratchy hatching and earthy colours under a flat-shaded character, and read as a stock diorama. The rules that matched it to the character: the character's own outline weight on every object, two flat tones per surface, at most five world colours, no texture, grain or gradients.
 - **A scene can be generated whole and split.** One master image, then background, figures and a near-camera corner cut into layers: "a space, not a slide" ([video at 4:42](https://www.youtube.com/watch?v=Zk4Qzd-NJ_0&t=282s)). Collage from separate cutouts when every figure must stay exact.
 
 ### Value and colour
@@ -49,6 +50,7 @@ Done when the owner picked one layout per target and every figure it places has 
 
 ### Text
 
+- **Text sits on its own plate when the art is generated.** A prompt's empty zone is a request: a sun and a cloud landed under the title on two of three tests. A window for the art and a plate for the name, label and line cannot collide.
 - Text sits in a calm safe zone and is never generated; the type and its scale come from `DESIGN.md` when one exists.
 - The character can enter the type: eyes in a letter's counter, a prop replacing a letter ([post](https://x.com/adrianabelarde/status/2117896840633098515)).
 
