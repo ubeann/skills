@@ -8,19 +8,9 @@
     ]
   },
   "banner": {
-    "back": [
-      "learn",
-      "video-context",
-      "design-direction",
-      "brand-art"
-    ],
-    "front": [
-      "report-web",
-      "ux-behaviour-audit",
-      "report-deck",
-      "moodboard",
-      "motion-direction"
-    ]
+    "scene": "scene/banner.webp",
+    "tagline": "A curated kit of Claude Code skills for design, reports and research.",
+    "url": "github.com/ubeann/skills"
   },
   "skills": {
     "report-deck": {
@@ -32,7 +22,9 @@
         0.62,
         0.1,
         -8
-      ]
+      ],
+      "expression": "proud",
+      "line": "Your data, paged and ready to present."
     },
     "report-web": {
       "colour": "#ffd23f",
@@ -43,7 +35,9 @@
         0.58,
         0.1,
         -8
-      ]
+      ],
+      "expression": "focused",
+      "line": "One file. Every chart. Opens offline."
     },
     "learn": {
       "colour": "#3ecf8e",
@@ -54,7 +48,9 @@
         0.56,
         0.06,
         -8
-      ]
+      ],
+      "expression": "curious",
+      "line": "Every answer comes with its sources."
     },
     "video-context": {
       "colour": "#ff5fa2",
@@ -65,7 +61,9 @@
         0.56,
         0.06,
         -8
-      ]
+      ],
+      "expression": "delighted",
+      "line": "I watched the whole thing so you don't have to."
     },
     "ux-behaviour-audit": {
       "colour": "#14b8a6",
@@ -76,7 +74,9 @@
         0.56,
         0.08,
         -8
-      ]
+      ],
+      "expression": "suspicious",
+      "line": "I follow the clicks, not the opinions."
     },
     "design-direction": {
       "colour": "#8b5cf6",
@@ -87,7 +87,9 @@
         0.56,
         0.08,
         -8
-      ]
+      ],
+      "expression": "determined",
+      "line": "Pick the direction before the pixels."
     },
     "moodboard": {
       "colour": "#d9a066",
@@ -98,7 +100,9 @@
         0.56,
         0.1,
         -8
-      ]
+      ],
+      "expression": "happy",
+      "line": "Every reference earns its pin."
     },
     "brand-art": {
       "colour": "#ef3b36",
@@ -109,7 +113,9 @@
         0.56,
         0.06,
         -8
-      ]
+      ],
+      "expression": "smug",
+      "line": "One character. Every image. Same face."
     },
     "motion-direction": {
       "colour": "#b6e33b",
@@ -120,7 +126,9 @@
         0.5,
         0.08,
         -8
-      ]
+      ],
+      "expression": "laughing",
+      "line": "Everything moves on the beat, then rests."
     }
   }
 }
