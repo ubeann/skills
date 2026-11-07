@@ -1,0 +1,52 @@
+{
+ "name": "cast",
+ "version": 1,
+ "family": "mascot",
+ "hero": "hero/hero-v1.webp",
+ "sheet": [
+  "sheet/face-kit.webp"
+ ],
+ "identity_text": "This exact character: a dark ink navy blob body with two-tone cel shading (lighter navy on the upper left, deeper navy underneath), a hand-inked outline thick outside and thin inside, big white round eyes with black pupils and tiny shine dots, white eyebrow strokes, a mouth drawn in white or open with a dark interior and red tongue, short navy tube arms ending in white mitten hands, short navy legs, white rounded shoes.",
+ "palette": {
+  "dominant": [
+   "#1a2046"
+  ],
+  "secondary": [
+   "#ff6b35",
+   "#ffd23f",
+   "#3ecf8e",
+   "#ff5fa2",
+   "#14b8a6",
+   "#8b5cf6",
+   "#d9a066",
+   "#ef3b36",
+   "#b6e33b"
+  ],
+  "accent": [
+   "#e5483e"
+  ],
+  "neutral": [
+   "#141414",
+   "#ffffff",
+   "#f6f1e7"
+  ]
+ },
+ "targets": {
+  "source": [
+   "raw/*.webp",
+   "scene/*.webp"
+  ],
+  "layout": [
+   "../../assets/cards/*.png",
+   "../../assets/banner.png"
+  ]
+ },
+ "checks": {
+  "shape_min": 0.4,
+  "texture_ratio": [
+   0.6,
+   4.5
+  ],
+  "loud_max": 0.55
+ }
+}

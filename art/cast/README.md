@@ -62,6 +62,8 @@ The first scene test drew each costume on a floating island with a dirt cliff, h
 | Sticker | icon tiles and the favicon get a white outline with a thin ink rim (`build.py`), so the navy body reads on dark grounds; scenes need none |
 | Composition | tile: peek crop, tilted 8 degrees, on the skill colour mixed 55% with white; card: the scene in a square window with an ink border, the number in a skill-colour disc, name, expression chip and line on a paper `#f6f1e7` plate below, the skill colour as the card's rim; banner: the cast around one giant open toolbox in the valley sky, the plain hero on the lid as the lead, the title in the calm upper-left third |
 
+`pack.json` scores the costumes against the plain hero and `world.json` scores the scenes against the world frame (`scene/design-direction.webp`). The costume pack loosens three thresholds, because a costume changes the measured silhouette, detail and saturation by design: `shape_min` 0.4 (the metronome and the slide board take the silhouette down to 0.41 and 0.46), `texture_ratio` up to 4.5 (props add detail to a plain hero; the explorer measured 4.35), `loud_max` 0.55 (the tomato suit is 52% saturated, as the costume rule asks). Whether a costume still holds the character is `art-critique`'s Identity held axis.
+
 | Skill | Costume | Expression | Colour |
 |---|---|---|---|
 | report-deck | the presenter: slide board with a bar chart, pointer | proud | tomato `#ff6b35` |
