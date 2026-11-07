@@ -142,15 +142,15 @@ def card_html(i, skill, c, scene):
 html,body{{width:900px;height:1200px;background:transparent}}
 .face{{position:absolute;inset:16px;border-radius:30px;overflow:hidden;background:{PAPER};border:6px solid {c["colour"]}}}
 .win{{position:absolute;left:18px;right:18px;top:18px;aspect-ratio:1;border-radius:20px;overflow:hidden;border:4px solid {INK}}}
-.win img{{width:100%;height:100%;display:block}}
+.win img{{width:100%;height:100%;display:block;transform:scale(1.12);transform-origin:50% 100%}}
 .idx{{position:absolute;left:34px;top:34px;width:66px;height:66px;border-radius:50%;background:{c["colour"]};
 border:4px solid {INK};display:grid;place-items:center;font:800 28px/1 'Bricolage Grotesque';color:{INK}}}
 .plate{{position:absolute;left:18px;right:18px;bottom:18px;top:812px;display:flex;flex-direction:column;align-items:center;
-justify-content:center;gap:14px;padding:0 24px 22px;text-align:center;color:{INK}}}
+justify-content:center;gap:16px;padding:22px 24px 26px;text-align:center;color:{INK}}}
 h1{{font:800 {size}px/0.95 'Bricolage Grotesque';letter-spacing:-.035em}}
-.chip{{padding:7px 16px;border-radius:99px;background:{c["colour"]};border:3px solid {INK};font:800 19px/1.1 'Bricolage Grotesque';
-letter-spacing:.1em;text-transform:uppercase}}
-.line{{font:600 28px/1.2 'Bricolage Grotesque';text-wrap:balance}}
+.chip{{padding:8px 22px;border-radius:99px;background:{c["colour"]};border:3px solid {INK};font:800 32px/1.1 'Bricolage Grotesque';
+letter-spacing:.08em;text-transform:uppercase}}
+.line{{font:600 38px/1.15 'Bricolage Grotesque';text-wrap:balance}}
 </style>
 <div class="face"><div class="win"><img src="{scene.as_uri()}"></div><div class="idx">{i:02d}</div>
 <div class="plate"><h1>{name}</h1><span class="chip">{c["expression"]}</span><span class="line">&ldquo;{c["line"]}&rdquo;</span></div></div>"""
@@ -166,6 +166,13 @@ h1{{position:absolute;left:64px;top:92px;font-weight:800;font-size:150px;line-he
 p{{position:absolute;left:70px;top:242px;font-weight:600;font-size:30px;line-height:1.25;max-width:420px;text-wrap:balance}}
 .u{{position:absolute;left:70px;top:372px;padding:8px 16px;border-radius:99px;background:{INK};color:#fff;font-weight:600;font-size:20px}}
 </style><h1>skills</h1><p>{b["tagline"]}</p><div class="u">{b["url"]}</div>"""
+
+
+def full_colour(path):
+    """The banner stays full colour: 256 colours band its gradient sky, dithering puts noise everywhere a
+    bare render has to be compared against, and the full-colour PNG is about 600 KB, inside GitHub's 1 MB
+    social-preview limit."""
+    Image.open(path).convert("RGB").save(path, optimize=True)
 
 
 def round_card(path, radius=44):
@@ -204,8 +211,7 @@ def main():
         card = ROOT / "assets" / "cards" / f"{skill}.png"
         render(card_html(i, skill, c, HERE / "scene" / f"{skill}.webp"), card, 900, 1200, round_card)
     banner = ROOT / "assets" / "banner.png"
-    render(banner_html(CAST["banner"], HERE / CAST["banner"]["scene"]), banner, 1280, 640, lambda f: Image.open(f).convert("RGB").quantize(
-        256, method=Image.Quantize.FASTOCTREE, dither=Image.Dither.NONE).save(f, optimize=True))
+    render(banner_html(CAST["banner"], HERE / CAST["banner"]["scene"]), banner, 1280, 640, full_colour)
 
     if args.check:
         W = 140
