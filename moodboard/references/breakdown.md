@@ -27,12 +27,14 @@ A board gives each reference one of these, and each job one reference.
 | `motion` | how something moves or changes state |
 | `copy` | voice and tone |
 
+An AI-generated image never takes the `palette` job or any job about light: its light was invented, not observed ([video at 8:40](https://www.youtube.com/watch?v=akVAWghc_KE&t=520s)). References on one board agree in line, texture and edge; a clean line taken from one and a rough texture from another read as two styles ([video at 8:02](https://www.youtube.com/watch?v=RQA_t-H_ZKM&t=482s)).
+
 ## Technique vocabulary
 
 Use an existing tag when it fits, so the trend count works; add a new one only for a technique none of these name, in lowercase with hyphens, and add it to this list in the same change.
 
 - **Rendering**: `flat-vector`, `flat-grain`, `soft-3d`, `clay`, `glass`, `painterly`, `gouache`, `watercolour`, `grain-print`, `risograph`, `halftone`, `dither`, `engraving`, `line-art`, `pixel`, `paper-cut`, `collage`, `photo-cutout`, `gradient-mesh`, `rubber-hose`, `svg-plane-extrude`
-- **Character**: `mascot-icon`, `mascot-empty-state`, `kawaii`, `blob-character`, `object-with-face`, `character-family`, `emanata`, `face-kit`, `mascot-presentation-sheet`
+- **Character**: `mascot-icon`, `mascot-empty-state`, `kawaii`, `blob-character`, `object-with-face`, `character-family`, `emanata`, `face-kit`, `mascot-presentation-sheet`, `costume-cast`
 - **Composition**: `image-behind-type`, `peek-crop`, `full-bleed-scene`, `single-object-on-sky`, `torn-edge`, `sticker-outline`, `centred-subject`, `ip-poster-system`, `faux-ui`
 - **Interaction and motion**: `time-of-day`, `scroll-reveal`, `cursor-reactive`, `state-morph`, `character-reaction`, `celebration`, `kinetic-type`, `one-container`, `token-snap`, `launch-film`, `svg-animation`
 - **Type**: `serif-display`, `grotesk-tight`, `mono-accent`, `mixed-serif-sans`
@@ -55,6 +57,7 @@ A stretch under five seconds gets its own trimmed run at `INTERVAL=0.1`. From th
 | `transitions` | cut, cross-fade, push, mask, shared element, morph, one container that never cuts |
 | `states` | for a character or control: the states seen and whether each returns to rest |
 | `sound` | whether cuts and entrances land on a beat |
+| `staging` | per shot: where the subject sits, where the light comes from, how many depth layers, the camera move, and the words on screen ([video at 3:45](https://www.youtube.com/watch?v=Zk4Qzd-NJ_0&t=225s)) |
 
 `motion-direction` reads these when it writes a beat sheet: each duration is snapped to the project's tokens there, and the reference's characters, copy and scenes stay out.
 

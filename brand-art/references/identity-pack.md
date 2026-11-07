@@ -57,6 +57,7 @@ art/<name>/
 4. **Expressions**: one per product state the mascot will appear in, generated from the front panel: neutral, happy (success), thinking (loading), surprised, sorry (error), working (empty state). Give each its **emanata**, the marks drawn around the character (motion lines, sparkles, a steam puff, a sweat drop): at icon and notification sizes the face is a few pixels and the marks carry the emotion. Fix their line weight and colour in the identity text so every expression draws them the same way.
 5. **Face kit**: the eye and mouth shapes the expressions are built from, drawn once (open, closed, happy arcs, wide, the mouths the states need; none for a mouthless mascot) and saved as `sheet/face-kit.png`. A new expression combines shapes from the kit, which is what keeps a large expression set reading as one face.
 6. **Base construction**: when several mascots form a family, they share the eye and face design, the line and the rendering, and differ in silhouette and colour.
+7. **One character, many costumes**: a single hero dressed per job, each costume generated from the hero alone with the costume, its pose and a kit expression as the one change, under the rules in the art bible's Costumes and casts. In this repo's cast, 9 of 9 costumes held identity on the first call (`gpt_image_2_medium` through Recraft's `image_edit`).
 
 Ask for one figure per image; a sheet given as a reference is copied as a layout unless the prompt says the sheet is for identity only.
 
@@ -93,6 +94,7 @@ An app icon wins on appeal and clarity, so a character beats an abstract mark ([
 - **Few details** on the subject, so it reads at 29 px.
 - **Contrast as high as the palette allows**; add an outline and a drop shadow when the subject does not separate from the background.
 - **Peek crop**: tilt the subject and let it enter from an edge so only part shows. The eye goes to the face, and small flaws fall outside the frame.
+- **A face, not a body**: the silhouette fills 65 to 80% of the tile and crops through the bottom edge, unless the shape is closed (a star, a flame). The eyes look off-centre; a straight stare reads as the generic default ([post](https://x.com/ktnr23/status/2118102254360182971)).
 
 Before generating, collect about 20 icons from the product's category (the top results of an App Store search for its job: `curl 'https://itunes.apple.com/search?entity=software&limit=25&term=<job>'` returns each app's `artworkUrl512`) into `art/<name>/rivals/`, and write in the README what the category is crowded with: one shared colour, the same symbol, the same gradient. The icon claims what none of them holds.
 
@@ -113,7 +115,7 @@ Done when both tests pass at 60 and 29 px on both grounds.
 
 What the people who use the art read, so they pick the right file without asking. Write `art/<name>/handover.md` and its image `handover.png`:
 
-- **Sheet**: the hero large; the palette as a strip of swatches with hex and role; each state pose with the name of the place it is used (empty state, loading, success), never only the emotion; the face kit for a mascot.
+- **Sheet**: the hero largest, showing the character's primary trait rather than a neutral stance; the other poses smaller, overlapping, each at a new angle; short do and don't notes beside the parts that drift (hands, eye shape); a small lineup for scale ([video at 1:43](https://www.youtube.com/watch?v=qO1DZCi27Xg&t=103s)); the palette as a strip of swatches with hex and role; each state pose with the name of the place it is used (empty state, loading, success), never only the emotion; the face kit for a mascot.
 - **In place**: the art in two or three of its real placements, at their sizes (an icon on a home screen, an empty state in the product, a social card).
 - **Files**: one row per file in `out/`, named by where it goes (`icon-1024.png` for the store, `favicon.ico` for the site, `empty-state@2x.webp`), with its size and format, and what goes to a printer and how it is checked first (a physical proof before a run).
 - **Rules**: the identity text, and what the art never does (the features it rules out).

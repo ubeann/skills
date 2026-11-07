@@ -52,6 +52,21 @@ Agents miss single-frame faults that a person sees at once, so open the frames a
 
 Apply `review-animations`' ten standards to the changed motion code. That skill is user-invoked, so read its file instead of calling it: `~/.agents/skills/review-animations/SKILL.md`, and its `STANDARDS.md` when a finding needs a value. The project's tokens and decision records win where the two disagree.
 
+## Video numbers
+
+A video or animated scene also passes these, each a count, not a taste ([video at 6:48](https://www.youtube.com/watch?v=Zk4Qzd-NJ_0&t=408s)):
+
+| Check | Passes when |
+|---|---|
+| Text size | every line is at least 4.5% of the frame height |
+| Read time | each line stays on screen at least its character count divided by 15, in seconds |
+| Frame edge | nothing slides off the edge by accident, and the camera never jerks |
+| Depth | each shot has a background, a subject and a near layer; a flat card with fading text is "a slide that wiggles" ([video at 3:34](https://www.youtube.com/watch?v=Zk4Qzd-NJ_0&t=214s)) |
+| Fonts | every glyph the copy uses exists in the chosen font, so no fallback font slips in |
+| Default look | none of the generic AI-video set: navy with gold, tiny widely spaced capitals, glowing lines, floating dust, words blurring in one at a time, Space Grotesk, Inter or a monospace label font, dot separators, invented codes like "FIG. 03" ([video at 1:21](https://www.youtube.com/watch?v=Zk4Qzd-NJ_0&t=81s)) |
+
+Findings that block release come first, each with its timestamp and fix. One defect means checking every similar shot for it.
+
 ## Drift
 
 Rerun the inventory with `--json` and compare it with step 1's run:

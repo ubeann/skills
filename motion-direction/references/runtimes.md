@@ -14,6 +14,8 @@ Pick the cheapest runtime that does the job, and only one per job. A decision re
 | Line art drawing itself in | SVG `stroke-dashoffset` in CSS | | |
 | Scroll-linked progress or reveal | CSS scroll-driven animations behind `@supports` | pinning, scrubbed choreography across sections, split text | GSAP ScrollTrigger |
 | Interactive or stateful character, illustration with states | Rive | | |
+| A character acting in a fixed loop (walk, cheer, idle) in a hero or a video | generated video from the hero still (below) | it must react to input | Rive |
+| A character moved by touch or gravity | the static SVG with physics in code (below) | | |
 | A loop or loader reused across web and native | dotLottie | web only | CSS or SVG |
 | Launch video, social clip, product explainer | HyperFrames | the team writes React video | Remotion |
 | A flat mascot or mark turning in depth | SVG plane stack (below) | it must turn all the way round or take real light | Three.js |
@@ -70,6 +72,17 @@ GSAP's skills tell the agent to recommend GSAP whenever no library is named, so 
 ## SVG plane stack
 
 Depth from a flat shape with no 3D runtime ([post](https://x.com/dom_scholz/status/2117683798678835316)): each subpath of the character's SVG (each `M` command starts one) becomes a part; each part is copied into many flat planes stacked front to back with CSS 3D transforms (`transform-style: preserve-3d`, a `translateZ` step per plane). Filled in one flat colour, the planes merge into a solid with no visible seams. Plane spacing sets the thickness, and the part with the eyes sits on the front plane. Past about 45° the stack shows its slices edge-on, so turning further swaps in side planes or stops there. Each frame then moves a few transforms on the whole stack, so it costs what a CSS transition costs. It suits flat-vector mascots from `brand-art`; shaded or soft-3D art reads as a stack of cutouts.
+
+## Generated character loops
+
+Code moves a character's parts as rigid pieces, and it reads as "a puppet with sticks" ([video at 10:13](https://www.youtube.com/watch?v=Rk6t9Uq1y9M&t=613s)). For a loop that never reacts:
+
+- **Image to video from the approved still**, with a reference clip for the motion and the exact stretch of it to copy (motion transfer) ([video at 11:42](https://www.youtube.com/watch?v=Rk6t9Uq1y9M&t=702s)).
+- **Generate on flat green**, key it out and encode with alpha: a 10.4 MB clip became a 1.6 MB transparent WebM ([video at 12:58](https://www.youtube.com/watch?v=Rk6t9Uq1y9M&t=778s)). Ship WebM with alpha, plus HEVC with alpha for Safari, and the still as the reduced-motion fallback.
+- **Draft at 480p**, then render or upscale only the approved take.
+- Score the frames against the hero with `brand-art`'s `check.py` as you would any image: video models drift the face first.
+
+For a character moved by touch, tilt or gravity, keep it one static vector and let code move it whole, and tell the coding agent "Use my character image exactly as attached. Don't redraw it." ([video at 17:14](https://www.youtube.com/watch?v=Rk6t9Uq1y9M&t=1034s)).
 
 ## Rive for a stateful character
 

@@ -1,6 +1,6 @@
 ---
 name: brand-art
-description: Make a product's mascots, illustration sets, scene and background art, and app icons that keep one identity across every image, through Recraft or Higgsfield. Locks an art bible and an identity pack (the owner's seed, an approved hero, a turnaround, fixed identity text, palette, style IDs) before generating, changes one thing per call, cleans the files (WebP, SVG backgrounds, palette snap, texture, edge, sizes) and scores every image for drift against the hero. Use when generating illustrations, a mascot or character, landscapes or backgrounds, or an app icon, when AI art looks generic or loses its identity, or to compare image vendors. UI tokens are design-direction; collecting and breaking down references is moodboard; logo marks are ui-ux-pro-max:design; assets cut from an approved mockup are impeccable; animating the art is motion-direction.
+description: Make a product's mascots, illustration sets, scene and background art, and app icons that keep one identity across every image, through Recraft or Higgsfield, and compose them into banners and cards. Locks an art bible and an identity pack (the owner's seed, an approved hero, a turnaround, fixed identity text, palette, style IDs) before generating, changes one thing per call, cleans the files (WebP, SVG backgrounds, palette snap, texture, edge, sizes), scores every image for drift against the hero, and checks each composed layout for a lead figure and figure-ground contrast. Use when generating illustrations, a mascot or character, landscapes or backgrounds, or an app icon, when composing a banner, card set or social image from a cast, when AI art looks generic or loses its identity, or to compare image vendors. UI tokens are design-direction; collecting and breaking down references is moodboard; logo marks are ui-ux-pro-max:design; assets cut from an approved mockup are impeccable; animating the art is motion-direction.
 ---
 
 # Brand art
@@ -20,7 +20,7 @@ Read `DESIGN.md` and `PRODUCT.md` when they exist; the palette and adjectives st
 - **scene**: landscapes, hero backgrounds, banners.
 - **icon**: an app icon, usually built from the mascot.
 
-List every target surface with its size and format (a 1024 app icon, a 1200x630 social card, art printed 34 mm wide). Check vendor access and credits: `higgsfield account` for Higgsfield, `get_user` on the Recraft MCP. `references/vendors.md` has setup for both. Create `art/<name>/` with the folders `references/identity-pack.md` lists.
+List every target surface with its size and format (a 1024 app icon, a 1200x630 social card, art printed 34 mm wide). A composed target (a banner, a card set) also names the figures it places; step 8 decides their poses. Check vendor access and credits: `higgsfield account` for Higgsfield, `get_user` on the Recraft MCP. `references/vendors.md` has setup for both. Create `art/<name>/` with the folders `references/identity-pack.md` lists.
 
 Done when the family, every target with size and format, and each vendor's credit balance are written in `art/<name>/README.md`.
 
@@ -38,7 +38,7 @@ Done when `art/<name>/seed/` holds at least one file the owner made or picked, w
 
 ### 4. Build the identity pack
 
-Follow `references/identity-pack.md` for the family: generate the hero from the seed and the bible, get the owner's approval, then build the sheet (a mascot's turnaround and expressions, or a set's two siblings and its custom style). Write `pack.json`, then validate it and score the sheet against the hero:
+Follow `references/identity-pack.md` for the family: generate the hero from the seed and the bible, get the owner's approval, then build the sheet (a mascot's turnaround and expressions, or a set's two siblings and its custom style). Build each expression from a formula in `references/expressions.md`. Write `pack.json`, then validate it and score the sheet against the hero:
 
 ```sh
 python3 <skill-dir>/references/check.py --pack art/<name>/pack.json
@@ -77,7 +77,13 @@ Render the result in chat: the `check.py` table, then each finding with its fix,
 
 Done when every image passes or has a finding with its fix, and `drift.png` has been looked at.
 
-### 8. Hand over
+### 8. Compose
+
+For a target built from several figures or with text (a banner, a card set, a social image), run the layout round in `references/compose.md`: one composition reference, two or three greyscale layouts for the owner, the poses the pick needs, then the build and `references/compose_check.py`.
+
+Done when `references/compose.md`'s criterion holds for every composed target.
+
+### 9. Hand over
 
 Build the handover sheet and file table in `references/identity-pack.md` (Handover). An icon also passes the lineup tests in that file's Icon section before handover.
 
