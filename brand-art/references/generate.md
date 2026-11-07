@@ -31,7 +31,7 @@ Each call changes **one** thing from its reference: the pose, then the prop, the
 
 For every target the owner chooses between (a hero, a world style frame, a banner, the first card of a set), the owner sees a ranked shortlist, never a raw batch:
 
-1. **Draft** three or four candidates from one prompt in one call (`n` on Recraft's `generate_image` and `image_edit`), on the draft model in `references/vendors.md`. Until a comparison there names a cheaper draft model, draft on the final one. Quote `n` times the rate first.
+1. **Draft** three or four candidates from one prompt in one call (`n` on Recraft's `generate_image` and `image_edit`) on a draft model from `references/vendors.md`: `gpt_image_2_low` with the hero for poses and expressions (each image tends to come back as a sheet of several poses), `recraftv4_1_flash_raster` for layouts that need no identity. Quote `n` times the rate first. A pick from a pose sheet is redrawn alone on the final model in step 4.
 2. **Rank.** Run `check.py` on each, then the `art-critique` skill in a fresh subagent, handing it the candidates, the bible, the hero and the benchmark as paths and nothing else: no prompt, no plan, no opinion of yours. It drops every candidate it would regenerate and ranks the rest two at a time.
 3. **Shortlist.** Show the owner the top two large, each with the critic's findings and its one change, and the others small beneath. When the critic drops every candidate, make the change its findings name (one change) and draft again; a round where nothing passed never reaches the owner.
 4. **Finish the pick.** A pick drafted on a cheaper model or quality is redrawn on the final model as an edit of the pick, with "keep everything, final quality" as the one change, and critiqued again.

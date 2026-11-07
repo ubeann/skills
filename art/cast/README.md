@@ -15,6 +15,7 @@ The repo's art: one ink-navy character, dressed for each skill's job. It replace
 | `cutout.py` | removes the plain white background, keeping enclosed whites (eyes, shoes, mittens) |
 | `build.py` | builds everything below from the sources; `out/` is its cache and is not committed |
 | `rounds/` | contact sheets of the exploration rounds |
+| `next/` | images the blind critique passed, waiting on the fix round: the art-critique costume and its scene, and the banner with the collector's pin board restored |
 | `log.jsonl` | one line per generation call, with model and credits (exploration files it names were replaced by `rounds/`) |
 
 `python3 art/cast/build.py --check <png>` writes:
@@ -104,5 +105,6 @@ One gotcha stays with this folder: `cutout.py` floods from the border over light
 | 5 | 28 | three cards and the banner as generated scenes | scenes, not collages; the island world reads generic |
 | 6 | 28 | one card in three world treatments, the banner redrawn flat | B: a full-bleed scene in the character's own style |
 | 7 | 63 | nine card scenes in that world | shipped, with the text on a plate below the art |
+| 8 | 126 | model comparison: a costume, a card scene, one banner fix and pose thumbnails on five models, ranked blind by `art-critique` | `gpt_image_2_medium` for costumes, `gpt_image_2p5_sunburst` for scenes and fixes, `gpt_image_2_low` for pose sheets; results in `brand-art`'s vendors file |
 
-Balance: 911 credits before the pilot, 714 after its final round, 595 after round 7. That is 7 more than the logged calls add up to: the first face-kit call was interrupted, `get_user` showed no charge right after, and it was most likely billed later.
+Balance: 911 credits before the pilot, 714 after its final round, 595 after round 7, 469 after round 8. That is 7 more than the logged calls add up to: the first face-kit call was interrupted, `get_user` showed no charge right after, and it was most likely billed later.
