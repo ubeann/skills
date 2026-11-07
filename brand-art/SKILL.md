@@ -38,7 +38,7 @@ Done when `art/<name>/seed/` holds at least one file the owner made or picked, w
 
 ### 4. Build the identity pack
 
-Follow `references/identity-pack.md` for the family: generate the hero from the seed and the bible, get the owner's approval, then build the sheet (a mascot's turnaround and expressions, or a set's two siblings and its custom style). Write `pack.json`, then validate it and score the sheet against the hero:
+Follow `references/identity-pack.md` for the family: generate the hero from the seed and the bible, get the owner's approval, then build the sheet (a mascot's turnaround and expressions, or a set's two siblings and its custom style). Build each expression from a formula in `references/expressions.md`. Write `pack.json`, then validate it and score the sheet against the hero:
 
 ```sh
 python3 <skill-dir>/references/check.py --pack art/<name>/pack.json

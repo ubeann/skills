@@ -52,6 +52,9 @@ Higgsfield's model catalogue changes; `higgsfield model list` and `higgsfield mo
 - `image_edit` edits by instruction, but only through other vendors' models (Nano Banana, GPT Image, Flux Kontext), billed in Recraft credits.
 - `create_style` asked for `recraftv4_raster` reports the style as `recraftv4_1_raster`; generate with the model the style reports.
 - Chrome stores WebP inside a PDF uncompressed; export print art as JPEG.
+- `image_edit` per image, measured on one prompt (2026-11-04): Recraft V4.1 vector 4 credits, `gpt_image_2_medium` 7, Nano Banana 2 11, Nano Banana Pro 20. `gpt_image_2_medium` drew objects people recognise and held one character through nine costumes; the vector model's objects drifted (a slide stack read as pancakes).
+- The MCP spends the plan's credits; a REST API key has its own balance (0 on that plan), so a key does not unlock the MCP's credits. When the MCP fails to connect in one session, a delegated fresh session connected.
+- A call dropped in transport can still be billed, minutes later. Read `get_user` before a retry and again after the round.
 
 ## Higgsfield
 
@@ -93,4 +96,6 @@ higgsfield generate create nano_banana_2 \
 
 Run each as an arm of the vendor comparison in `references/generate.md` before routing work to it.
 
+- **Draft low, upscale the pick.** A cheap model at 480p plus an upscale of the chosen image cost about a quarter of generating every draft at full size ([video at 13:16](https://www.youtube.com/watch?v=Rk6t9Uq1y9M&t=796s)).
+- **Nano Banana Pro through Google's API** at about $0.134 per image is cheaper than a $59 monthly plan below roughly 440 images a month ([video](https://www.youtube.com/watch?v=Zk4Qzd-NJ_0)).
 - **QuiverAI** generates illustration as native SVG (seen in [@DannPetty's post](https://x.com/DannPetty/status/2117708396153479626), 2026-11-04, where the SVG was then animated in Claude). If its paths hold the pack's identity, it competes with the Recraft vector model for flat art that `motion-direction` will animate, since the parts arrive as paths instead of through `vectorize_image`.

@@ -29,9 +29,13 @@ Each call changes **one** thing from its reference: the pose, then the prop, the
 
 **Hero or chain.** Practitioners disagree on whether each image should come from the hero or from the previous approved image. Start every image from the hero; switch a run to chaining only when hero-based images keep failing the same check, and record which worked in the README.
 
+## Poses
+
+Describe the movement before the costume: the line of action and its energy, then the camera angle, then what the character wears ([video at 1:15](https://www.youtube.com/watch?v=t-8FuHla3H0&t=75s)). Vary the camera across a set ([video at 3:14](https://www.youtube.com/watch?v=t-8FuHla3H0&t=194s)). Tension comes from a lowered head, raised shoulders, straight arms and a curved spine ([video at 8:31](https://www.youtube.com/watch?v=t-8FuHla3H0&t=511s)); when a costume forces a calm pose, push the camera instead of the limbs ([video at 9:46](https://www.youtube.com/watch?v=t-8FuHla3H0&t=586s)). Faces follow `expressions.md`.
+
 ## Thumbnail round
 
-Before a hero exists: four to six silhouettes on the cheapest model and quality, small, flat, no detail, as a gallery. The owner picks a silhouette and a direction, not a finished image. Sketching first keeps creative control; without a silhouette the model gives you something random.
+Before a hero exists: four to six silhouettes on the cheapest model and quality, small, flat, no detail, as a gallery, numbered so the owner can answer with a number. Each differs from the last in its main shape. A family is judged as a lineup of three or more in one image: fit across a cast does not show in single images. The owner picks a silhouette and a direction, not a finished image. Sketching first keeps creative control; without a silhouette the model gives you something random.
 
 ## Where the mascot appears
 

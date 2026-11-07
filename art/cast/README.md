@@ -71,24 +71,9 @@ Model: `gpt_image_2_medium` through Recraft's `image_edit`, 1:1, 7 credits per i
 
 ## Notes for the brand-art skill
 
-Kept for the skill update after the pilot. The owner is collecting more material on mascot design first.
+What the pilot taught is now in the `brand-art` skill (2026-11-07): face formulas in `references/expressions.md`, costume and dark-body rules in the art bible, the costume pattern and sheet layout in the identity pack, Recraft costs and billing in the vendors file, and the layout round with `compose_check.py` in `references/compose.md`, after the banner and cards here shipped without one.
 
-- **Expression theory.** The skill asks for a face kit and emanata but does not teach how to build them. Add `brand-art/references/expressions.md`:
-  - Brows are the strongest signal: inner ends up for worry or sadness, down for anger or focus, one raised for doubt or curiosity (Ekman's FACS; Scott McCloud, *Making Comics*).
-  - Lids cut the eye white: a lowered top lid reads bored, smug or tired; a raised bottom lid reads happy; a flat top lid over the pupil reads angry (Preston Blair, *Cartoon Animation*).
-  - Pupils: direction is attention, size is intensity (tiny means shock).
-  - Mouth: shape plus interior (dark inside, teeth, red tongue); asymmetry makes it alive.
-  - Emanata carry the emotion at icon size: sweat drop, anger vein, question mark, sparkles, Zz, a flush (Mort Walker, *The Lexicon of Comicana*).
-  - McCloud's six basic emotions (joy, surprise, fear, sadness, anger, disgust), mixed, cover most sticker expressions.
-  - One face formula per state (brows, lids, pupils, mouth, mark) generated all 16 of `sheet/face-kit.webp` correctly in one call.
-- **Pose theory.** One line of action, squash and stretch, a silhouette that reads filled black, one idea per image (Disney's 12 principles; Blair).
-- **Model sheet.** The owner's juice-box reference is the target layout: construction, turnaround, face kit, props, walk cycle on one sheet.
-- **Rendering on a dark body.** Two-tone cel shading on navy is subtle but the owner preferred it to flat; props on a dark body need bright colours, since a navy notebook and a blue chair vanished.
-- **One character, many costumes.** A single hero changed by costume per skill held identity on `gpt_image_2_medium` `image_edit` from one reference, 9 of 9 on the first try. The skill's mascot section assumes one mascot or a family of different mascots; add the costume-cast pattern.
-- **Vendors.** Recraft MCP spends subscription credits; the REST API has its own balance (0 here), so an API key does not unlock the MCP's credits. When the MCP fails to connect in one session, a delegated fresh session connects. Measured costs: Recraft V4.1 vector 4, GPT Image 2 medium 7, Nano Banana 2 11, Nano Banana Pro 20. A call dropped mid-transport can still be charged; check `get_user` before retrying.
-- **Rounds by lineup.** Judging three characters in one image showed family fit that single images could not.
-- **Build, do not generate, the layout.** Tiles, cards and the banner are composed from cutouts in code (`build.py`), so text is never garbled and every figure stays exact. The skill's handover step could ship a template like it.
-- **Cutouts.** A flood fill from the border over light, unsaturated pixels removes a plain white ground and the soft shadow and keeps enclosed whites; `Image.fromarray` can share a read-only buffer, so copy before `ImageDraw.floodfill`.
+One gotcha stays with this folder: `cutout.py` floods from the border over light, unsaturated pixels, which removes the white ground and the soft shadow and keeps enclosed whites; `Image.fromarray` can share a read-only buffer, so it copies before `ImageDraw.floodfill`.
 
 ## Rounds
 
