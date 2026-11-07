@@ -15,7 +15,6 @@ The repo's art: one ink-navy character, dressed for each skill's job. It replace
 | `cutout.py` | removes the plain white background, keeping enclosed whites (eyes, shoes, mittens) |
 | `build.py` | builds everything below from the sources; `out/` is its cache and is not committed |
 | `rounds/` | contact sheets of the exploration rounds |
-| `next/` | images the blind critique passed, waiting on the fix round: the art-critique costume and its scene, and the banner with the collector's pin board restored |
 | `log.jsonl` | one line per generation call, with model and credits (exploration files it names were replaced by `rounds/`) |
 
 `python3 art/cast/build.py --check <png>` writes:
@@ -63,11 +62,11 @@ The first scene test drew each costume on a floating island with a dirt cliff, h
 | Sticker | icon tiles and the favicon get a white outline with a thin ink rim (`build.py`), so the navy body reads on dark grounds; scenes need none |
 | Composition | tile: peek crop, tilted 8 degrees, on the skill colour mixed 55% with white; card: the scene in a square window with an ink border, the number in a skill-colour disc, name, expression chip and line on a paper `#f6f1e7` plate below, the skill colour as the card's rim; banner: the cast around one giant open toolbox in the valley sky, the plain hero on the lid as the lead, the title in the calm upper-left third |
 
-`pack.json` scores the costumes against the plain hero and `world.json` scores the scenes against the world frame (`scene/design-direction.webp`). The costume pack loosens three thresholds, because a costume changes the measured silhouette, detail and saturation by design: `shape_min` 0.4 (the metronome and the slide board take the silhouette down to 0.41 and 0.46), `texture_ratio` up to 4.5 (props add detail to a plain hero; the explorer measured 4.35), `loud_max` 0.55 (the tomato suit is 52% saturated, as the costume rule asks). Whether a costume still holds the character is `art-critique`'s Identity held axis.
+`pack.json` scores the costumes against the plain hero and `world.json` scores the scenes against the world frame (`scene/design-direction.webp`). The costume pack loosens three thresholds, because a costume changes the measured silhouette, detail and saturation by design: `shape_min` 0.4 (the metronome and the slide board take the silhouette down to 0.41 and 0.46), `texture_ratio` up to 4.5 (props add detail to a plain hero; the explorer measured 4.35), `loud_max` 0.55 (report-deck's yellow suit and orange slide board measure 52%, as the costume rule asks). Whether a costume still holds the character is `art-critique`'s Identity held axis.
 
 | Skill | Costume | Expression | Colour |
 |---|---|---|---|
-| report-deck | the presenter: slide board with a bar chart, pointer | proud | tomato `#ff6b35` |
+| report-deck | the presenter: a yellow suit, slide board with a bar chart, pointer | proud | tomato `#ff6b35` (the card's colour; the suit stays yellow) |
 | report-web | the reader: a long scroll as a cape, reading glasses | focused | lemon `#ffd23f` |
 | learn | the student: an open notebook as a hat, pencil | curious | mint `#3ecf8e` |
 | video-context | the film buff: film-reel hat, film-strip scarf | delighted | hot pink `#ff5fa2` |
@@ -76,6 +75,7 @@ The first scene test drew each costume on a floating island with a dirt cliff, h
 | moodboard | the collector: a pin board of swatches, pinning a card | happy | cork `#d9a066` |
 | brand-art | the artist: beret, paint tube, brush, paint smear | smug | red `#ef3b36` |
 | motion-direction | the conductor: baton, a swinging metronome | laughing | lime `#b6e33b` |
+| art-critique | the critic: sky-blue sash with a star pin, brass loupe on a cord, a star scorecard paddle | unimpressed | sky blue `#38bdf8` |
 
 ## Adding a skill
 
@@ -107,5 +107,6 @@ One gotcha stays with this folder: `cutout.py` floods from the border over light
 | 7 | 63 | nine card scenes in that world | shipped, with the text on a plate below the art |
 | 8 | 126 | model comparison: a costume, a card scene, one banner fix and pose thumbnails on five models, ranked blind by `art-critique` | `gpt_image_2_medium` for costumes, `gpt_image_2p5_sunburst` for scenes and fixes, `gpt_image_2_low` for pose sheets; results in `brand-art`'s vendors file |
 | 8b | 22 | the same scene, fix and pose tests on GPT Image 2.6 in Recraft Studio, through the yab browser | 2.6 Sunburst lost the scene to 2.5 and tied on the fix; markup was the most surgical edit but drew a second board |
+| 9 | 62 | fix round on `gpt_image_2p5_sunburst`: the critic added to the banner, learn's chalkboard blanked, moodboard's butterflies removed and its easel board redrawn, the banner's film-buff handle and the artist's brush separated; each banner edit upscaled from 1440 px | the critic joins as card 10; card text enlarged, scenes zoomed, the banner shipped full colour to stop banding; the critique passes nine cards and still returns fix on the banner and moodboard |
 
-Balance: 911 credits before the pilot, 714 after its final round, 595 after round 7, 469 after round 8, 447 after round 8b. That is 7 more than the logged calls add up to: the first face-kit call was interrupted, `get_user` showed no charge right after, and it was most likely billed later.
+Balance: 911 credits before the pilot, 714 after its final round, 595 after round 7, 469 after round 8, 447 after round 8b, 385 after round 9. That is 7 more than the logged calls add up to: the first face-kit call was interrupted, `get_user` showed no charge right after, and it was most likely billed later.
