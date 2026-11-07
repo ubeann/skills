@@ -1,4 +1,4 @@
-<p align="center"><img src="assets/banner.png" alt="The skills cast: one ink-navy character in a costume for each skill"></p>
+<p align="center"><img src="assets/banner.png" alt="The skills cast around a giant open toolbox: one ink-navy character in a costume for each skill"></p>
 
 # skills
 

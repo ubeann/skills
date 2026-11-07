@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Build every shipped asset of the cast from the approved images.
 
-Sources: hero/hero-v1.webp (the hero) and raw/<skill>.webp (one costume per skill), each a
-character on plain white. Everything in out/ is a build cache, regenerated on each run.
+Sources: hero/hero-v1.webp (the hero), raw/<skill>.webp (one costume per skill on plain white),
+scene/<skill>.webp (that costume in its own spot of the valley world, for the card) and
+scene/banner.webp (the whole cast around the toolbox). Everything in out/ is a build cache.
 
     python3 art/cast/build.py            # stickers, tiles, brand icon, favicon, cards, banner
     python3 art/cast/build.py --check /tmp/check.png   # also a light/dark README check sheet
@@ -12,8 +13,8 @@ Writes:
   art/cast/out/sticker/<name>.png   cutout with a white sticker outline, 1024 tall
   assets/skills/<skill>.png          256 px peek-crop icon tile, for the README table
   assets/icon-512.png, favicon.ico   the brand icon (the hero, waving)
-  assets/cards/<skill>.png           900 x 1200 character card, rendered by headless Chrome
-  assets/banner.png                  1280 x 640 cast banner, rendered by headless Chrome
+  assets/cards/<skill>.png           900 x 1200 card: the scene in a window, name, expression and line below
+  assets/banner.png                  1280 x 640 banner: the cast scene with the title, by headless Chrome
 Run from the repo root. Needs Pillow, numpy and Google Chrome.
 """
 import argparse
@@ -33,6 +34,7 @@ ROOT = HERE.parent.parent
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 CAST = json.loads((HERE / "cast.json").read_text())
 INK = "#141414"
+PAPER = "#f6f1e7"
 COBALT = "#2a46ff"
 
 
@@ -115,60 +117,48 @@ FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
          '&display=block" rel="stylesheet">')
 
 
-def card_html(i, skill, c):
-    bg = "rgb(%d,%d,%d)" % tint(c["colour"], 0.32)
-    panel = "rgb(%d,%d,%d)" % tint(c["colour"], 0.62)
-    img = (HERE / "out" / "sticker" / f"{skill}.png").as_uri()
-    size = 112 if len(skill) <= 11 else 92 if len(skill) <= 14 else 76
+def card_html(i, skill, c, scene):
+    """The art in a square window, the name, expression and line on their own plate below it."""
     name = skill.replace("-", "&#8209;")
+    size = 84 if len(skill) <= 11 else 72 if len(skill) <= 16 else 64
     return f"""<!doctype html><meta charset="utf-8">{FONTS}<style>
 *{{margin:0;box-sizing:border-box}}
-body{{width:900px;height:1200px;background:{bg};font-family:'Bricolage Grotesque',system-ui,sans-serif;color:{INK};
-position:relative;overflow:hidden}}
-.top{{position:absolute;left:64px;right:64px;top:56px;display:flex;justify-content:space-between;font-weight:500;
-font-size:26px;letter-spacing:.02em}}
-h1{{position:absolute;left:60px;right:60px;top:118px;font-weight:800;font-size:{size}px;line-height:.95;letter-spacing:-.03em}}
-p{{text-wrap:pretty;position:absolute;left:64px;right:120px;top:{118 + size + 30}px;font-size:34px;line-height:1.2;font-weight:500}}
-.panel{{position:absolute;left:64px;right:64px;bottom:120px;height:640px;border-radius:56px;background:{panel};
-border:5px solid {INK}}}
-img{{position:absolute;left:50%;bottom:150px;transform:translateX(-50%);max-width:700px;max-height:700px}}
-.foot{{position:absolute;left:64px;right:64px;bottom:50px;display:flex;justify-content:space-between;font-size:24px;
-font-weight:500}}
+html,body{{width:900px;height:1200px;background:#fff}}
+.face{{position:absolute;inset:16px;border-radius:30px;overflow:hidden;background:{PAPER};border:6px solid {c["colour"]}}}
+.win{{position:absolute;left:18px;right:18px;top:18px;aspect-ratio:1;border-radius:20px;overflow:hidden;border:4px solid {INK}}}
+.win img{{width:100%;height:100%;display:block}}
+.idx{{position:absolute;left:34px;top:34px;width:66px;height:66px;border-radius:50%;background:{c["colour"]};
+border:4px solid {INK};display:grid;place-items:center;font:800 28px/1 'Bricolage Grotesque';color:{INK}}}
+.plate{{position:absolute;left:18px;right:18px;bottom:18px;top:812px;display:flex;flex-direction:column;align-items:center;
+justify-content:center;gap:14px;padding:0 24px 22px;text-align:center;color:{INK}}}
+h1{{font:800 {size}px/0.95 'Bricolage Grotesque';letter-spacing:-.035em}}
+.chip{{padding:7px 16px;border-radius:99px;background:{c["colour"]};border:3px solid {INK};font:800 19px/1.1 'Bricolage Grotesque';
+letter-spacing:.1em;text-transform:uppercase}}
+.line{{font:600 28px/1.2 'Bricolage Grotesque';text-wrap:balance}}
 </style>
-<div class="top"><span>skills</span><span>{i:02d} / {len(CAST["skills"]):02d}</span></div>
-<h1>{name}</h1><p>{c["tagline"]}</p>
-<div class="panel"></div><img src="{img}">
-<div class="foot"><span>github.com/ubeann/skills</span><span>{c["costume"]}</span></div>"""
+<div class="face"><div class="win"><img src="{scene.as_uri()}"></div><div class="idx">{i:02d}</div>
+<div class="plate"><h1>{name}</h1><span class="chip">{c["expression"]}</span><span class="line">&ldquo;{c["line"]}&rdquo;</span></div></div>"""
 
 
-def banner_html(rows):
-    """Two staggered rows, so every face in the back row shows between two in the front."""
-    items = []
-    for row, bottom, h, z in (("back", 150, 270, 1), ("front", 30, 300, 5)):
-        names = rows[row]
-        if row == "front":
-            step = 1100 / (len(names) - 1)
-            first = 90
-        else:
-            step = 1100 / len(names)
-            first = 90 + step / 2
-        for k, name in enumerate(names):
-            img = (HERE / "out" / "sticker" / f"{name}.png").as_uri()
-            items.append(f'<img src="{img}" style="left:{first + k * step:.0f}px;bottom:{bottom}px;'
-                         f'height:{h}px;z-index:{z}">')
+def banner_html(b, scene):
+    """The generated cast scene with the title in its calm upper-left sky."""
     return f"""<!doctype html><meta charset="utf-8">{FONTS}<style>
 *{{margin:0}}
-body{{width:1280px;height:640px;background:{COBALT};font-family:'Bricolage Grotesque',system-ui,sans-serif;color:#fff;
-position:relative;overflow:hidden}}
-h1{{position:absolute;left:64px;top:44px;font-weight:800;font-size:120px;letter-spacing:-.04em;line-height:1}}
-p{{position:absolute;left:68px;top:176px;font-size:28px;font-weight:500;opacity:.92}}
-.r{{position:absolute;right:64px;top:62px;font-size:24px;font-weight:500;text-align:right;line-height:1.4;opacity:.92}}
-img{{position:absolute;transform:translateX(-50%)}}
-.ground{{position:absolute;left:0;right:0;bottom:0;height:70px;background:#1f36d6}}
-</style>
-<h1>skills</h1><p>Claude Code skills, one character, a costume for each job.</p>
-<div class="r">github.com/ubeann/skills</div>
-<div class="ground"></div>{''.join(items)}"""
+body{{width:1280px;height:640px;position:relative;overflow:hidden;background:url('{scene.as_uri()}') center/cover;color:{INK};
+font-family:'Bricolage Grotesque',system-ui,sans-serif}}
+h1{{position:absolute;left:64px;top:92px;font-weight:800;font-size:150px;line-height:.9;letter-spacing:-.045em}}
+p{{position:absolute;left:70px;top:242px;font-weight:600;font-size:30px;line-height:1.25;max-width:420px;text-wrap:balance}}
+.u{{position:absolute;left:70px;top:372px;padding:8px 16px;border-radius:99px;background:{INK};color:#fff;font-weight:600;font-size:20px}}
+</style><h1>skills</h1><p>{b["tagline"]}</p><div class="u">{b["url"]}</div>"""
+
+
+def round_card(path, radius=44):
+    """Cut the card's corners transparent so it sits on GitHub's light and dark themes."""
+    im = Image.open(path).convert("RGBA")
+    m = Image.new("L", (im.width * 4, im.height * 4), 0)
+    ImageDraw.Draw(m).rounded_rectangle([0, 0, im.width * 4 - 1, im.height * 4 - 1], radius=radius * 4, fill=255)
+    im.putalpha(m.resize(im.size, R))
+    im.quantize(256, method=Image.Quantize.FASTOCTREE, dither=Image.Dither.NONE).save(path, optimize=True)
 
 
 def main():
@@ -195,8 +185,12 @@ def main():
 
     (ROOT / "assets" / "cards").mkdir(parents=True, exist_ok=True)
     for i, (skill, c) in enumerate(skills.items(), 1):
-        chrome(card_html(i, skill, c), ROOT / "assets" / "cards" / f"{skill}.png", 900, 1200)
-    chrome(banner_html(CAST["banner"]), ROOT / "assets" / "banner.png", 1280, 640)
+        card = ROOT / "assets" / "cards" / f"{skill}.png"
+        chrome(card_html(i, skill, c, HERE / "scene" / f"{skill}.webp"), card, 900, 1200)
+        round_card(card)
+    banner = ROOT / "assets" / "banner.png"
+    chrome(banner_html(CAST["banner"], HERE / CAST["banner"]["scene"]), banner, 1280, 640)
+    Image.open(banner).convert("RGB").quantize(256, method=Image.Quantize.FASTOCTREE, dither=Image.Dither.NONE).save(banner, optimize=True)
 
     if args.check:
         W = 140
