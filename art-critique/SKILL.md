@@ -42,6 +42,8 @@ Done when every crop, value read and placement sheet has been opened.
 
 Judge every image on every axis in `references/rubric.md`, reading `references/motifs.md` for axis 3. When the art has a pack, run `brand-art`'s `check.py` on it first and take its numbers as given; for a composed target take `compose_check.py`'s. Write each finding as a rubric row with its severity and the one change that fixes it, and give each image its verdict: pass, fix or regenerate.
 
+On a re-critique, apply `references/rubric.md` (When to stop): only criticals and unwaived majors keep an image at fix, and a finding against something the owner chose goes to the owner as a question.
+
 Done when every image has a verdict on all six axes, every fix names one change and a place in the image, and every motif row was checked.
 
 ### 4. Rank
