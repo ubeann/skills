@@ -1,6 +1,6 @@
 ---
 name: brand-art
-description: Make a product's mascots, illustration sets, scene and background art, and app icons that keep one identity across every image, through Recraft or Higgsfield, and compose them into banners and cards. Locks an art bible and an identity pack (the owner's seed, an approved hero, a turnaround, fixed identity text, palette, style IDs) before generating, changes one thing per call, cleans the files (WebP, SVG backgrounds, palette snap, texture, edge, sizes), scores every image for drift against the hero, and checks each composed layout for a lead figure and figure-ground contrast. Use when generating illustrations, a mascot or character, landscapes or backgrounds, or an app icon, when composing a banner, card set or social image from a cast, when AI art looks generic or loses its identity, or to compare image vendors. UI tokens are design-direction; collecting and breaking down references is moodboard; logo marks are ui-ux-pro-max:design; assets cut from an approved mockup are impeccable; animating the art is motion-direction.
+description: Make a product's mascots, illustration sets, scene and background art, and app icons that keep one identity across every image, through Recraft or Higgsfield, and compose them into banners and cards. Locks an art bible and an identity pack (the owner's seed, an approved hero, a turnaround, fixed identity text, palette, style IDs) before generating, changes one thing per call, cleans the files (WebP, SVG backgrounds, palette snap, texture, edge, sizes), scores every image for drift against the hero, and checks each composed layout for a lead figure and figure-ground contrast. Use when generating illustrations, a mascot or character, landscapes or backgrounds, or an app icon, when composing a banner, card set or social image from a cast, when AI art looks generic or loses its identity, or to compare image vendors. Judging finished art cold is art-critique; UI tokens are design-direction; collecting and breaking down references is moodboard; logo marks are ui-ux-pro-max:design; assets cut from an approved mockup are impeccable; animating the art is motion-direction.
 ---
 
 # Brand art
@@ -51,9 +51,9 @@ Done when the owner approved the hero, `check.py --pack` reports 0 errors, and e
 
 ### 5. Generate
 
-Generate each target from the pack through the loop in `references/generate.md`: the hero and the closest sheet panel as references, one change per call, the prompt template, a cost quote before any batch, and a log line per call. `references/vendors.md` says which model handles which operation.
+Generate each target from the pack through the loop in `references/generate.md`: the hero and the closest sheet panel as references, one change per call, the prompt template, a cost quote before any batch, and a log line per call. A target the owner chooses between goes through Draft, rank, pick in that file: the `art-critique` skill ranks the drafts cold before the owner sees a shortlist. `references/vendors.md` says which model handles which operation.
 
-Done when every target has a raw file in `art/<name>/raw/` and a line in `art/<name>/log.jsonl` with prompt, model, references, cost and job ID.
+Done when every target has a raw file in `art/<name>/raw/` and a line in `art/<name>/log.jsonl` with prompt, model, references, cost and job ID, and every image the owner saw had passed `art-critique` first.
 
 ### 6. Clean
 
@@ -71,11 +71,11 @@ Done when every file in `art/<name>/out/` opens as its extension says, every SVG
 python3 <skill-dir>/references/check.py art/<name>/pack.json art/<name>/out/* --sheet art/<name>/drift.png
 ```
 
-Open `drift.png`: the hero first, each image beside it, and a greyscale row underneath for the value test. `check.py` scores identity, not obedience, so judge two things per image by eye and add them as columns: **change made** (a near-copy of the hero passes every metric) and **identity held** (each feature the identity text rules out is still absent, such as a mouth on a mouthless mascot). Look also for what the numbers miss: a second rendering style, a light from the other side, a stock metaphor. For each finding, regenerate from the hero with the one fix as the change, or `snap` flat art; when a deliberate change recurs on three or more images, promote it into the bible and record why.
+Open `drift.png`: the hero first, each image beside it, and a greyscale row underneath for the value test. `check.py` scores identity, not obedience: a near-copy of the hero passes every metric, and a second rendering style or a stock metaphor passes too. So then run the `art-critique` skill on `out/` in a fresh subagent, handing it the files, the bible, the hero and the benchmark as paths. Add one column of your own per image, **change made**: the one change its call asked for is visible. For each finding, regenerate from the hero with the one fix as the change, or `snap` flat art; when a deliberate change recurs on three or more images, promote it into the bible and record why.
 
-Render the result in chat: the `check.py` table, then each finding with its fix, then `drift.png`.
+Render the result in chat: the `check.py` table, the critique's verdict table and findings, each with its fix, then `drift.png`.
 
-Done when every image passes or has a finding with its fix, and `drift.png` has been looked at.
+Done when every image passes both `check.py` and the critique or has a finding with its fix, and `drift.png` has been looked at.
 
 ### 8. Compose
 
@@ -95,3 +95,4 @@ Done when the Handover section's criterion holds, and an icon's lineup tests pas
 - A new hero is a new pack version: `pack.json` `version` goes up and earlier outputs keep the version they were made with.
 - Report the credit balance before and after each round, and the cost of each retry.
 - The owner reads galleries, not descriptions: show images, then one line per choice.
+- The owner is the last critic, not the first. Before any gallery, `art-critique` has read it cold; what reaches the owner is a choice between images that could ship.
