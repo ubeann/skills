@@ -10,6 +10,18 @@ Write every finding as a row:
 
 Severity: **critical** blocks shipping (identity lost, a defect a viewer notices, text that cannot be read); **major** a professional would send back; **minor** worth fixing in the same pass. Name the place in the image (the lid, the left hand, the top-right sky) so the fix can be aimed.
 
+## When to stop
+
+A cold reader finds something new on every pass. In the cast's round 9, each re-critique of art already approved found new majors (a tongue blot, a gradient sky), so "fix every finding" has no end. An image is done when:
+
+- no **critical** finding is open;
+- every **major** is fixed, or the owner waived it with a reason (`--verdict waived --note "<reason>"`);
+- **minors** never hold shipping: list them in the report and leave them.
+
+An image gets at most two fix passes after the owner approved it. After the second, each major still open goes to the owner as one line with its three choices (fix and its cost, waive, regenerate), not into a third pass.
+
+A finding against something the owner chose in a gallery (a sky the owner picked, a pose the owner asked for) is a question for the owner, not a fix: either the bible changes to match what they chose, or the finding is waived.
+
 ## 1. Identity held
 
 The character or set is still itself. Read it against the hero and the identity text in the art bible:

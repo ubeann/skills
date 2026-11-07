@@ -3,168 +3,193 @@
   "compose": {
    "busy": 0.0,
    "camo": null,
-   "contrast": 11.778,
+   "contrast": 11.851,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T11:51:32Z"
+   "t": "2026-11-07T15:59:57Z"
   },
   "critique": {
-   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: moodboard collector lost its pin-board costume (holds report-web's yellow sheet); also red toolbox camouflages brand-art, every figure on its own cloud island",
+   "note": "reader's mouth fixed; open majors are the round-6 owner-approved sky gradient and soft right cloud bank, waived by the owner 2026-11-07 under When to stop; minors: learn's mouth, two-eraser pencil, footprints",
    "status": "waived",
-   "t": "2026-11-07T12:05:20Z"
+   "t": "2026-11-07T16:03:00Z"
   },
-  "sha": "4a0fccde3478b7d6"
+  "sha": "93e26dc9b7442072"
+ },
+ "../../assets/cards/art-critique.png": {
+  "compose": {
+   "busy": 0.0,
+   "camo": null,
+   "contrast": 9.506,
+   "findings": [],
+   "status": "pass",
+   "t": "2026-11-07T15:59:57Z"
+  },
+  "critique": {
+   "note": "closest to failing: one hand, gloss highlights on the gold stanchions and frame; the framed picture repeats brand-art's canvas",
+   "status": "pass",
+   "t": "2026-11-07T14:13:58Z"
+  },
+  "sha": "ebe2a596449db4e8"
  },
  "../../assets/cards/brand-art.png": {
   "compose": {
    "busy": 0.0,
    "camo": null,
-   "contrast": 14.821,
+   "contrast": 14.328,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T11:51:31Z"
+   "t": "2026-11-07T15:59:57Z"
   },
   "critique": {
-   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: chip (~4 px caps) and line (~5 px x-height) too small to read at 260 px; also centred figure flanked by one prop each side",
-   "status": "waived",
-   "t": "2026-11-07T12:05:20Z"
+   "note": "closest to failing: one hand, the canvas is drawn in the world's own line and lines up with the real path, so it reads as a window",
+   "status": "pass",
+   "t": "2026-11-07T14:13:58Z"
   },
-  "sha": "a3c9c3b3a67518f0"
+  "sha": "452d0360068040fe"
  },
  "../../assets/cards/design-direction.png": {
   "compose": {
    "busy": 0.0,
    "camo": null,
-   "contrast": 14.352,
+   "contrast": 4.73,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T11:51:31Z"
+   "t": "2026-11-07T15:59:57Z"
   },
   "critique": {
-   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: chip (~4 px caps) and line (~5 px x-height) too small to read at 260 px; art closest to failing: composition, figure near dead centre",
-   "status": "waived",
-   "t": "2026-11-07T12:05:20Z"
+   "note": "closest to failing: motifs, three stock direction props (compass, summit flag, signpost) stacked; chip contrast 4.7:1 is the set's lowest",
+   "status": "pass",
+   "t": "2026-11-07T14:13:58Z"
   },
-  "sha": "eb43b019ec2dbadb"
+  "sha": "d38b15abc021eb05"
  },
  "../../assets/cards/learn.png": {
   "compose": {
    "busy": 0.0,
    "camo": null,
-   "contrast": 10.637,
+   "contrast": 10.219,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T11:51:31Z"
+   "t": "2026-11-07T15:59:57Z"
   },
   "critique": {
-   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: chip (~4 px caps) and line (~5 px x-height) too small to read at 260 px; also a '?' glyph on the chalkboard and a centred figure flanked by desk and board",
-   "status": "waived",
-   "t": "2026-11-07T12:05:20Z"
+   "note": "closest to failing: defects, a mint sliver on the grass under the chalkboard ledge belongs to nothing",
+   "status": "pass",
+   "t": "2026-11-07T14:13:58Z"
   },
-  "sha": "1e20565c8462e937"
+  "sha": "fe690edbc89caeb5"
  },
  "../../assets/cards/moodboard.png": {
   "compose": {
    "busy": 0.0,
    "camo": null,
-   "contrast": 15.856,
+   "contrast": 15.755,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T11:51:31Z"
+   "t": "2026-11-07T15:59:57Z"
   },
   "critique": {
-   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: chip (~4 px caps) and line (~5 px x-height) too small to read at 260 px; art closest to failing: motifs, two sourceless butterflies",
-   "status": "waived",
-   "t": "2026-11-07T12:05:20Z"
+   "note": "easel removed, card raised in the free mitten; minors: sparse lower-left ground, board grip",
+   "status": "pass",
+   "t": "2026-11-07T16:03:00Z"
   },
-  "sha": "dce8cdd2c2a1711c"
+  "sha": "f7076c2050dfbdaa"
  },
  "../../assets/cards/motion-direction.png": {
   "compose": {
    "busy": 0.0,
    "camo": null,
-   "contrast": 14.555,
+   "contrast": 13.85,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T11:51:31Z"
+   "t": "2026-11-07T15:59:57Z"
   },
   "critique": {
-   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: chip (~4 px caps) and line (~5 px x-height) too small to read at 260 px; also centred figure flanked by one prop each side",
-   "status": "waived",
-   "t": "2026-11-07T12:05:20Z"
+   "note": "closest to failing: composition, three flowers of one height evenly spaced in a row; strongest card of the set",
+   "status": "pass",
+   "t": "2026-11-07T14:13:58Z"
   },
-  "sha": "4b9e462de2766be1"
+  "sha": "46c0bc114dac2664"
  },
  "../../assets/cards/report-deck.png": {
   "compose": {
    "busy": 0.0,
    "camo": null,
-   "contrast": 15.764,
+   "contrast": 15.527,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T11:51:31Z"
+   "t": "2026-11-07T15:59:57Z"
   },
   "critique": {
-   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: chip (~4 px caps) and line (~5 px x-height) too small to read at 260 px; also centred figure flanked by one prop each side",
-   "status": "waived",
-   "t": "2026-11-07T12:05:20Z"
+   "note": "closest to failing: one hand, hills and bushes outlined about half the cast's weight, stage in unpaletted wood brown",
+   "status": "pass",
+   "t": "2026-11-07T14:13:57Z"
   },
-  "sha": "bf4a7c3dc2821c41"
+  "sha": "045f5e07baf18533"
  },
  "../../assets/cards/report-web.png": {
   "compose": {
    "busy": 0.0,
    "camo": null,
-   "contrast": 15.662,
+   "contrast": 14.724,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T11:51:31Z"
+   "t": "2026-11-07T14:23:28Z"
   },
   "critique": {
-   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: chip (~4 px caps) and line (~5 px x-height) too small to read at 260 px; also centred figure flanked by one prop each side",
-   "status": "waived",
-   "t": "2026-11-07T12:05:20Z"
+   "note": "closest to failing: composition, the ruled yellow path continues the scroll cape so cape and path read as one ribbon",
+   "status": "pass",
+   "t": "2026-11-07T14:13:58Z"
   },
-  "sha": "ca6c7a40bd5950cd"
+  "sha": "7b17fdb85bb65ee2"
  },
  "../../assets/cards/ux-behaviour-audit.png": {
   "compose": {
    "busy": 0.0,
    "camo": null,
-   "contrast": 13.803,
+   "contrast": 12.176,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T11:51:31Z"
+   "t": "2026-11-07T15:59:57Z"
   },
   "critique": {
-   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: chip (~4 px caps) and line (~5 px x-height) too small to read at 260 px; art closest to failing: in place, magnifier and face small at 260 px",
-   "status": "waived",
-   "t": "2026-11-07T12:05:20Z"
+   "note": "closest to failing: composition, the footprint trail runs the eye out of the bottom-right corner",
+   "status": "pass",
+   "t": "2026-11-07T14:13:58Z"
   },
-  "sha": "68904e7198022508"
+  "sha": "c7d98b85eb576462"
  },
  "../../assets/cards/video-context.png": {
   "compose": {
    "busy": 0.0,
    "camo": null,
-   "contrast": 13.702,
+   "contrast": 12.971,
    "findings": [],
    "status": "pass",
-   "t": "2026-11-07T11:51:31Z"
+   "t": "2026-11-07T15:59:57Z"
   },
   "critique": {
-   "note": "accepted by the owner 2026-11-07 until the fix round after the model comparison; critic's verdict was fix: chip (~4 px caps) and line (~5 px x-height) too small to read at 260 px; also centred figure flanked by one prop each side",
-   "status": "waived",
-   "t": "2026-11-07T12:05:20Z"
+   "note": "closest to failing: composition, the card zoom slices the projector and the screen at the window edges",
+   "status": "pass",
+   "t": "2026-11-07T14:13:58Z"
   },
-  "sha": "684eb385c098c4b3"
+  "sha": "bf2888c537a402ba"
+ },
+ "raw/art-critique.webp": {
+  "check": {
+   "findings": [],
+   "pack": "pack.json",
+   "status": "pass",
+   "t": "2026-11-07T14:02:00Z"
+  },
+  "sha": "23adc039077b3b87"
  },
  "raw/brand-art.webp": {
   "check": {
    "findings": [],
    "pack": "pack.json",
    "status": "pass",
-   "t": "2026-11-07T11:51:13Z"
+   "t": "2026-11-07T14:02:00Z"
   },
   "sha": "f65b6a015043a5c2"
  },
@@ -173,7 +198,7 @@
    "findings": [],
    "pack": "pack.json",
    "status": "pass",
-   "t": "2026-11-07T11:51:13Z"
+   "t": "2026-11-07T14:02:00Z"
   },
   "sha": "ab862a409958c230"
  },
@@ -182,7 +207,7 @@
    "findings": [],
    "pack": "pack.json",
    "status": "pass",
-   "t": "2026-11-07T11:51:13Z"
+   "t": "2026-11-07T14:02:00Z"
   },
   "sha": "dbe6a7e83d515aa5"
  },
@@ -191,7 +216,7 @@
    "findings": [],
    "pack": "pack.json",
    "status": "pass",
-   "t": "2026-11-07T11:51:13Z"
+   "t": "2026-11-07T14:02:00Z"
   },
   "sha": "b05e1aaab7b74073"
  },
@@ -200,7 +225,7 @@
    "findings": [],
    "pack": "pack.json",
    "status": "pass",
-   "t": "2026-11-07T11:51:13Z"
+   "t": "2026-11-07T14:02:00Z"
   },
   "sha": "a5678a4626597b5f"
  },
@@ -209,7 +234,7 @@
    "findings": [],
    "pack": "pack.json",
    "status": "pass",
-   "t": "2026-11-07T11:51:13Z"
+   "t": "2026-11-07T14:02:00Z"
   },
   "sha": "a700ab98c033176e"
  },
@@ -218,7 +243,7 @@
    "findings": [],
    "pack": "pack.json",
    "status": "pass",
-   "t": "2026-11-07T11:51:13Z"
+   "t": "2026-11-07T14:02:00Z"
   },
   "sha": "22284773990e8666"
  },
@@ -227,7 +252,7 @@
    "findings": [],
    "pack": "pack.json",
    "status": "pass",
-   "t": "2026-11-07T11:51:13Z"
+   "t": "2026-11-07T14:02:00Z"
   },
   "sha": "bb03e607af51357b"
  },
@@ -236,25 +261,39 @@
    "findings": [],
    "pack": "pack.json",
    "status": "pass",
-   "t": "2026-11-07T11:51:13Z"
+   "t": "2026-11-07T14:02:00Z"
   },
   "sha": "6b5d845674d9b2e2"
+ },
+ "scene/art-critique.webp": {
+  "check": {
+   "findings": [],
+   "pack": "world.json",
+   "status": "pass",
+   "t": "2026-11-07T14:23:27Z"
+  },
+  "sha": "519ae5467c6dd7a3"
  },
  "scene/banner.webp": {
   "check": {
    "findings": [],
    "pack": "world.json",
    "status": "pass",
-   "t": "2026-11-07T11:51:30Z"
+   "t": "2026-11-07T15:58:33Z"
   },
-  "sha": "c0b38156d21e1634"
+  "critique": {
+   "note": "reader's mouth fixed; open majors are the round-6 owner-approved sky gradient and soft right cloud bank, waived by the owner 2026-11-07 under When to stop; minors: learn's mouth, two-eraser pencil, footprints",
+   "status": "waived",
+   "t": "2026-11-07T16:03:00Z"
+  },
+  "sha": "817b2623fb03e554"
  },
  "scene/brand-art.webp": {
   "check": {
    "findings": [],
    "pack": "world.json",
    "status": "pass",
-   "t": "2026-11-07T11:51:30Z"
+   "t": "2026-11-07T14:23:27Z"
   },
   "sha": "eca1e5234f0652d3"
  },
@@ -263,7 +302,7 @@
    "findings": [],
    "pack": "world.json",
    "status": "pass",
-   "t": "2026-11-07T11:51:30Z"
+   "t": "2026-11-07T14:23:27Z"
   },
   "sha": "784bc1c1a903f1de"
  },
@@ -272,25 +311,30 @@
    "findings": [],
    "pack": "world.json",
    "status": "pass",
-   "t": "2026-11-07T11:51:30Z"
+   "t": "2026-11-07T14:23:27Z"
   },
-  "sha": "c033c19887cbba46"
+  "sha": "e4249976b9f8d1ac"
  },
  "scene/moodboard.webp": {
   "check": {
    "findings": [],
    "pack": "world.json",
    "status": "pass",
-   "t": "2026-11-07T11:51:30Z"
+   "t": "2026-11-07T15:58:33Z"
   },
-  "sha": "34d6c8ac81ea55bf"
+  "critique": {
+   "note": "easel removed, card raised in the free mitten; minors: sparse lower-left ground, board grip",
+   "status": "pass",
+   "t": "2026-11-07T16:03:00Z"
+  },
+  "sha": "cad467196b6c2d27"
  },
  "scene/motion-direction.webp": {
   "check": {
    "findings": [],
    "pack": "world.json",
    "status": "pass",
-   "t": "2026-11-07T11:51:30Z"
+   "t": "2026-11-07T14:23:27Z"
   },
   "sha": "d8b0363a45aac4dc"
  },
@@ -299,7 +343,7 @@
    "findings": [],
    "pack": "world.json",
    "status": "pass",
-   "t": "2026-11-07T11:51:30Z"
+   "t": "2026-11-07T14:23:27Z"
   },
   "sha": "b4527c2c08493464"
  },
@@ -308,7 +352,7 @@
    "findings": [],
    "pack": "world.json",
    "status": "pass",
-   "t": "2026-11-07T11:51:30Z"
+   "t": "2026-11-07T14:23:27Z"
   },
   "sha": "26b7b918d40bf544"
  },
@@ -317,7 +361,7 @@
    "findings": [],
    "pack": "world.json",
    "status": "pass",
-   "t": "2026-11-07T11:51:30Z"
+   "t": "2026-11-07T14:23:27Z"
   },
   "sha": "1e52272cbf6f1fbf"
  },
@@ -326,7 +370,7 @@
    "findings": [],
    "pack": "world.json",
    "status": "pass",
-   "t": "2026-11-07T11:51:30Z"
+   "t": "2026-11-07T14:23:27Z"
   },
   "sha": "6906927c74914d95"
  }

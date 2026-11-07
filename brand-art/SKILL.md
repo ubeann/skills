@@ -104,3 +104,4 @@ Done when the Handover section's criterion holds, an icon's lineup tests pass, a
 - Report the credit balance before and after each round, and the cost of each retry.
 - The owner reads galleries, not descriptions: show images, then one line per choice.
 - The owner is the last critic, not the first. Before any gallery, `art-critique` has read it cold; what reaches the owner is a choice between images that could ship.
+- Stop fixing by art-critique's rule (`rubric.md`, When to stop): two fix passes per approved image, then each open major goes to the owner to fix, waive or regenerate.

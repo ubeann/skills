@@ -129,6 +129,19 @@
       ],
       "expression": "laughing",
       "line": "Everything moves on the beat, then rests."
+    },
+    "art-critique": {
+      "colour": "#38bdf8",
+      "costume": "the critic",
+      "tagline": "Art judged cold, against its bible and a benchmark.",
+      "peek": [
+        1.2,
+        0.6,
+        0.1,
+        -8
+      ],
+      "expression": "unimpressed",
+      "line": "I judge the pixels, not the prompt."
     }
   }
 }
