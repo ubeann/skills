@@ -21,6 +21,12 @@ const LOGIN = { url: '/login', email: process.env.SHOT_EMAIL, password: process.
 // before, the new one after. A crop that misses it fails here instead of in someone's eyes later.
 // `act` drives the page into the state to show (open a tab, add a row, fill a field); it runs in both phases,
 // so write it against what both versions share (roles, ids, field names) rather than the text being changed.
+// Optional per screen:
+//   url        a full URL instead of APP + path, e.g. the HTML of a PDF template rendered to a file
+//   viewport   the size to shoot at; a printed document goes at its paper width, A4 portrait at 96 dpi is
+//              { width: 794, height: 1123 }, so the shot shows the page as it prints and its wrapping bugs
+//   clipUntil  an element the crop stops above, to keep only the top of a long `locate`
+//   Keep 1440 px for app screens: render.mjs lays the report out at 1400 px, so they show near their real size.
 const SCREENS = [
   {
     name: '01-form-empty',
@@ -37,6 +43,13 @@ const SCREENS = [
     },
     locate: (page) => page.locator('section').filter({ hasText: 'Billing Details' }).last(),
     expect: { before: 'Vendor Total', after: 'Shipment Lines Total' },
+  },
+  {
+    name: '03-invoice-pdf',
+    url: process.env.INVOICE_HTML,
+    viewport: { width: 794, height: 1123 },
+    locate: (page) => page.locator('body'),
+    expect: { before: 'Vendor Lines', after: 'Shipment Lines' },
   },
 ];
 
@@ -55,7 +68,8 @@ async function launch() {
 const out = join(here, 'shots', phase);
 mkdirSync(out, { recursive: true });
 const browser = await launch();
-const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 2 });
+const VIEWPORT = { width: 1440, height: 1000 };
+const page = await browser.newPage({ viewport: VIEWPORT, deviceScaleFactor: 2 });
 if (LOGIN.email) {
   await page.goto(APP + LOGIN.url);
   await page.fill('input[type=email]', LOGIN.email);
@@ -65,14 +79,19 @@ if (LOGIN.email) {
 }
 const failed = [];
 for (const s of SCREENS) {
-  await page.goto(APP + s.path, { waitUntil: 'networkidle' });
+  await page.setViewportSize(s.viewport ?? VIEWPORT);
+  await page.goto(s.url ?? APP + s.path, { waitUntil: 'networkidle' });
   if (s.act) await s.act(page);
   await page.waitForTimeout(500);
   const el = s.locate(page);
   await el.scrollIntoViewIfNeeded();
   const text = await el.innerText();
   if (!text.includes(s.expect[phase])) { failed.push(`${s.name}: the crop does not contain "${s.expect[phase]}"`); continue; }
-  await el.screenshot({ path: join(out, `${s.name}.png`) });
+  const file = join(out, `${s.name}.png`);
+  if (s.clipUntil) {
+    const [box, until] = [await el.boundingBox(), await s.clipUntil(page).boundingBox()];
+    await page.screenshot({ path: file, clip: { x: box.x, y: box.y, width: box.width, height: until.y - box.y } });
+  } else await el.screenshot({ path: file });
   console.log(`✓ shots/${phase}/${s.name}.png`);
 }
 await browser.close();

@@ -1,5 +1,6 @@
 /* Stylesheet for a before/after change report, inlined by render.mjs.
-   One body class picks the output: screen (the tall PNG and the album), portrait or landscape (the PDF).
+   One layout for both outputs: body.album is the page the album images are cut from; body.album.pdf prints it,
+   one album image per PDF page, so the PDF keeps the album's scale instead of re-flowing into a narrower page.
    Swap the palette to the product's; keep the before/after colours distinct and the page rules. */
 :root {
   --bg: #f6f7f9; --card: #ffffff; --ink: #111827; --muted: #6b7280; --line: #e5e7eb;
@@ -35,6 +36,8 @@ h2 { font-size: 22px; margin: 0 0 4px; }
 h2 span { display: inline-grid; place-items: center; min-width: 30px; height: 30px; padding: 0 8px; margin-right: 10px; border-radius: 999px; background: var(--ink); color: #fff; font-size: 15px; font-variant-numeric: tabular-nums; vertical-align: 2px; }
 .where { font-size: 14px; color: var(--muted); margin: 0 0 14px; }
 .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+/* render.mjs stacks a pair whose screenshots would shrink side by side. */
+.pair.stack { grid-template-columns: 1fr; gap: 14px; }
 figure.shot { margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
 .tag { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px; margin: 12px 12px 0; }
 .tag.b { color: var(--before); background: var(--before-bg); }
@@ -85,36 +88,26 @@ ul.source .muted { display: block; font-size: 13px; }
 .open h3 { color: #92400e; margin: 14px 0 10px; }
 .open-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0 28px; }
 .open h4 { color: #92400e; }
-body.portrait .ctx-grid { grid-template-columns: 1fr; gap: 0; }
 .evidence { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
 .evidence figure { margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px; break-inside: avoid; }
 .evidence img { display: block; max-width: 100%; max-height: 520px; margin: 0 auto; }
 .evidence figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
-body.pdf .evidence img { max-height: 90mm; }
 
 footer.foot, .footnote { margin-top: 28px; font-size: 13.5px; color: var(--muted); line-height: 1.6; border-top: 1px solid var(--line); padding-top: 16px; }
 .footnote { display: none; margin-top: 0; }
 
-/* Album: each section is sent as its own image, so it carries a crumb naming the report. */
+/* Album: sections sit flush so render.mjs can cut runs of them into images; each carries a crumb naming the report,
+   and the cover carries the footer line. */
 body.album .crumb { display: block; }
 body.album .footnote { display: block; }
+body.album footer.foot { display: none; }
 body.album .cover, body.album section.sec { margin: 0; padding: 36px 44px 28px; }
 
-/* PDF: A4, one screen section per page; the @page size is injected by render.mjs. */
-body.pdf { background: #fff; font-size: 11pt; }
-body.pdf .page { width: auto; padding: 0; }
-body.pdf .crumb, body.pdf .footnote { display: block; }
-body.pdf footer.foot { display: none; }
-body.pdf section.sec { break-before: page; margin: 0; background: #fff; }
+/* PDF: the album page printed; render.mjs sets the @page size and marks the first block of each page. */
+body.pdf .page-start { break-before: page; }
 body.pdf .sec-pair, body.pdf .sec-single { break-inside: avoid; }
-body.pdf .shot img { width: auto; max-width: 100%; max-height: var(--shot-max); margin: 0 auto; }
 body.pdf thead { display: table-header-group; }
 body.pdf tr { break-inside: avoid; }
-body.landscape { --shot-max: 118mm; }
-body.portrait { --shot-max: 100mm; }
-body.portrait .pair { grid-template-columns: 1fr; gap: 10px; }
-body.portrait h1 { font-size: 28px; }
-body.pdf .summary { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
 body.pdf .card, body.pdf .decision, body.pdf .open, body.pdf .ctx .block { break-inside: avoid; }
 /* Group icons and the scope of a big change. */
 .ic { width: 15px; height: 15px; vertical-align: -2px; margin-right: 7px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
@@ -127,4 +120,3 @@ body.pdf .card, body.pdf .decision, body.pdf .open, body.pdf .ctx .block { break
 .dir .muted { font-size: 13px; white-space: nowrap; }
 .card.wide { margin: 4px 0 14px; }
 .scope-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
-body.portrait .scope-cols { grid-template-columns: 1fr; gap: 6px; }
