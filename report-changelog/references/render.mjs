@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 // render.mjs: render one changelog entry from its changelog.json.
-//   node <skill>/references/render.mjs <entry-dir> [--pdf portrait|landscape] [--context] [--lang en,id] [--no-png]
+//   node <skill>/references/render.mjs <entry-dir> [--pdf] [--context] [--lang en,id] [--no-png]
 // Run it from a folder where playwright-core (or playwright) is installed; it drives the installed Chrome,
 // or the newest Playwright headless shell, or $CHROME_PATH. It writes README.md in the entry and the
 // outputs under <entry>/out/<lang>/, and exits non-zero when a gate fails. The context (with its evidence)
 // always goes into README.md, the repository's record; the outputs carry it only with --context.
+// One layout feeds both outputs: the sections are packed in order into pages of PAGE_H, and each page is
+// one album image and one PDF page, so the PDF reads exactly like the album.
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { join, resolve, dirname } from 'node:path';
@@ -13,15 +15,27 @@ import { homedir } from 'node:os';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const args = process.argv.slice(2);
-const valued = ['--pdf', '--lang'];
+const valued = ['--lang'];
 const opt = (n) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : undefined; };
-const entryDir = resolve(args.find((a, i) => !a.startsWith('--') && !valued.includes(args[i - 1])) ?? '.');
+// `--pdf portrait|landscape` from before the shared layout still works; the value is ignored.
+const legacy = ['portrait', 'landscape'];
+const entryDir = resolve(args.find((a, i) => !a.startsWith('--') && !valued.includes(args[i - 1]) && !legacy.includes(a)) ?? '.');
 const entry = JSON.parse(readFileSync(join(entryDir, 'changelog.json'), 'utf8'));
-const orientation = opt('--pdf');
+const withPdf = args.includes('--pdf');
 const withContext = args.includes('--context');
 const langs = (opt('--lang') ?? (entry.langs ?? []).join(',')).split(',').filter(Boolean);
 
 const TYPES = ['copy', 'ui', 'fix', 'feature'];
+// The layout width in CSS px, close to the 1440 px viewport capture.mjs shoots at, so a screenshot shows near
+// its captured size. A page is A4-proportioned at that width: one album image (1.5x, so at most ~2970 px tall,
+// a size chat apps send sharp) and one PDF page. SHOT_DPR is capture.mjs's deviceScaleFactor.
+const WIDTH = 1400;
+const PAGE_H = Math.round(WIDTH * 297 / 210);
+const SHOT_DPR = 2;
+// Gate 3: a screenshot shown below this share of its captured size has app text under ~7pt.
+const MIN_SCALE = 0.5;
+// A before/after pair sits side by side only when both shots keep this share of their size; otherwise it stacks.
+const PAIR_SCALE = 0.75;
 const LABELS = {
   en: {
     before: 'Before', after: 'After', now: 'New', where: 'Where', steps: 'How to use it', changes: 'Changes',
@@ -61,7 +75,6 @@ for (const lang of langs) {
   if (s.kind === 'table') for (const lang of langs) need(s.text?.[lang]?.rows?.length, `sections[${i}].text.${lang}.rows is empty`);
 });
 (entry.context?.evidence ?? []).forEach((e, i) => need(e.file && existsSync(join(entryDir, e.file)), `context.evidence[${i}]: ${e.file} does not exist`));
-if (orientation) need(['portrait', 'landscape'].includes(orientation), '--pdf takes portrait or landscape');
 if (errors.length) fail(errors);
 
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -203,11 +216,9 @@ function html(lang, mode) {
   const cL = labels(entry.context?.lang ?? langs[0]);
   const evidence = entry.context?.evidence ?? [];
   const ctx = withContext && entry.context ? contextHtml(cL, crumb()) : '';
-  const page = mode === 'screen' ? '' : `<style>@page { size: A4 ${mode}; margin: 12mm; }</style>`;
-  const bodyClass = mode === 'screen' ? 'screen' : `pdf ${mode}`;
   return `<!doctype html><html lang="${esc(lang)}"><head><meta charset="utf-8"><base href="${pathToFileURL(entryDir + '/').href}">
-<title>${esc(titleText(h.title))}</title><style>${readFileSync(join(here, 'style.css'), 'utf8')}</style>${page}</head>
-<body class="${bodyClass}"><div class="page">
+<title>${esc(titleText(h.title))}</title><style>${readFileSync(join(here, 'style.css'), 'utf8')}</style></head>
+<body class="${mode}"><div class="page">
 <div class="cover" id="cover"><header class="head"><div><p class="eyebrow">${badge}${eyebrow}</p><h1>${titleHtml(h.title)}</h1></div>
 <div class="meta"><b>${esc(fmtDate(entry.date, lang))}</b>${h.meta ? `<br>${md(h.meta)}` : ''}</div></header>
 ${h.summary?.length ? `<div class="summary">${h.summary.map((c) => `<div><b>${esc(c.label)}</b>${md(c.text)}</div>`).join('')}</div>` : ''}
@@ -292,47 +303,64 @@ writeFileSync(join(entryDir, 'README.md'), readme());
 const browser = await launch();
 const warnings = [];
 const written = [join(entryDir, 'README.md')];
-const MM = 96 / 25.4;
+const name = (ids) => ids.map((id) => id === 'cover' || id === 'context' ? id : id.slice(1)).join('-');
 for (const lang of langs) {
   const dir = join(entryDir, 'out', lang);
   mkdirSync(join(dir, 'album'), { recursive: true });
   const base = `${entry.slug}-${lang}`;
-  const screen = html(lang, 'screen');
+  const screen = html(lang, 'album');
   // Gate 2: nothing broken reaches the reader.
   const content = screen.replace(/<style>[\s\S]*?<\/style>/g, '');
   for (const bad of ['undefined', 'NaN', '[object Object]']) if (content.includes(bad)) errors.push(`${lang}: the report contains "${bad}"`);
   writeFileSync(join(dir, `${base}.html`), screen);
+  const page = await browser.newPage({ viewport: { width: WIDTH, height: 900 }, deviceScaleFactor: 1.5 });
+  await page.goto(pathToFileURL(join(dir, `${base}.html`)).href, { waitUntil: 'load' });
+  // Stack a pair whose shots would shrink side by side, then measure every shot and every block.
+  const { small, blocks } = await page.evaluate(({ SHOT_DPR, PAIR_SCALE }) => {
+    const shown = (img) => img.getBoundingClientRect().width / (img.naturalWidth / SHOT_DPR);
+    for (const pair of document.querySelectorAll('.pair')) if ([...pair.querySelectorAll('img')].some((i) => shown(i) < PAIR_SCALE)) pair.classList.add('stack');
+    const small = [...document.querySelectorAll('.shot img')].map((i) => [i.closest('section, .cover').id, i.getAttribute('src'), shown(i)]);
+    const blocks = [...document.querySelectorAll('#cover, section.sec')].map((e) => {
+      const r = e.getBoundingClientRect();
+      return { id: e.id, x: r.x, y: r.y + scrollY, width: r.width, height: r.height };
+    });
+    return { small, blocks };
+  }, { SHOT_DPR, PAIR_SCALE });
+  // Let Chrome repaint the restacked layout first, or a full-page capture repeats stale tiles.
+  await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done))));
+  for (const [id, src, k] of small) if (k < MIN_SCALE) errors.push(`${lang} ${id}: ${src} shows at ${Math.round(k * 100)}% of its captured size; crop it in capture.mjs to the part that changed`);
+  // Pack the blocks in order into pages. A section with "break": true, and the context, start a new page.
+  const forced = new Set([...entry.sections.flatMap((s, i) => s.break ? [`s${i + 1}`] : []), 'context']);
+  const pages = [];
+  for (const b of blocks) {
+    const last = pages.at(-1);
+    if (last && !forced.has(b.id) && last.height + b.height <= PAGE_H) { last.blocks.push(b); last.height += b.height; }
+    else pages.push({ blocks: [b], height: b.height });
+  }
+  // Gate 4: a screen section fits on one page, so its screenshots never split across PDF pages.
+  for (const b of blocks) {
+    const shot = entry.sections[Number(b.id.slice(1)) - 1]?.kind !== 'table' && b.id.startsWith('s');
+    if (shot && b.height > PAGE_H) (withPdf ? errors : warnings).push(`${lang} ${b.id}: ${Math.round(b.height)}px is taller than a ${PAGE_H}px page; crop its screenshots in capture.mjs or split the section`);
+  }
   if (!args.includes('--no-png')) {
-    const page = await browser.newPage({ viewport: { width: 1400, height: 900 }, deviceScaleFactor: 1.5 });
-    await page.goto(pathToFileURL(join(dir, `${base}.html`)).href, { waitUntil: 'load' });
-    await page.screenshot({ path: join(dir, `${base}.png`), fullPage: true });
-    written.push(join(dir, `${base}.png`));
-    await page.evaluate(() => document.body.classList.add('album'));
-    const parts = ['#cover', ...entry.sections.map((_, i) => `#s${i + 1}`), ...(withContext && entry.context ? ['#context'] : [])];
-    for (const [i, sel] of parts.entries()) {
-      const el = page.locator(sel);
-      const box = await el.boundingBox();
-      if (box.height > 2000) warnings.push(`${lang} ${sel}: ${Math.round(box.height)}px tall in the album; crop the screenshots or split the section`);
-      const file = join(dir, 'album', `${String(i + 1).padStart(2, '0')}-${sel === '#cover' ? 'cover' : sel === '#context' ? 'context' : `section-${i}`}.png`);
-      await el.screenshot({ path: file });
+    for (const [i, p] of pages.entries()) {
+      const [first, last] = [p.blocks[0], p.blocks.at(-1)];
+      const file = join(dir, 'album', `${String(i + 1).padStart(2, '0')}-${name(p.blocks.map((b) => b.id))}.png`);
+      await page.screenshot({ path: file, fullPage: true, clip: { x: first.x, y: first.y, width: first.width, height: last.y + last.height - first.y } });
       written.push(file);
     }
-    await page.close();
   }
-  if (orientation) {
-    const [w, h] = orientation === 'landscape' ? [273, 186] : [186, 273];
-    const page = await browser.newPage({ viewport: { width: Math.round(w * MM), height: Math.round(h * MM) } });
-    const file = join(dir, `${base}-${orientation}.html`);
-    writeFileSync(file, html(lang, orientation));
-    await page.goto(pathToFileURL(file).href, { waitUntil: 'load' });
-    await page.emulateMedia({ media: 'print' });
-    // Gate 3: a screen section fits on one page, so a before/after pair never splits.
-    const tall = await page.$$eval('.sec-pair, .sec-single', (els, max) => els.filter((e) => e.getBoundingClientRect().height > max).map((e) => e.id), h * MM);
-    for (const id of tall) errors.push(`${lang} ${orientation}: section ${id} is taller than one page; crop its screenshots or try the other orientation`);
-    await page.pdf({ path: join(dir, `${base}-${orientation}.pdf`), preferCSSPageSize: true, printBackground: true });
-    written.push(join(dir, `${base}-${orientation}.pdf`));
-    await page.close();
+  if (withPdf) {
+    await page.evaluate((starts) => {
+      document.body.classList.add('pdf');
+      for (const id of starts) document.getElementById(id).classList.add('page-start');
+    }, pages.slice(1).map((p) => p.blocks[0].id));
+    await page.addStyleTag({ content: `@page { size: ${WIDTH}px ${PAGE_H}px; margin: 0; }` });
+    const file = join(dir, `${base}.pdf`);
+    await page.pdf({ path: file, preferCSSPageSize: true, printBackground: true });
+    written.push(file);
   }
+  await page.close();
 }
 await browser.close();
 for (const w of warnings) console.warn(`! ${w}`);

@@ -46,6 +46,8 @@ A section is one of three kinds. The screenshot paths sit on the section, shared
 | `single` | `shot`, optional `tag` | a screen that is new: a feature, with `steps` for how to reach and use it |
 | `table` | `text.<lang>.rows` as `[where, before, after]`, optional `columns` | wording in guides, messages and emails that no screenshot shows |
 
+Any section takes `"break": true` to start a new album image and PDF page.
+
 Each section's `text.<lang>` has `title`, `where` (the breadcrumb a user follows to reach it), and `bullets` or `steps`. Write `**label**` around the app's own words; they stay in the app's language in every locale, so the reader can find them on screen.
 
 ## context
