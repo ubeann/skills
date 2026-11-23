@@ -119,5 +119,43 @@
       }
     }
   },
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "deniedMcpServers": [
+    {
+      "serverName": "plugin:claude-for-nonprofits:microsoft-365"
+    },
+    {
+      "serverName": "plugin:claude-for-nonprofits:salesforce"
+    },
+    {
+      "serverName": "plugin:claude-for-nonprofits:benevity"
+    },
+    {
+      "serverName": "plugin:claude-for-nonprofits:candid"
+    },
+    {
+      "serverName": "plugin:claude-for-nonprofits:givebutter"
+    },
+    {
+      "serverName": "plugin:claude-for-nonprofits:instrumentl"
+    },
+    {
+      "serverName": "plugin:claude-for-nonprofits:airtable"
+    },
+    {
+      "serverName": "plugin:claude-for-nonprofits:intuit-quickbooks"
+    },
+    {
+      "serverName": "plugin:claude-for-nonprofits:canva"
+    },
+    {
+      "serverName": "plugin:claude-for-nonprofits:notion"
+    },
+    {
+      "serverName": "plugin:claude-for-nonprofits:monday"
+    },
+    {
+      "serverName": "plugin:claude-for-nonprofits:granola"
+    }
+  ]
 }
