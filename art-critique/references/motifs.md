@@ -18,4 +18,6 @@ What an image model draws when a prompt leaves a decision open. Each one marks a
 | Text squiggles | letter-like marks on signs, books, screens and labels | blank shapes; real text goes on in code | common |
 | Merged props | two objects fused, an extra limb or finger, a prop passing through another | one change per call, with the prop named and placed | common |
 | Stock metaphor | lightbulb for an idea, rocket for launch, magnifier over a cylinder for data, compass for direction | the owned metaphor from the bible's subject vocabulary | the handbook set |
+| Animal with an accessory | a stock species whose only identity is what it wears or holds: glasses, a scarf, a hat, a coin | a signature on the body and a build in numbers, from the character brief | a mascot pilot, 2026-11-24, two anatomy rounds |
+| Grown-up build on a cute brief | a long body, thin jointed arms, small eyes set high | the brief's Anatomy numbers: under two heads tall, large eyes at or below the middle of the head, short limbs | the same pilot |
 | Over-detail at small size | fine detail everywhere that turns to noise at the display size | detail on the one identifying piece, plain shapes elsewhere | common |

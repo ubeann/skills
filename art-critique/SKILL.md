@@ -1,6 +1,6 @@
 ---
 name: art-critique
-description: Judge illustrations, mascots, scenes, banners and cards cold, as a reviewer who never saw them made. Scores six axes (identity held, one hand, AI-default motifs, defects in full-size crops, composition, the art in its real placement with its copy), ranks candidates two at a time in both orders, and names the gap to premium per axis against a benchmark of professional work. Use when reviewing generated or hand-made art, picking the best of several generations, asking whether art looks premium or AI-made, or checking that copy on a card or banner does not break the art. Generating and fixing art is brand-art, which calls this skill at its gates; collecting the benchmark is moodboard; UI screens are impeccable or design-direction.
+description: Judge illustrations, mascots, scenes, banners and cards cold, as a reviewer who never saw them made. Scores six axes (identity held, one hand, AI-default motifs, defects in full-size crops, composition, the art in its real placement with its copy) and a mascot's hero on a seventh, the character against its brief, ranks candidates two at a time in both orders, and names the gap to premium per axis against a benchmark of professional work. Use when reviewing generated or hand-made art, picking the best of several generations, asking whether art looks premium or AI-made, or checking that copy on a card or banner does not break the art. Generating and fixing art is brand-art, which calls this skill at its gates; collecting the benchmark is moodboard; UI screens are impeccable or design-direction.
 ---
 
 # Art critique
@@ -17,6 +17,7 @@ Collect, by path:
 
 - **The art**: every file to judge, at full resolution, and for a composed target its parts (the scene inside a card).
 - **The art bible and hero**: `art/<name>/README.md`, `pack.json` and its hero when the art came from `brand-art`. Without a bible, ask the owner for the three words the art should be and the one thing it must never be, and judge against those.
+- **The character brief**: `art/<name>/character.md` and `art/<name>/rivals/`, when a mascot's hero candidate or anatomy pick is judged.
 - **The benchmark**: the three to five professional pieces the README lists as the bar, as moodboard folders (`$MOODBOARD_DIR/<id>/`). Without one, judge the six axes and say the premium comparison was skipped; offer to build a benchmark with `moodboard`.
 - **The placements**: where each file ships and at what size (a README card at 260 px, a social preview at 600 px), and on which grounds.
 
@@ -36,7 +37,9 @@ Open every file it wrote: the whole image, the blurred greyscale value read, and
 python3 <skill-dir>/references/critique_sheet.py inplace <art files> --width 260 --width 600 --out <scratch>/inplace.png
 ```
 
-Done when every crop, value read and placement sheet has been opened.
+For a mascot's hero candidate or anatomy pick, write the three cold reads of `references/rubric.md` axis 7 now, while the character brief is still unopened.
+
+Done when every crop, value read and placement sheet has been opened, and each hero candidate has its cold reads written.
 
 ### 3. Judge
 
@@ -44,7 +47,7 @@ Judge every image on every axis in `references/rubric.md`, reading `references/m
 
 On a re-critique, apply `references/rubric.md` (When to stop): only criticals and unwaived majors keep an image at fix, and a finding against something the owner chose goes to the owner as a question.
 
-Done when every image has a verdict on all six axes, every fix names one change and a place in the image, and every motif row was checked.
+Done when every image has a verdict on all six axes, every hero candidate has one on the seventh, every fix names one change and a place in the image, and every motif row was checked.
 
 ### 4. Rank
 
