@@ -49,6 +49,7 @@ profile/settings.json     keys merged into each profile's settings.json: plugins
 profile/mcp.json          user-scope MCP servers; write secrets as ${VAR}, read from the env at sync time
 profile/skill-sources.txt skills kept outside this repo (npx skills, but, yab), linked into each profile from where they live
 profile/home/             files symlinked into each profile at the same path (rules/, CLAUDE.md, agents/)
+profile/t3-aliases.json   every T3 Code alias (provider instance): name, color, profile dir, settings
 assets/                   banner, brand icon, favicon, a tile per skill in skills/, a card per skill in cards/
 art/cast/                 how the cast is made: art bible, hero, face kit, costumes, build.py
 AGENTS.md                 pointers for any coding agent working here
@@ -67,6 +68,7 @@ python3 scripts/check_skills.py   # validate every skill
 python3 scripts/sync_profiles.py  # sync every profile: plugins, mcp, settings, skills, files
 python3 scripts/sync_profiles.py --dry-run --only settings   # preview one step
 python3 scripts/sync_profiles.py --drift    # what a profile has that the repo does not
+python3 scripts/sync_profiles.py --only t3  # write this machine's T3 Code aliases
 sh scripts/link.sh                # skills only
 ```
 
@@ -92,3 +94,21 @@ Every change goes through `profile/` (or a skill folder) in a PR. Once it merges
 - MCP servers and plugins go through the `claude` CLI, never by editing `.claude.json`, which also holds the profile's login. OAuth MCP servers still need signing in once per profile.
 - A new profile gets everything on its first session; run the sync by hand for it once if you want it ready sooner, since adding marketplaces clones them.
 - This repo is public: keep tokens out of `profile/`; write them as `${VAR}` in `profile/mcp.json`.
+
+## T3 Code aliases
+
+An alias (Cherry, Basil, Manggo, Coconut) is a T3 Code provider instance: one Claude profile dir signed in to one account. `profile/t3-aliases.json` lists them all. Each machine picks its own in `~/.config/skills/machine.json`, which stays out of the repo because each machine has its own accounts:
+
+```json
+{ "aliases": { "coconut": true, "manggo": true, "basil": false } }
+```
+
+`true` adds the alias and turns it on, `false` adds it turned off, and an alias left out is never added. The `t3` step runs before the others, in a full sync and in the `SessionStart` hook. It writes the aliases into `~/.t3/userdata/settings.json`, which T3 Code reloads without a restart, and creates any missing profile dir, which the same run then syncs.
+
+- One alias is one account. A machine signed in to the same account uses the same alias; a different account gets a new alias, never a reused name.
+- Never change an alias's `id`: threads store it. `displayName` and `accentColor` are safe to change.
+- Only the fields the catalog names are written. An alias dropped from the machine file is turned off, not deleted, so its old threads still open.
+- Logins never sync. Sign in each new profile once: `CLAUDE_CONFIG_DIR=~/.claude-<alias> claude`, then `/login`, then `/mcp` for OAuth servers.
+- `--drift` also lists aliases made by hand in T3 Code, so you can add them to the catalog.
+
+On a new machine: clone this repo to `~/skills`, copy `profile/t3-machine.example.json` to `~/.config/skills/machine.json` and edit it, run `python3 scripts/sync_profiles.py`, then sign in each profile.
