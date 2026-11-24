@@ -8,6 +8,10 @@
       "type": "http",
       "url": "https://mcp.higgsfield.ai/mcp"
     },
+    "elevenlabs": {
+      "type": "http",
+      "url": "https://api.elevenlabs.io/v1/mcp-creative"
+    },
     "pencil": {
       "command": "/Applications/Pen.app/Contents/Resources/app.asar.unpacked/out/mcp-server-darwin-arm64",
       "args": [
