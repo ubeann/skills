@@ -22,6 +22,7 @@ A board gives each reference one of these, and each job one reference.
 | `type` | family, scale, weight, letter-spacing (measured with `inventory.js`) |
 | `layout` | structure: what is on the screen and in what order |
 | `shape` | corner treatment, shape language, silhouette |
+| `anatomy` | a character's build: height in heads, the pushed proportion, how head, body and limbs join |
 | `pose` | a character pose or gesture |
 | `composition` | framing and crop: centred, peek crop, safe zones |
 | `motion` | how something moves or changes state |
