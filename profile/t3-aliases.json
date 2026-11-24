@@ -1,0 +1,42 @@
+{
+  "aliases": {
+    "cherry": {
+      "id": "claudeAgent",
+      "driver": "claudeAgent",
+      "displayName": "Cherry",
+      "accentColor": "#C21E3A",
+      "config": {
+        "homePath": ""
+      }
+    },
+    "basil": {
+      "id": "claudeAgent_claude_sharing",
+      "driver": "claudeAgent",
+      "displayName": "Basil",
+      "accentColor": "#4C9A2A",
+      "config": {
+        "homePath": "~/.claude-sharing"
+      }
+    },
+    "manggo": {
+      "id": "claudeAgent_manggo",
+      "driver": "claudeAgent",
+      "displayName": "Manggo",
+      "accentColor": "#FFB627",
+      "config": {
+        "homePath": "~/.claude-manggo",
+        "idleCompaction": "beforeCacheExpires"
+      }
+    },
+    "coconut": {
+      "id": "claudeAgent_coconut",
+      "driver": "claudeAgent",
+      "displayName": "Coconut",
+      "accentColor": "#8B5E3C",
+      "config": {
+        "homePath": "~/.claude-coconut",
+        "idleCompaction": "beforeCacheExpires"
+      }
+    }
+  }
+}

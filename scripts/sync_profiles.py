@@ -2,9 +2,12 @@
 """Sync the shared Claude Code setup in this repo into every Claude profile.
 
 A profile is a Claude config dir: ~/.claude (the default) and every ~/.claude-*
-dir, which T3 Code launches through CLAUDE_CONFIG_DIR. Each run does five steps:
+dir, which T3 Code launches through CLAUDE_CONFIG_DIR. Each run first writes this
+machine's T3 Code aliases, then does five steps in every profile:
 
-  plugins   add the marketplaces in profile/settings.json, install its enabled plugins,
+  t3        add the aliases ~/.config/skills/machine.json picks from profile/t3-aliases.json
+            to T3 Code, and create their profile dirs (once per machine, not per profile)
+  plugins  add the marketplaces in profile/settings.json, install its enabled plugins,
             uninstall plugins and remove marketplaces the repo dropped
   mcp       add the servers in profile/mcp.json at user scope (`${VAR}` reads the env)
   settings  merge profile/settings.json into <profile>/settings.json
@@ -37,8 +40,11 @@ from pathlib import Path
 HOME = Path.home()
 DEFAULT_PROFILE = HOME / ".claude"
 STATE_FILE = ".skills-sync.json"
-STEPS = ["plugins", "mcp", "settings", "skills", "files"]
+STEPS = ["t3", "plugins", "mcp", "settings", "skills", "files"]
 BIN_LINK = HOME / ".local/bin/sync-claude-profiles"
+# T3 Code's settings, and this machine's pick of aliases. The env vars exist for tests.
+T3_SETTINGS = Path(os.environ.get("T3_SETTINGS") or HOME / ".t3/userdata/settings.json")
+MACHINE_FILE = Path(os.environ.get("SKILLS_MACHINE_FILE") or HOME / ".config/skills/machine.json")
 
 args = None
 warnings = 0
@@ -418,6 +424,96 @@ def sync_files(profile, repo, state):
     state["files"] = [rel for rel in wanted if link(profile, home / rel, profile / rel, rel)]
 
 
+# ---- t3 aliases ------------------------------------------------------------
+# An alias is a T3 Code provider instance: one Claude profile dir, one account.
+# profile/t3-aliases.json lists them all; the machine file says which this machine
+# has, true for on and false for present but off, since accounts differ per
+# machine. Only the fields the catalog names are written, so what T3 Code adds
+# itself stays. An alias the machine drops is turned off, never deleted: threads
+# keep its id. What the step wrote is recorded next to the machine file.
+
+def merge_owned(node, wanted, before):
+    """Set wanted's keys in node; delete keys set last time (before) that are gone now."""
+    for key, value in wanted.items():
+        if isinstance(value, dict):
+            if not isinstance(node.get(key), dict):
+                node[key] = {}
+            merge_owned(node[key], value, before.get(key) if isinstance(before.get(key), dict) else {})
+        else:
+            node[key] = value
+    for key, value in before.items():
+        if key not in wanted and node.get(key) == value:
+            del node[key]
+
+
+def note(msg):
+    if not args.quiet:
+        print(f"t3: {msg}")
+
+
+def sync_t3(repo):
+    """Write this machine's aliases into T3 Code. Returns the profile dirs it created."""
+    if not T3_SETTINGS.is_file():
+        return []  # T3 Code is not installed here
+    machine = read_json(MACHINE_FILE, None)
+    if machine is None:
+        note(f"no {MACHINE_FILE}; aliases left alone (copy profile/t3-machine.example.json)")
+        return []
+    catalog = read_json(repo / "profile/t3-aliases.json", {}).get("aliases", {})
+    state_path = MACHINE_FILE.parent / "t3-sync.json"
+    owned = read_json(state_path, {}).get("instances", {})
+    settings = read_json(T3_SETTINGS, {})
+    before = json.dumps(settings, sort_keys=True)
+    instances = settings.setdefault("providerInstances", {})
+    applied, created = {}, []
+
+    for alias, on in machine.get("aliases", {}).items():
+        spec = catalog.get(alias)
+        if not spec:
+            warn(None, f"t3: alias {alias!r} in {MACHINE_FILE} is not in profile/t3-aliases.json")
+            continue
+        iid = spec["id"]
+        fields = {k: v for k, v in spec.items() if k not in ("id", "config")}
+        fields["enabled"] = bool(on)
+        if "config" in spec:
+            fields["config"] = spec["config"]
+        if iid not in instances:
+            note(f"{'would add' if args.dry_run else 'added'} alias {fields.get('displayName', alias)}")
+        merge_owned(instances.setdefault(iid, {}), fields, owned.get(iid, {}))
+        applied[iid] = fields
+
+        home = spec.get("config", {}).get("homePath")
+        if home and not Path(home).expanduser().exists():
+            folder = Path(home).expanduser()
+            if not args.dry_run:
+                folder.mkdir(parents=True)
+                created.append(folder)
+            note(f"{'would create' if args.dry_run else 'created'} {home}; sign in once with "
+                 f"`CLAUDE_CONFIG_DIR={home} claude`, then /login")
+
+    for iid in owned:
+        if iid not in applied and instances.get(iid, {}).get("enabled"):
+            instances[iid]["enabled"] = False
+            note(f"{'would turn' if args.dry_run else 'turned'} off alias {instances[iid].get('displayName', iid)}")
+
+    if json.dumps(settings, sort_keys=True) != before:
+        if not args.dry_run:
+            write_json(T3_SETTINGS, settings)  # T3 Code reloads it live
+        note(f"{'would update' if args.dry_run else 'updated'} {T3_SETTINGS}")
+    if not args.dry_run:
+        write_json(state_path, {"instances": applied})
+    return created
+
+
+def report_t3_drift(repo):
+    if not T3_SETTINGS.is_file():
+        return
+    ids = {spec["id"] for spec in read_json(repo / "profile/t3-aliases.json", {}).get("aliases", {}).values()}
+    for iid, inst in read_json(T3_SETTINGS, {}).get("providerInstances", {}).items():
+        if inst.get("driver") == "claudeAgent" and iid not in ids:
+            print(f"t3: only here: alias {inst.get('displayName', iid)} ({iid})")
+
+
 # ---- main ------------------------------------------------------------------
 
 # ---- drift and pull --------------------------------------------------------
@@ -482,7 +578,6 @@ def main():
     repo = (args.repo or main_repo).resolve()
     is_main = main_repo is not None and repo == main_repo
     steps = args.only or STEPS
-    profiles = args.profile or ([current_profile()] if args.current else discover_profiles())
 
     if args.pull and not args.dry_run and is_main and pull(repo):
         # The script itself may have changed: rerun the new one, without --pull.
@@ -490,9 +585,15 @@ def main():
         os.execv(sys.executable, [sys.executable, str(repo / "scripts/sync_profiles.py"), *argv])
 
     if args.drift:
-        for profile in profiles:
+        report_t3_drift(repo)
+        for profile in args.profile or ([current_profile()] if args.current else discover_profiles()):
             report_drift(profile.expanduser(), repo)
         return 0
+
+    # Aliases first: a profile dir they create is synced in this same run, so its
+    # first session already has the shared hooks.
+    created = sync_t3(repo) if "t3" in steps and not args.profile else []
+    profiles = args.profile or ([current_profile(), *created] if args.current else discover_profiles())
 
     for profile in profiles:
         profile = profile.expanduser()
@@ -502,7 +603,8 @@ def main():
         state_path = profile / STATE_FILE
         state = read_json(state_path, {})
         for step in steps:
-            globals()[f"sync_{step}"](profile, repo, state)
+            if step != "t3":
+                globals()[f"sync_{step}"](profile, repo, state)
         if not args.dry_run:
             write_json(state_path, state)
 
