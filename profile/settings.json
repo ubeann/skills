@@ -41,7 +41,8 @@
     "macroscope@macroscope-local": true,
     "mattpocock-skills@mattpocock": true,
     "impeccable@impeccable": true,
-    "antislop@anti-slop": true
+    "antislop@anti-slop": true,
+    "diagram-design@diagram-design": true
   },
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
@@ -116,6 +117,12 @@
       "source": {
         "source": "git",
         "url": "https://github.com/miqdadbadjuber/anti-slop.git"
+      }
+    },
+    "diagram-design": {
+      "source": {
+        "source": "github",
+        "repo": "cathrynlavery/diagram-design"
       }
     }
   },
