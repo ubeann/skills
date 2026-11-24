@@ -1,6 +1,6 @@
 ---
 name: brand-art
-description: Make a product's mascots, illustration sets, scene and background art, and app icons that keep one identity across every image, through Recraft or Higgsfield, and compose them into banners and cards. Locks an art bible and an identity pack (the owner's seed, an approved hero, a turnaround, fixed identity text, palette, style IDs) before generating, changes one thing per call, cleans the files (WebP, SVG backgrounds, palette snap, texture, edge, sizes), scores every image for drift against the hero, and checks each composed layout for a lead figure and figure-ground contrast. Use when generating illustrations, a mascot or character, landscapes or backgrounds, or an app icon, when composing a banner, card set or social image from a cast, when AI art looks generic or loses its identity, or to compare image vendors. Judging finished art cold is art-critique; UI tokens are design-direction; collecting and breaking down references is moodboard; logo marks are ui-ux-pro-max:design; assets cut from an approved mockup are impeccable; animating the art is motion-direction.
+description: Make a product's mascots, illustration sets, scene and background art, and app icons that keep one identity across every image, through Recraft or Higgsfield, and compose them into banners and cards. Locks an art bible and an identity pack (the owner's seed, an approved hero, a turnaround, fixed identity text, palette, style IDs) before generating, changes one thing per call, cleans the files (WebP, SVG backgrounds, palette snap, texture, edge, sizes), scores every image for drift against the hero, and checks each composed layout for a lead figure and figure-ground contrast. Use when generating illustrations, a mascot or character, landscapes or backgrounds, or an app icon, when composing a banner, card set or social image from a cast, when AI art looks generic or loses its identity, or to compare image vendors. A mascot's character (role, story, personality, anatomy) is character-design, which runs first; judging finished art cold is art-critique; UI tokens are design-direction; collecting and breaking down references is moodboard; logo marks are ui-ux-pro-max:design; assets cut from an approved mockup are impeccable; animating the art is motion-direction.
 ---
 
 # Brand art
@@ -13,20 +13,20 @@ The work lives in the product repo under `art/<name>/`, one folder per asset fam
 
 ### 1. Read the direction
 
-Read `DESIGN.md` and `PRODUCT.md` when they exist; the palette and adjectives start there, and a product with UI but no `DESIGN.md` runs the `design-direction` skill first. Pick the **family**:
+Read `DESIGN.md` and `PRODUCT.md` when they exist; the palette and adjectives start there. A product with UI but no `DESIGN.md` runs the `design-direction` skill first, and a product with no `PRODUCT.md` gets its product fields (the users, the bet, the key moments) from that skill's brief before any art. Pick the **family**:
 
-- **mascot**: a character that recurs (empty states, loading, onboarding, the app icon).
+- **mascot**: a character that recurs (empty states, loading, onboarding, the app icon). It is drawn from a **character brief**: without an approved `art/<name>/character.md`, run the `character-design` skill first.
 - **set**: spot illustrations or chapter art that must read as one series.
 - **scene**: landscapes, hero backgrounds, banners.
-- **icon**: an app icon, usually built from the mascot.
+- **icon**: an app icon. One that shows a character is a target of that character's mascot pack: the family is mascot, and the icon is built from its hero and sheet.
 
-List every target surface with its size and format (a 1024 app icon, a 1200x630 social card, art printed 34 mm wide). A composed target (a banner, a card set) also names the figures it places; step 8 decides their poses. Check vendor access and credits: `higgsfield account` for Higgsfield, `get_user` on the Recraft MCP. `references/vendors.md` has setup for both. Create `art/<name>/` with the folders `references/identity-pack.md` lists.
+List every target surface with its size and format (a 1024 app icon, a 1200x630 social card, art printed 34 mm wide). A composed target (a banner, a card set) also names the figures it places; step 8 decides their poses. Check vendor access and credits: `higgsfield account` for Higgsfield, `get_user` on the Recraft MCP. `references/vendors.md` has setup for both. Then write the **budget**: the reserve is every planned image at its final model's rate (the hero, each sheet panel, each expression, each target) plus half as much again for retries, and exploration (the style round, drafts) spends only what is left. Create `art/<name>/` with the folders `references/identity-pack.md` lists.
 
-Done when the family, every target with size and format, and each vendor's credit balance are written in `art/<name>/README.md`.
+Done when the family, every target with size and format, each vendor's credit balance and the budget are written in `art/<name>/README.md`, and a mascot's character brief starts with `Status: approved`.
 
 ### 2. Write the art bible
 
-Fill every field of `references/art-bible.md` into `art/<name>/README.md`. References arrive from the `moodboard` skill with one job each; a bare link gets one job here, and a technique flagged as a trend enters as one ingredient, never the whole style.
+Fill every field of `references/art-bible.md` into `art/<name>/README.md`. References arrive from the `moodboard` skill with one job each. A single bare link gets its job here; a batch, or a second link in the same session, goes through moodboard's fetch and breakdown first, so the references are read as one board. A technique flagged as a trend enters as one ingredient, never the whole style.
 
 When the style fields (line, rendering, light, palette, texture) are undecided, when the owner wants to change them, or when a world or scene family needs a style the bible lacks, run the style round in `references/style-round.md` first: the owner's own character drawn in three or four researched directions, identity locked and style varied, and the pick fills those fields. It needs a subject, so it can follow step 3's seed or thumbnail round.
 
@@ -34,9 +34,9 @@ Done when every field has a value, the style fields came from an owner's pick of
 
 ### 3. Get the original seed
 
-Ask the owner once for something they made: a phone photo of a sketch or silhouette, a scanned texture, a doodle, a hand-tuned SVG. With a seed, every generation starts from it. Without one, run a **thumbnail round**: four to six images of the silhouette only, on the cheapest model and quality, shown as a gallery for the owner to pick from; the pick plus their notes becomes the seed.
+A mascot's seed is the anatomy the owner picked for its character brief, already in `art/<name>/seed/`. For the other families, ask the owner once for something they made: a phone photo of a sketch or silhouette, a scanned texture, a doodle, a hand-tuned SVG. With a seed, every generation starts from it. Without one, run a **thumbnail round** (`references/generate.md`, Sketch rounds): four to six images of the silhouette only, as a numbered gallery that ends the turn; the owner's pick plus their notes becomes the seed.
 
-Done when `art/<name>/seed/` holds at least one file the owner made or picked, with a line in the README saying what to keep from it.
+Done when `art/<name>/seed/` holds at least one file the owner made or picked, with a line in the README saying who picked it and what to keep from it.
 
 ### 4. Build the identity pack
 
@@ -55,7 +55,7 @@ Done when the owner approved the hero, `check.py --pack` reports 0 errors, and e
 
 Generate each target from the pack through the loop in `references/generate.md`: the hero and the closest sheet panel as references, one change per call, the prompt template, a cost quote before any batch, and a log line per call. A target the owner chooses between goes through Draft, rank, pick in that file: the `art-critique` skill ranks the drafts cold before the owner sees a shortlist. `references/vendors.md` says which model handles which operation.
 
-Done when every target has a raw file in `art/<name>/raw/` and a line in `art/<name>/log.jsonl` with prompt, model, references, cost and job ID, and every image the owner saw had passed `art-critique` first.
+Done when every target has a raw file in `art/<name>/raw/` and a line in `art/<name>/log.jsonl` with prompt, model, references, cost and job ID, and every finished image the owner saw had passed `art-critique` first.
 
 ### 6. Clean
 
@@ -101,7 +101,7 @@ Done when the Handover section's criterion holds, an icon's lineup tests pass, a
 
 - Restart from the hero, in a fresh call or chat, when two variations in a row drift. A drifted image is evidence, never a new base.
 - A new hero is a new pack version: `pack.json` `version` goes up and earlier outputs keep the version they were made with.
-- Report the credit balance before and after each round, and the cost of each retry.
+- Report the credit balance before and after each round, and the cost of each retry. A round that would cut into the budget's reserve waits for the owner's yes, with the shortfall in credits.
 - The owner reads galleries, not descriptions: show images, then one line per choice.
-- The owner is the last critic, not the first. Before any gallery, `art-critique` has read it cold; what reaches the owner is a choice between images that could ship.
+- The owner is the last critic, not the first. Before any gallery of finished images, `art-critique` has read it cold; what reaches the owner is a choice between images that could ship. A sketch round is the one gallery that reaches the owner unreviewed: it asks for a direction, on the draft model.
 - Stop fixing by art-critique's rule (`rubric.md`, When to stop): two fix passes per approved image, then each open major goes to the owner to fix, waive or regenerate.

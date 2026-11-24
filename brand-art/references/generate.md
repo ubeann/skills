@@ -45,13 +45,21 @@ In the cast pilot every round went straight from generation to the owner, and th
 
 Describe the movement before the costume: the line of action and its energy, then the camera angle, then what the character wears ([video at 1:15](https://www.youtube.com/watch?v=t-8FuHla3H0&t=75s)). Vary the camera across a set ([video at 3:14](https://www.youtube.com/watch?v=t-8FuHla3H0&t=194s)). Tension comes from a lowered head, raised shoulders, straight arms and a curved spine ([video at 8:31](https://www.youtube.com/watch?v=t-8FuHla3H0&t=511s)); when a costume forces a calm pose, push the camera instead of the limbs ([video at 9:46](https://www.youtube.com/watch?v=t-8FuHla3H0&t=586s)). Faces follow `expressions.md`.
 
-## Thumbnail round
+## Sketch rounds
 
-Before a hero exists: four to six silhouettes on the cheapest model and quality, small, flat, no detail, as a gallery, numbered so the owner can answer with a number. Each differs from the last in its main shape. A family is judged as a lineup of three or more in one image: fit across a cast does not show in single images. The owner picks a silhouette and a direction, not a finished image. Sketching first keeps creative control; without a silhouette the model gives you something random.
+A **sketch round** asks the owner for a direction before anything is finished: the thumbnail round here, and the form and anatomy rounds of `character-design`. Each runs the same way:
+
+- **Draft model only**: the cheapest model and quality in `references/vendors.md`, quoted before the round. Final-model credits go only to a direction the owner picked.
+- **One numbered gallery, labelled unreviewed**, so the owner answers with a number. It skips `art-critique`; the critique starts at the hero.
+- **The gallery ends the turn.** The reply is the gallery, one line per sketch and your recommendation; the next call waits for the owner's number.
+
+In a mascot pilot on 2026-11-24 the agent picked its own thumbnail and spent 57 credits finishing it before the owner saw any direction; 133 credits of finished work were archived when the owner then asked for a different character.
+
+**Thumbnail round**, before a set's or a scene's hero exists: four to six silhouettes, small, flat, no detail. Each differs from the last in its main shape. A family is judged as a lineup of three or more in one image: fit across a cast does not show in single images. The owner picks a silhouette and a direction, not a finished image. Sketching first keeps creative control; without a silhouette the model gives you something random.
 
 ## Where the mascot appears
 
-Plan the uses before generating poses, so each expression maps to a state: the app icon, onboarding, empty states, loading, errors, success, and marketing ([video at 11:24](https://www.youtube.com/watch?v=JDwxt9fHofk&t=684s)). A mascot that appears in one place is a logo; one that recurs is a character people attach to.
+Plan the uses before generating poses, so each expression maps to a state. A mascot's uses are the Role and Moments fields of its character brief; the usual places are the app icon, onboarding, empty states, loading, errors, success, and marketing ([video at 11:24](https://www.youtube.com/watch?v=JDwxt9fHofk&t=684s)). A mascot that appears in one place is a logo; one that recurs is a character people attach to.
 
 ## Log line
 

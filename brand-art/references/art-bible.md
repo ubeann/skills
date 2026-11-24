@@ -2,6 +2,8 @@
 
 Every decision the model would otherwise make for you, written down before generation. Fill each field in `art/<name>/README.md`. The sources behind each rule are linked at their field.
 
+A mascot's character brief (`art/<name>/character.md`) has already decided who the character is. Its Anatomy field answers Proportion in field 3, its signature is field 10's quirk, its props and moments fill field 9, and its Forbidden rows are field 2's nots. Point to the brief for those; the bible adds how the character is drawn.
+
 ## 1. Three adjectives, each made visible
 
 An adjective the model cannot see is a mood. Tie each to something drawn:
