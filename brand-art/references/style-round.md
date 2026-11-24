@@ -20,7 +20,7 @@ A reference may lend only cells from the right column, each as a named technique
 
 ## Steps
 
-1. **The subject.** The approved hero when one exists, else the owner's seed, else the silhouette picked in a thumbnail round (`references/generate.md`). One subject, one pose, for every direction.
+1. **The subject.** The approved hero when one exists, else the owner's seed (for a mascot, the anatomy picked for its character brief, whose Locked rows are the identity column above), else the silhouette picked in a thumbnail round (`references/generate.md`). One subject, one pose, for every direction.
 2. **Research three or four directions.** Draw from the owner's references, the `moodboard` library's trend table (`library.py trends`) and the art's benchmark. Each direction gets a card:
 
    | Field | What goes in |

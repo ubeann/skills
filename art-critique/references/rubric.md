@@ -1,6 +1,6 @@
 # The rubric
 
-Six axes, judged per image. Each gets a verdict: **pass**, **fix** (one named change makes it pass), or **regenerate** (no single change will). An image's verdict is its worst axis.
+Six axes, judged per image, and a seventh for a mascot's hero. Each gets a verdict: **pass**, **fix** (one named change makes it pass), or **regenerate** (no single change will). An image's verdict is its worst axis.
 
 Write every finding as a row:
 
@@ -81,6 +81,29 @@ The art as it ships, not as it was generated: `critique_sheet.py inplace` at eve
 - The face and the job still read at the smallest size.
 - Text on or beside the art is readable and sits on calm ground; no generated element runs under it. `compose_check.py --bare` in `brand-art` measures this; its numbers come first when the layout has a bare render.
 - Edges and corners hold on both grounds (no white box on a dark page, no halo).
+
+## 7. Character
+
+Only for a mascot's hero candidate or anatomy pick. The other axes ask whether an image is well made; this one asks whether the character is worth making. In a mascot pilot on 2026-11-24, two cold critiques found only polish defects in a hero the owner then rejected as generic: no body to act with, no story, nothing a rival could not wear.
+
+Write three **cold reads** from the blurred greyscale copy and the smallest placement, before opening the character brief:
+
+- **Form**: what it is, in one word.
+- **Job**: what it does, and for what kind of product.
+- **Trait**: the one personality word its build and face give.
+
+Then open `art/<name>/character.md` and compare:
+
+| Test | Passes when |
+|---|---|
+| Form read | the cold read names the brief's form; "pig or hippo" is a miss |
+| Job read | the cold job is the brief's Role, or its neighbour |
+| Trait read | the cold trait is one of the brief's Personality rows |
+| Swap | beside `art/<name>/rivals/`, it could not trade places with a rival's character after a recolour |
+| Bare | with every prop and accessory covered, the brief's signature still shows on the body |
+| Numbers | the build measures within the brief's Anatomy numbers: heads tall, eye width, the pushed proportion |
+
+A missed Form read or a failed Swap is **critical**: more polish will not fix it, so the verdict is regenerate from the brief, or the brief changes. Each other miss is a **major**, and its one change names a brief field ("push the eyes from 25% to 35% of the head, per Anatomy"). Without a brief, report this axis as not judged and say that `character-design` writes one.
 
 ## Premium: the benchmark comparison
 

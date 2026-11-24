@@ -19,7 +19,7 @@ from collections import defaultdict
 from pathlib import Path
 
 LIB = Path(os.environ.get("MOODBOARD_DIR", Path.home() / "moodboard")).expanduser()
-JOBS = {"technique", "palette", "type", "layout", "shape", "pose", "composition", "motion", "copy"}
+JOBS = {"technique", "palette", "type", "layout", "shape", "anatomy", "pose", "composition", "motion", "copy"}
 
 
 def cards():

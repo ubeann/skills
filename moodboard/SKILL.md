@@ -1,6 +1,6 @@
 ---
 name: moodboard
-description: Collect design references from X, Threads, Instagram, YouTube or any site into one local library, break each into the technique it uses, flag techniques several designers are using at once, and assemble a project board where every reference has one job. Use when the user shares reference links or screenshots, asks what is trending in design, or wants a moodboard for an app, website, illustration, mascot or icon. Turning a board into UI tokens is design-direction; into art is brand-art; into motion is motion-direction; a video's full transcript is video-context.
+description: Collect design references from X, Threads, Instagram, YouTube or any site into one local library, break each into the technique it uses, flag techniques several designers are using at once, and assemble a project board where every reference has one job. Use when the user shares reference links or screenshots, asks what is trending in design, or wants a moodboard for an app, website, illustration, mascot or icon. Turning a board into UI tokens is design-direction; into a mascot's character is character-design; into art is brand-art; into motion is motion-direction; a video's full transcript is video-context.
 ---
 
 # Moodboard
@@ -47,7 +47,7 @@ python3 <skill-dir>/references/library.py board <project> <lead-id>=<job>:<what 
 
 The first reference is the **lead**, drawn at four times the area: size is weight, so lead with the reference most central to the direction. What is taken is a measured value for palette and type (`design-direction`'s `inventory.js` on a live page) and a named technique for the rest; it captions the reference on `board.png` too, so a reader reacts to the part taken rather than the whole image.
 
-Then look at `board.png` for ten seconds. A reader should be able to say the direction from it; a reference whose colour or tone pulls the eye away from the lead is cut, or recoloured to sit with the others. Hand the board to `brand-art` (its art bible's references table) or `design-direction` (its step 3).
+Then look at `board.png` for ten seconds. A reader should be able to say the direction from it; a reference whose colour or tone pulls the eye away from the lead is cut, or recoloured to sit with the others. Hand the board to `character-design` (its brief's references table), `brand-art` (its art bible's references table) or `design-direction` (its step 3).
 
 Done when `library.py board` exits 0, the direction can be said from `board.png` in ten seconds, and no reference pulls away from the lead.
 

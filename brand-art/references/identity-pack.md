@@ -6,7 +6,8 @@ Everything a later image is generated from and scored against, versioned in one 
 
 ```
 art/<name>/
-  README.md     the art bible, targets, credit balances, decisions
+  README.md     the art bible, targets, credit balances, the budget, decisions
+  character.md  a mascot's character brief, written by character-design
   pack.json     machine-readable identity (below)
   seed/         what the owner made or picked
   hero/         the approved hero, one file per version (hero-v1.png, hero-v2.png)
@@ -27,6 +28,7 @@ art/<name>/
   "name": "oliver",
   "version": 1,
   "family": "mascot",
+  "character": "character.md",
   "hero": "hero/hero-v1.png",
   "sheet": ["sheet/front.png", "sheet/three-quarter.png", "sheet/side.png", "sheet/back.png",
             "sheet/happy.png", "sheet/thinking.png"],
@@ -46,6 +48,7 @@ art/<name>/
 ```
 
 - `family` is `mascot`, `set`, `scene` or `icon`. Mascot and icon packs get the silhouette check.
+- `character` is the mascot's character brief. `check.py --pack` fails a mascot pack without one, or with one whose first line is not `Status: approved`.
 - `palette` roles are `dominant`, `secondary`, `accent`, `neutral`; values are `#RRGGBB`.
 - `checks` overrides any default threshold in `check.py` (its source lists them). Loosen one only with a reason in the README.
 - `styles` holds one entry per vendor model: a Recraft style ID works only with the model it was created for.
@@ -56,9 +59,9 @@ art/<name>/
 ## Mascot
 
 1. **Hero**: one front-facing, full-body image in a neutral pose on a plain light background, made from the seed. Before the owner approves it, show it in two of the places it will live, at their real size (the app icon at 29 px, an empty state on the product's background): a character drawn for a white artboard over-details and blurs where it is used. The owner approves it before anything else is generated.
-2. **Identity text**: 30 to 90 words naming body shape, proportions, colours in hex, eyes, the one memorable feature, and the rendering and light. Paste it into every prompt **verbatim**; a reworded description slowly changes the character. Describe what the character has, completely: "its face is only two small black ovals" holds where "no mouth" does not. In the toolbox comparison, two of four models added a smile to a "no mouth" mascot as soon as the prompt asked for a happy expression.
+2. **Identity text**: 30 to 90 words naming body shape, proportions, colours in hex, eyes, the one memorable feature, and the rendering and light. The character brief's Locked rows supply everything but the rendering and light, numbers included. Paste it into every prompt **verbatim**; a reworded description slowly changes the character. Describe what the character has, completely: "its face is only two small black ovals" holds where "no mouth" does not. In the toolbox comparison, two of four models added a smile to a "no mouth" mascot as soon as the prompt asked for a happy expression.
 3. **Turnaround**: front, three-quarter, side, back, same scale, same plain background, flat even light, generated from the hero. A sheet whose panels disagree teaches the disagreement to every later image, so score each panel against the hero before keeping it.
-4. **Expressions**: one per product state the mascot will appear in, generated from the front panel: neutral, happy (success), thinking (loading), surprised, sorry (error), working (empty state). Give each its **emanata**, the marks drawn around the character (motion lines, sparkles, a steam puff, a sweat drop): at icon and notification sizes the face is a few pixels and the marks carry the emotion. Fix their line weight and colour in the identity text so every expression draws them the same way.
+4. **Expressions**: one per row of the character brief's Moments field, generated from the front panel, with the body in the state the brief's body mechanic gives that moment. A mascot with no brief yet falls back to the product's states: neutral, happy (success), thinking (loading), surprised, sorry (error), working (empty state). Give each its **emanata**, the marks drawn around the character (motion lines, sparkles, a steam puff, a sweat drop): at icon and notification sizes the face is a few pixels and the marks carry the emotion. Fix their line weight and colour in the identity text so every expression draws them the same way.
 5. **Face kit**: the eye and mouth shapes the expressions are built from, drawn once (open, closed, happy arcs, wide, the mouths the states need; none for a mouthless mascot) and saved as `sheet/face-kit.png`. A new expression combines shapes from the kit, which is what keeps a large expression set reading as one face.
 6. **Base construction**: when several mascots form a family, they share the eye and face design, the line and the rendering, and differ in silhouette and colour.
 7. **One character, many costumes**: a single hero dressed per job, each costume generated from the hero alone with the costume, its pose and a kit expression as the one change, under the rules in the art bible's Costumes and casts. In this repo's cast, 9 of 9 costumes held identity on the first call (`gpt_image_2_medium` through Recraft's `image_edit`).
@@ -100,7 +103,7 @@ An app icon wins on appeal and clarity, so a character beats an abstract mark ([
 - **Peek crop**: tilt the subject and let it enter from an edge so only part shows. The eye goes to the face, and small flaws fall outside the frame.
 - **A face, not a body**: the silhouette fills 65 to 80% of the tile and crops through the bottom edge, unless the shape is closed (a star, a flame). The eyes look off-centre; a straight stare reads as the generic default ([post](https://x.com/ktnr23/status/2118102254360182971)).
 
-Before generating, collect about 20 icons from the product's category (the top results of an App Store search for its job: `curl 'https://itunes.apple.com/search?entity=software&limit=25&term=<job>'` returns each app's `artworkUrl512`) into `art/<name>/rivals/`, and write in the README what the category is crowded with: one shared colour, the same symbol, the same gradient. The icon claims what none of them holds.
+The category's icons are in `art/<name>/rivals/`, collected for the character brief (`character-design` step 1 has the search command), with what the category is crowded with written in the README: one shared colour, the same symbol, the same gradient. The icon claims what none of them holds.
 
 Generate at 1024 on the mascot pack's hero and sheet, then `postprocess.py export --icon` writes every size and the favicon. Then hide it among the rivals at home-screen sizes on light and dark grounds:
 

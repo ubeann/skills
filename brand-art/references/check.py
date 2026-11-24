@@ -264,6 +264,13 @@ def read_pack(path):
             errors.append(f"identity_text has {words} words; a mascot needs 30 to 90")
         if len(pack.get("sheet", [])) < 4:
             incomplete.append("a mascot pack needs a turnaround of at least 4 sheet panels")
+        brief = pack.get("character")
+        if not brief:
+            incomplete.append("a mascot pack needs character: the path of its character brief (the character-design skill)")
+        elif not (base / brief).exists():
+            errors.append(f"character brief {brief} does not exist")
+        elif not re.match(r"\s*Status:\s*approved", (base / brief).read_text(), re.I):
+            errors.append(f"character brief {brief} is not approved: its first line must read 'Status: approved ...'")
     if pack.get("family") in ("set", "scene") and not pack.get("prompt_suffix"):
         incomplete.append("a set or scene pack needs prompt_suffix")
     checks = {**DEFAULT_CHECKS, **pack.get("checks", {})}
